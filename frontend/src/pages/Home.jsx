@@ -8,9 +8,7 @@ import BottomNav from "../Components/nav/BottomNav";
 import TopNav_main from "../Components/nav/TopNav_main";
 const HomeBlock = styled.div`
   position: relative;
-  height: 100vh;
 `;
-
 const Home = () => {
   console.log("랜더링");
   const userActions = useUserActions();
@@ -30,20 +28,65 @@ const Home = () => {
 
   return (
     <HomeBlock>
-      <TopNav_main></TopNav_main>
-      <Link to="/login">
-        <button>login</button>
-      </Link>
-      <Link to="/users/mypage">
-        <button>mypage</button>
-      </Link>
-      {state.isLogin && <button onClick={userActions.logout}>logout</button>}
-
-      <Link to="/view_all">
-        <button>전체글 보기</button>
-      </Link>
-
-      <BottomNav></BottomNav>
+      <TopNav_main />
+      <div style={{ marginTop: "80px", paddingBottom: "90px" }}>
+        <Link to="/login">
+          <button>login</button>
+        </Link>
+        <Link to="/users/mypage">
+          <button>mypage</button>
+        </Link>
+        {state.isLogin && <button onClick={userActions.logout}>logout</button>}
+        <Link to="/view_all">
+          <button>전체글 보기</button>
+        </Link>
+        <div>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo natus molestiae modi
+          similique, odit praesentium cupiditate temporibus in eum totam atque omnis alias quaerat,
+          labore rem molestias, tempora dolore accusantium?
+        </div>
+        <div>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo natus molestiae modi
+          similique, odit praesentium cupiditate temporibus in eum totam atque omnis alias quaerat,
+          labore rem molestias, tempora dolore accusantium?
+        </div>
+        <div>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo natus molestiae modi
+          similique, odit praesentium cupiditate temporibus in eum totam atque omnis alias quaerat,
+          labore rem molestias, tempora dolore accusantium?
+        </div>
+        <div>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo natus molestiae modi
+          similique, odit praesentium cupiditate temporibus in eum totam atque omnis alias quaerat,
+          labore rem molestias, tempora dolore accusantium?
+        </div>{" "}
+        <div>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo natus molestiae modi
+          similique, odit praesentium cupiditate temporibus in eum totam atque omnis alias quaerat,
+          labore rem molestias, tempora dolore accusantium?
+        </div>{" "}
+        <div>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo natus molestiae modi
+          similique, odit praesentium cupiditate temporibus in eum totam atque omnis alias quaerat,
+          labore rem molestias, tempora dolore accusantium?
+        </div>{" "}
+        <div>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo natus molestiae modi
+          similique, odit praesentium cupiditate temporibus in eum totam atque omnis alias quaerat,
+          labore rem molestias, tempora dolore accusantium?
+        </div>{" "}
+        <div>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo natus molestiae modi
+          similique, odit praesentium cupiditate temporibus in eum totam atque omnis alias quaerat,
+          labore rem molestias, tempora dolore accusantium?
+        </div>{" "}
+        <div>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo natus molestiae modi
+          similique, odit praesentium cupiditate temporibus in eum totam atque omnis alias quaerat,
+          labore rem molestias, tempora dolore accusantium?
+        </div>
+      </div>
+      <BottomNav />
     </HomeBlock>
   );
 };

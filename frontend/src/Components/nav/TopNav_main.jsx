@@ -1,17 +1,17 @@
 import React from "react";
 import styled from "styled-components";
 
-const TopNav_mainBlock = styled.div`
+const TopNavMainBlock = styled.div`
   height: 80px;
-  width: 100vh;
-  position: absolute;
+  width: 100%;
+  position: fixed;
+  display: flex;
   top: 0;
   background-color: red;
-  height: 80px;
 `;
 
 const TopNav_main = () => {
-  return <TopNav_mainBlock></TopNav_mainBlock>;
+  return <TopNavMainBlock></TopNavMainBlock>;
 };
 
 export default TopNav_main;

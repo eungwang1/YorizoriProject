@@ -3,13 +3,12 @@ import styled, { css } from "styled-components";
 
 const BottomNavBlock = styled.div`
   height: 80px;
-  width: 100vh;
-  position: absolute;
-  bottom: 0;
+  width: 100%;
+  position: fixed;
+  bottom: 103px;
   display: flex;
-  flex-direction: row;
+  // flex-direction: row;
   border-top: 1px solid #c5c5c5;
-  padding-top: 3px;
 `;
 
 const IconImg = styled.div`
