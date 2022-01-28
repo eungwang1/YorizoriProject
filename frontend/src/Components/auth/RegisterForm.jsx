@@ -110,7 +110,7 @@ const RegisterForm = () => {
         <ErrorText>비밀번호가 일치하지 않습니다.</ErrorText>
       )}
 
-      <StyledButton>로그인</StyledButton>
+      <StyledButton>회원가입</StyledButton>
 
       <DivWrapper>
         <StyledDiv>간편 회원가입</StyledDiv>

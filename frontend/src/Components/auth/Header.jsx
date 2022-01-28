@@ -9,8 +9,8 @@ const AuthTemplateBlock = styled.div`
 `;
 
 const LogoImageBox = styled.img`
-  width: 400px;
-  height: 150px;
+  width: 215px;
+  height: 143px;
 `;
 
 const ArrowImageBox = styled.img`
@@ -26,7 +26,7 @@ const AuthTemplate = () => {
         <ArrowImageBox src="./images/arrow.png" alt="arrow.png"></ArrowImageBox>
       </Link>
       <Link to="/">
-        <LogoImageBox src="./images/logo.png" alt="logo.png"></LogoImageBox>
+        <LogoImageBox src="./images/logo_login.png" alt="logo.png"></LogoImageBox>
       </Link>
     </AuthTemplateBlock>
   );
