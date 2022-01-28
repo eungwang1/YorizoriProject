@@ -3,9 +3,12 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 const TopNavBox = styled.div`
+  height: 80px;
   width: 100%;
-  height: 70px;
-  padding: 5px;
+  position: fixed;
+  display: flex;
+  top: 0;
+  background-color: white;
   border-bottom: 5px solid rgba(255,210,136, .46);
 `
 
@@ -14,7 +17,7 @@ const TopBackBox = styled.img`
     font-size: 24px;
     position: absolute;
     left: 12px;
-    top: 3%;
+    top: 28px;
 `;
 
 
