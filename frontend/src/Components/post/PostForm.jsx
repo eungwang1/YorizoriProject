@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { Dropdown, Selection } from "react-dropdown-now";
-import { DropDownList } from "@progress/kendo-react-dropdowns";
 
 const PostFormBlock = styled.div`
   display: flex;

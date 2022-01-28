@@ -38,6 +38,11 @@ const Home = () => {
         <button>mypage</button>
       </Link>
       {state.isLogin && <button onClick={userActions.logout}>logout</button>}
+
+      <Link to="/view_all">
+        <button>전체글 보기</button>
+      </Link>
+
       <BottomNav></BottomNav>
     </HomeBlock>
   );
