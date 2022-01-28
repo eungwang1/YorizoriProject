@@ -1,6 +1,7 @@
-import React from 'react';
-import styled from 'styled-components';
-import { Dropdown, Selection } from 'react-dropdown-now';
+import React from "react";
+import styled from "styled-components";
+import { Dropdown, Selection } from "react-dropdown-now";
+import { DropDownList } from "@progress/kendo-react-dropdowns";
 
 const PostFormBlock = styled.div`
   display: flex;
@@ -48,6 +49,37 @@ const ImgBox = styled.div`
   background-color: #c4c4c4;
 `;
 
+const DropdownWrapper = styled.div`
+  display: flex;
+  .rdn {
+    width: 180px;
+    height: 61px;
+    box-sizing: border-box;
+    padding: 20px 0px 20px 10px;
+    z-index: 10;
+    font-size: 1rem;
+    font-weight: 400;
+    font-family: Roboto;
+    .is-open {
+      background-color: red;
+    }
+  }
+  .rdn-control-placeholder {
+    padding-left: 8px;
+  }
+
+  .rdn-drop {
+    margin-top: 10px;
+  }
+
+  .rdn-drop-menu-option {
+    background-color: white;
+    box-shadow: 0px 8px 16px 8px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+    padding: 8px;
+  }
+`;
+
 const PostForm = () => {
   return (
     <PostFormBlock>
@@ -67,11 +99,22 @@ const PostForm = () => {
       <TitleBox>
         <p>카테고리</p>
       </TitleBox>
-      <Dropdown
+      {/* <Dropdown
         placeholder="::종류별::"
         className="my-className"
-        options={['한식', '중식', '일식']}
-      />
+        options={["한식", "중식", "일식"]}
+      /> */}
+      <DropdownWrapper>
+        <Dropdown
+          placeholder="::종류별::"
+          options={["one", "two", "three"]}
+          // value="one"
+          onChange={(value) => console.log("change!", value)}
+          onSelect={(value) => console.log("selected!", value)} // always fires once a selection happens even if there is no change
+          onClose={(closedBySelection) => console.log("closedBySelection?:", closedBySelection)}
+          onOpen={() => console.log("open!")}
+        />
+      </DropdownWrapper>
       <TitleBox>
         <p>요리정보</p>
       </TitleBox>
