@@ -1,12 +1,12 @@
 import React from "react";
 import styled from "styled-components";
-import Headers from '../Components/mypage/Header'
+import Profile from '../Components/mypage/Profile'
 
 
 const MyPage = () => {
   return (
     <div>
-      <Headers />
+      <Profile />
     </div>
   );
 };
