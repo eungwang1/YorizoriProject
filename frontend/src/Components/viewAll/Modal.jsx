@@ -1,16 +1,19 @@
 import React from "react";
 import styled from "styled-components";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { buttonState } from "./ModalAtom";
+import { buttonState } from "./ViewAllAtom";
 
 const ModalWrapping = styled.div`
   display: ${(props) => (props.RandomButtonPush === true ? "flex" : "none")};
+
+  z-index: 999;
+  justify-content: center;
+`;
+const ModalBackground = styled.div`
   position: absolute;
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 999;
-  justify-content: center;
 `;
 
 const ModalBox = styled.div`
@@ -136,6 +139,7 @@ const Modal = () => {
   };
   return (
     <ModalWrapping RandomButtonPush={randomButton}>
+      <ModalBackground onClick={closeModal} />
       <ModalBox>
         <div>
           <CloseButton onClick={closeModal} />
