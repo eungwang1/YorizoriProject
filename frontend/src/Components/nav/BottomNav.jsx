@@ -7,7 +7,7 @@ const BottomNavBlock = styled.div`
   position: fixed;
   bottom: 0;
   display: flex;
-  // flex-direction: row;
+  /* flex-direction: row; */
   border-top: 1px solid #c5c5c5;
   background-color: white;
 `;

@@ -115,7 +115,11 @@ export const TagInfo = styled.div`
 export const ImgBox = styled.div`
   width: 100vw;
   height: 242px;
-  background-color: #c4c4c4;
+  background-color: #1111;
+  position: relative;
+  background-image: url("../images/camera.png");
+  background-repeat: no-repeat;
+  background-position: 45px 40px;
   ${(props) =>
     props.small &&
     css`
@@ -247,6 +251,13 @@ export const ImgBoxSmall = styled.div`
     color: #9999;
     font-size: 2.5rem;
   }
+  ${(props) =>
+    props.album &&
+    css`
+      + div {
+        margin-left: 10px;
+      }
+    `}
 `;
 
 export const OrderNum = styled.div`

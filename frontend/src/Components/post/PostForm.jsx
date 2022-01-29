@@ -8,17 +8,18 @@ import SourceList from "./SourceForm/SourceList";
 import AddOrder from "./CookOrderForm/AddOrder";
 import CookOrderList from "./CookOrderForm/CookOrderList";
 import { RecoilRoot } from "recoil";
-import { ContentText } from "./PostStyle";
+import { ContentText, ImgBox } from "./PostStyle";
 import Category from "./CategoryForm/Category";
 import CookInfomation from "./CookInfoForm/CookInfomation";
-import moment from "moment";
-import TimePicker from "rc-time-picker";
-import "rc-time-picker/assets/index.css";
-
+import AlbumForm from "./AlbumForm/AlbumForm";
+import NavBottom from "../nav/BottomNav";
+import TopNav from "../nav/TopNav";
 const PostFormBlock = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
+  overflow: hidden;
+  margin-top: 55px;
 `;
 
 const TitleBox = styled.div`
@@ -55,12 +56,6 @@ const TagInfo = styled.div`
 
 const ContentTextWrapper = styled.div`
   display: flex;
-`;
-
-const ImgBox = styled.div`
-  width: 100vw;
-  height: 242px;
-  background-color: #c4c4c4;
 `;
 
 const CookInfo = styled.div`
@@ -154,57 +149,62 @@ const PostForm = () => {
     // });
   };
   return (
-    <PostFormBlock>
-      <TitleBox>
-        <p>레시피 제목</p>
-      </TitleBox>
-      <TitleInput placeholder="예) 소고기 미역국 끓이기" />
-      <ImgBox />
-      <TitleBox>
-        <p>요리소개</p>
-      </TitleBox>
-      <ContentText
-        placeholder="이 레시피의 탄생 배경을 적어주세요.
+    <>
+      <PostFormBlock>
+        <TopNav />
+        <TitleBox>
+          <p>레시피 제목</p>
+        </TitleBox>
+        <TitleInput placeholder="예) 소고기 미역국 끓이기" />
+        <ImgBox />
+        <TitleBox>
+          <p>요리소개</p>
+        </TitleBox>
+        <ContentText
+          placeholder="이 레시피의 탄생 배경을 적어주세요.
 예) 아내의 생일ㄹ을 맞아 소고기 미역국을 끓여봤어요.
 어머니로부터 배운 미역국 레시피를 아내의 입맛에 맞게 고안했습니다."
-      />
-      <Category />
-      <CookInfomation />
+        />
+        <Category />
+        <CookInfomation />
 
-      <TitleBox>
-        <p>재료</p>
-      </TitleBox>
-      <IngredientList />
-      <AddIngredinet />
+        <TitleBox>
+          <p>재료</p>
+        </TitleBox>
+        <IngredientList />
+        <AddIngredinet />
 
-      <TitleBox>
-        <p>양념</p>
-      </TitleBox>
-      <SourceList />
-      <AddSource />
+        <TitleBox>
+          <p>양념</p>
+        </TitleBox>
+        <SourceList />
+        <AddSource />
 
-      <TitleBox>
-        <p>요리순서</p>
-      </TitleBox>
-      <CookOrderList />
-      <AddOrder />
+        <TitleBox>
+          <p>요리순서</p>
+        </TitleBox>
+        <CookOrderList />
+        <AddOrder />
 
-      <TitleBox>
-        <p>완성사진</p>
-      </TitleBox>
-      <TitleBox>
-        <p>팁/주의사항</p>
-      </TitleBox>
-      <ContentText tip placeholder="예) 소고기 미역국 끓이기"></ContentText>
-      <TitleBox>
-        <p>태그</p>
-      </TitleBox>
-      <TagInfo>
-        주재료, 목적, 효능, 대상 등을 쉼표(,)를 사용하여 태그로 남겨주세요. 예) 돼지고기, 다이어트,
-        비만, 칼슈므 감기예방
-      </TagInfo>
-      <ContentText tag placeholder="예) 돼지고기, 다이어트, 비만, 캄슘, 감기예방"></ContentText>
-    </PostFormBlock>
+        <TitleBox>
+          <p>완성사진</p>
+        </TitleBox>
+        <AlbumForm />
+        <TitleBox>
+          <p>팁/주의사항</p>
+        </TitleBox>
+        <ContentText tip placeholder="예) 소고기 미역국 끓이기"></ContentText>
+        <TitleBox>
+          <p>태그</p>
+        </TitleBox>
+        <TagInfo>
+          주재료, 목적, 효능, 대상 등을 쉼표(,)를 사용하여 태그로 남겨주세요. 예) 돼지고기,
+          다이어트, 비만, 칼슈므 감기예방
+        </TagInfo>
+        <ContentText tag placeholder="예) 돼지고기, 다이어트, 비만, 캄슘, 감기예방"></ContentText>
+      </PostFormBlock>
+      <NavBottom post />
+    </>
   );
 };
 

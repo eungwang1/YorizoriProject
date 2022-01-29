@@ -10,6 +10,7 @@ const TopNavBox = styled.div`
   top: 0;
   background-color: white;
   border-bottom: 5px solid rgba(255, 210, 136, 0.46);
+  z-index: 900;
 `;
 
 const TopBackBox = styled.img`
