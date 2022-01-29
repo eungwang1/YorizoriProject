@@ -37,10 +37,10 @@ const SearchButton = styled.button`
   background-image: url("./images/search.png");
   background-size: cover;
   border: none;
-  position: relative;
+  position: absolute;
   width: 25px;
   height: 25px;
-  left: 40px;
+  right: 20px;
   top: 25px;
 `;
 const TopNavMain = () => {

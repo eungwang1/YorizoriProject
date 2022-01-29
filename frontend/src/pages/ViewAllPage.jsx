@@ -4,6 +4,7 @@ import Buttons from "../Components/viewAll/Buttons";
 import Postzone from "../Components/viewAll/Postzone";
 import TopNav_main from "../Components/nav/TopNav_main";
 import BottomNav from "../Components/nav/BottomNav";
+import Modal from "../Components/viewAll/Modal";
 
 const ViewAllPageBlock = styled.div`
   font-size: 18px;
@@ -17,8 +18,9 @@ const ViewAllPageBlock = styled.div`
 const ViewAllPage = () => {
   return (
     <ViewAllPageBlock>
+      <Modal />
       <TopNav_main />
-      <div style={{ marginTop: "80px", paddingBottom: "90px" }}>
+      <div style={{ marginTop: "80px", marginBottom: "90px" }}>
         <Buttons />
         <Postzone />
       </div>
