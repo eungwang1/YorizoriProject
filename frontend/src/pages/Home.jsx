@@ -36,6 +36,9 @@ const Home = () => {
         <Link to="/users/mypage">
           <button>mypage</button>
         </Link>
+        <Link to="/post">
+          <button>post</button>
+        </Link>
         {state.isLogin && <button onClick={userActions.logout}>logout</button>}
         <Link to="/view_all">
           <button>전체글 보기</button>

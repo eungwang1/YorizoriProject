@@ -12,13 +12,13 @@ const AddSource = () => {
       const newList = [
         ...oldList,
         {
-          key: new Date().getTime() + 1,
+          key: new Date().getTime(),
         },
       ];
       return newList;
     });
   };
-  return <AddCookOrder onClick={addItem}>재료추가</AddCookOrder>;
+  return <AddCookOrder onClick={addItem}>양념 추가</AddCookOrder>;
 };
 
 export default AddSource;

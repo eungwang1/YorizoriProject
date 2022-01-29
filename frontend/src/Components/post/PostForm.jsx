@@ -5,8 +5,15 @@ import IngredientList from "./IngredientForm/IngredientList";
 import AddIngredinet from "./IngredientForm/AddIngredinet";
 import AddSource from "./SourceForm/AddSource";
 import SourceList from "./SourceForm/SourceList";
+import AddOrder from "./CookOrderForm/AddOrder";
+import CookOrderList from "./CookOrderForm/CookOrderList";
 import { RecoilRoot } from "recoil";
 import { ContentText } from "./PostStyle";
+import Category from "./CategoryForm/Category";
+import CookInfomation from "./CookInfoForm/CookInfomation";
+import moment from "moment";
+import TimePicker from "rc-time-picker";
+import "rc-time-picker/assets/index.css";
 
 const PostFormBlock = styled.div`
   display: flex;
@@ -126,34 +133,26 @@ const DropdownWrapper = styled.div`
 `;
 
 const PostForm = () => {
-  const [ingredientList, setIngredientList] = useState([0]);
-  const [count, setCount] = useState(1);
+  const [input, setInput] = useState({ min: 5, sec: 6 });
+  const [test, setTest] = useState({ a: 1, b: 2 });
+  const onChangeTest = (e) => {
+    const { value } = e.target;
+    const { a, b } = e.target.value;
+    console.log(a);
+    console.log(b);
 
-  const addIngredient = () => {
-    console.log("test");
-    setIngredientList((current) => {
-      const newList = [...current];
-      setCount((el) => el + 1);
-      newList.push(count);
-      return newList;
-    });
+    setTest(value);
   };
-  const [inputValue, setInputValue] = useState("");
-  const handleChangeInput = (event) => {
-    console.log(inputValue);
-    setInputValue(event.target.value);
+  const { min, sec } = input;
+  const onChangeTime = (e) => {
+    // const { min, sec } = e.target.value;
+    console.log(e.target.value.input.min);
+    // setInput({
+    //   ...input,
+    //   [min]: min,
+    //   [sec]: sec,
+    // });
   };
-  console.log(inputValue);
-  const onRemove = (index) => {
-    setIngredientList((current) => {
-      const newList = [...current];
-      console.log(newList);
-      newList.splice(index, 1);
-      console.log(index);
-      return newList;
-    });
-  };
-
   return (
     <PostFormBlock>
       <TitleBox>
@@ -169,113 +168,27 @@ const PostForm = () => {
 예) 아내의 생일ㄹ을 맞아 소고기 미역국을 끓여봤어요.
 어머니로부터 배운 미역국 레시피를 아내의 입맛에 맞게 고안했습니다."
       />
-      <TitleBox>
-        <p>카테고리</p>
-      </TitleBox>
-      {/* <Dropdown
-        placeholder="::종류별::"
-        className="my-className"
-        options={["한식", "중식", "일식"]}
-      /> */}
-      <DropdownWrapper>
-        <Dropdown
-          placeholder="::종류별::"
-          options={["::종류별::", "한식", "중식", "일식", "아시안", "양식", "기타"]}
-          // value="one"
-          onChange={(value) => console.log("change!", value)}
-          onSelect={(value) => console.log("selected!", value)} // always fires once a selection happens even if there is no change
-          onClose={(closedBySelection) => console.log("closedBySelection?:", closedBySelection)}
-          onOpen={() => console.log("open!")}
-        />
-        <Dropdown
-          placeholder="::상황별::"
-          options={[
-            "::상황별::",
-            "파티할 때",
-            "주말에 혼먹",
-            "근사한 분위기",
-            "다이어트",
-            "영양식",
-            "야식",
-            "간식",
-            "초스피드",
-            "기타",
-          ]}
-          // value="one"
-          onChange={(value) => console.log("change!", value)}
-          onSelect={(value) => console.log("selected!", value)} // always fires once a selection happens even if there is no change
-        />
-      </DropdownWrapper>
-      <DropdownWrapper>
-        <Dropdown
-          placeholder="::재료별::"
-          options={["::재료별::", "육류", "채소류", "해물류", "과일류", "달걀/유제품", "기타"]}
-          // value="one"
-          onChange={(value) => console.log("change!", value)}
-          onSelect={(value) => console.log("selected!", value)} // always fires once a selection happens even if there is no change
-        />
-        <Dropdown
-          placeholder="::방법별::"
-          options={["::방법별::", "볶음", "무침", "비빔", "끓이기", "굽기", "삶기", "튀김", "기타"]}
-          // value="one"
-          onChange={(value) => console.log("change!", value)}
-          onSelect={(value) => console.log("selected!", value)} // always fires once a selection happens even if there is no change
-        />
-      </DropdownWrapper>
-      <TitleBox>
-        <p>요리정보</p>
-      </TitleBox>
-      <DropdownWrapper cookinfo>
-        <CookInfo>인원</CookInfo>
-        <Dropdown
-          placeholder="선택"
-          options={["선택", "1인분", "2인분", "3인분", "4인분", "5인분", "6인분이상"]}
-          // value="one"
-          onChange={(value) => console.log("change!", value)}
-          onSelect={(value) => console.log("selected!", value)} // always fires once a selection happens even if there is no change
-        />
-      </DropdownWrapper>
-      <DropdownWrapper cookinfo>
-        <CookInfo>시간</CookInfo>
-        <Dropdown
-          placeholder="선택"
-          options={["선택", "5분이내", "10분이내", "15분이내", "30분이내", "60분이내", "1시간이상"]}
-          // value="one"
-          onChange={(value) => console.log("change!", value)}
-          onSelect={(value) => console.log("selected!", value)} // always fires once a selection happens even if there is no change
-        />
-      </DropdownWrapper>
-      <DropdownWrapper cookinfo>
-        <CookInfo>난이도</CookInfo>
-        <Dropdown
-          placeholder="선택"
-          options={["선택", "아무나", "초급", "중급", "고급", "신의경지"]}
-          // value="one"
-          onChange={(value) => console.log("change!", value)}
-          onSelect={(value) => console.log("selected!", value)} // always fires once a selection happens even if there is no change
-        />
-      </DropdownWrapper>
+      <Category />
+      <CookInfomation />
+
       <TitleBox>
         <p>재료</p>
       </TitleBox>
-
-      <RecoilRoot>
-        <IngredientList />
-        <AddIngredinet />
-      </RecoilRoot>
+      <IngredientList />
+      <AddIngredinet />
 
       <TitleBox>
         <p>양념</p>
       </TitleBox>
-
-      <RecoilRoot>
-        <SourceList />
-        <AddSource />
-      </RecoilRoot>
+      <SourceList />
+      <AddSource />
 
       <TitleBox>
         <p>요리순서</p>
       </TitleBox>
+      <CookOrderList />
+      <AddOrder />
+
       <TitleBox>
         <p>완성사진</p>
       </TitleBox>
