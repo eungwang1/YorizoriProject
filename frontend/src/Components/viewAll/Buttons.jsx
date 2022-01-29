@@ -113,7 +113,6 @@ const Buttons = () => {
         <DropdownWrapper>
           <Dropdown
             placeholder="종류"
-            className="my-className"
             options={["한식", "중식", "일식", "아시안", "양식", "기타"]}
             value="one"
             onChange={(value) => console.log("change!", value)}
@@ -124,7 +123,6 @@ const Buttons = () => {
 
           <Dropdown
             placeholder="재료"
-            className="my-className"
             options={["육류", "채소류", "해물류", "과일류", "달걀/유제품", "기타"]}
             value="one"
             onChange={(value) => console.log("change!", value)}
@@ -134,7 +132,6 @@ const Buttons = () => {
           />
           <Dropdown
             placeholder="상황"
-            className="my-className"
             options={[
               "파티",
               "주말에 혼먹",
@@ -154,14 +151,13 @@ const Buttons = () => {
           />
           <Dropdown
             placeholder="방법"
-            className="my-className"
+            className="last"
             options={["볶음", "무침", "비빔", "끓이기", "굽기", "삶기", "튀김", "기타"]}
             value="one"
             onChange={(value) => console.log("change!", value)}
             onSelect={(value) => console.log("selected!", value)} // always fires once a selection happens even if there is no change
             onClose={(closedBySelection) => console.log("closedBySelection?:", closedBySelection)}
             onOpen={() => console.log("open!")}
-            className="last"
           />
         </DropdownWrapper>
         <Line />

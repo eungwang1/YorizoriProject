@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 const Wrapper = styled.div`
   text-align: center;
@@ -66,61 +67,84 @@ const Postzone = () => {
   return (
     <Wrapper>
       <WrapperPost>
-        <div>
-          <Img />
-          <TextBox>
-            <Title>바스바스감바스</Title>
-            <Author>고래</Author>
-            <WrapperHeartComment>
-              <span className="sprite heart" /> <HeartCommentCount>31</HeartCommentCount>
-              <span className="sprite comment" /> <HeartCommentCount>7</HeartCommentCount>
-            </WrapperHeartComment>
-          </TextBox>
-        </div>
-        <div>
-          <Img />
-          <TextBox>
-            <Title>바스바스감바스</Title>
-            <Author>고래</Author>
-            <WrapperHeartComment>
-              <span className="sprite heart" /> <HeartCommentCount>31</HeartCommentCount>
-              <span className="sprite comment" /> <HeartCommentCount>7</HeartCommentCount>
-            </WrapperHeartComment>
-          </TextBox>
-        </div>
-        <div>
-          <Img />
-          <TextBox>
-            <Title>바스바스감바스</Title>
-            <Author>고래</Author>
-            <WrapperHeartComment>
-              <span className="sprite heart" /> <HeartCommentCount>31</HeartCommentCount>
-              <span className="sprite comment" /> <HeartCommentCount>7</HeartCommentCount>
-            </WrapperHeartComment>
-          </TextBox>
-        </div>
-        <div>
-          <Img />
-          <TextBox>
-            <Title>바스바스감바스</Title>
-            <Author>고래</Author>
-            <WrapperHeartComment>
-              <span className="sprite heart" /> <HeartCommentCount>31</HeartCommentCount>
-              <span className="sprite comment" /> <HeartCommentCount>7</HeartCommentCount>
-            </WrapperHeartComment>
-          </TextBox>
-        </div>
-        <div>
-          <Img />
-          <TextBox>
-            <Title>바스바스감바스</Title>
-            <Author>고래</Author>
-            <WrapperHeartComment>
-              <span className="sprite heart" /> <HeartCommentCount>31</HeartCommentCount>
-              <span className="sprite comment" /> <HeartCommentCount>7</HeartCommentCount>
-            </WrapperHeartComment>
-          </TextBox>
-        </div>
+        <Link to="/detail/" style={{ textDecoration: "none", color: "inherit" }}>
+          <div>
+            <Img />
+            <TextBox>
+              <Title>바스바스감바스</Title>
+              <Author>고래</Author>
+              <WrapperHeartComment>
+                <span className="sprite heart" /> <HeartCommentCount>31</HeartCommentCount>
+                <span className="sprite comment" /> <HeartCommentCount>7</HeartCommentCount>
+              </WrapperHeartComment>
+            </TextBox>
+          </div>
+        </Link>
+        <Link to="/detail/" style={{ textDecoration: "none", color: "inherit" }}>
+          <div>
+            <Img />
+            <TextBox>
+              <Title>바스바스감바스</Title>
+              <Author>고래</Author>
+              <WrapperHeartComment>
+                <span className="sprite heart" /> <HeartCommentCount>31</HeartCommentCount>
+                <span className="sprite comment" /> <HeartCommentCount>7</HeartCommentCount>
+              </WrapperHeartComment>
+            </TextBox>
+          </div>
+        </Link>
+        <Link to="/detail/" style={{ textDecoration: "none", color: "inherit" }}>
+          <div>
+            <Img />
+            <TextBox>
+              <Title>바스바스감바스</Title>
+              <Author>고래</Author>
+              <WrapperHeartComment>
+                <span className="sprite heart" /> <HeartCommentCount>31</HeartCommentCount>
+                <span className="sprite comment" /> <HeartCommentCount>7</HeartCommentCount>
+              </WrapperHeartComment>
+            </TextBox>
+          </div>
+        </Link>
+        <Link to="/detail/" style={{ textDecoration: "none", color: "inherit" }}>
+          <div>
+            <Img />
+            <TextBox>
+              <Title>바스바스감바스</Title>
+              <Author>고래</Author>
+              <WrapperHeartComment>
+                <span className="sprite heart" /> <HeartCommentCount>31</HeartCommentCount>
+                <span className="sprite comment" /> <HeartCommentCount>7</HeartCommentCount>
+              </WrapperHeartComment>
+            </TextBox>
+          </div>
+        </Link>
+        <Link to="/detail/" style={{ textDecoration: "none", color: "inherit" }}>
+          <div>
+            <Img />
+            <TextBox>
+              <Title>바스바스감바스</Title>
+              <Author>고래</Author>
+              <WrapperHeartComment>
+                <span className="sprite heart" /> <HeartCommentCount>31</HeartCommentCount>
+                <span className="sprite comment" /> <HeartCommentCount>7</HeartCommentCount>
+              </WrapperHeartComment>
+            </TextBox>
+          </div>
+        </Link>
+        <Link to="/detail/" style={{ textDecoration: "none", color: "inherit" }}>
+          <div>
+            <Img />
+            <TextBox>
+              <Title>바스바스감바스</Title>
+              <Author>고래</Author>
+              <WrapperHeartComment>
+                <span className="sprite heart" /> <HeartCommentCount>31</HeartCommentCount>
+                <span className="sprite comment" /> <HeartCommentCount>7</HeartCommentCount>
+              </WrapperHeartComment>
+            </TextBox>
+          </div>
+        </Link>
       </WrapperPost>
     </Wrapper>
   );
