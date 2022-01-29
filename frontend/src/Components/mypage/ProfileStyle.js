@@ -17,7 +17,11 @@ export const MyPageMainBtnBox = styled.div`
   text-align: center;
 `
 
-export const MypageResipeBox = styled.div`
+export const MypageResipeBox = styled.button`
+  width: 100%;
+  border: none;
+  background-color: white;
+  cursor: pointer;
   height: 55px;
   margin-bottom: 10px;
   margin-top: 10px;
