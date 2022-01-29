@@ -7,7 +7,7 @@ const Wrapper = styled.div`
 `;
 
 const ButtonWrapper = styled.div`
-  margin: 12px 0;
+  margin: 12px 0px;
   & > button {
     width: 95px;
     height: 45px;
@@ -31,7 +31,7 @@ const Line = styled.div`
 `;
 const DropdownWrapper = styled.div`
   display: flex;
-  margin: 14px 0;
+  margin: 14px 3.5px;
   & > div {
     width: 76px;
     height: 36px;
@@ -41,11 +41,22 @@ const DropdownWrapper = styled.div`
     font-size: 14px;
     font-weight: 900;
     color: #feae11;
+    background-color: white;
     &:not(:last-child) {
       margin-right: 11px;
     }
-  }
-  .kinds {
+    & > div:not(:first-child) {
+      background-color: white;
+      width: 120px;
+      z-index: 100;
+      color: #feae11;
+      transform: translateY(-5px) translateX(10px);
+      border-radius: 10px;
+      border: 2px solid #feae11;
+    }
+    .last:not(:first-child) {
+      transform: translateY(-5px) translateX(-60px);
+    }
   }
 `;
 const Buttons = () => {
@@ -60,13 +71,12 @@ const Buttons = () => {
         <Dropdown
           placeholder="종류"
           className="my-className"
-          options={["한식", "중식", "일식", "아시안", "양식", "기타음식"]}
+          options={["한식", "중식", "일식", "아시안", "양식", "기타"]}
           value="one"
           onChange={(value) => console.log("change!", value)}
           onSelect={(value) => console.log("selected!", value)} // always fires once a selection happens even if there is no change
           onClose={(closedBySelection) => console.log("closedBySelection?:", closedBySelection)}
           onOpen={() => console.log("open!")}
-          className="kinds"
         />
 
         <Dropdown
@@ -108,6 +118,7 @@ const Buttons = () => {
           onSelect={(value) => console.log("selected!", value)} // always fires once a selection happens even if there is no change
           onClose={(closedBySelection) => console.log("closedBySelection?:", closedBySelection)}
           onOpen={() => console.log("open!")}
+          className="last"
         />
       </DropdownWrapper>
       <Line />

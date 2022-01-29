@@ -9,15 +9,16 @@ const TopNavMainBox = styled.div`
   display: flex;
   top: 0;
   background-color: white;
-  border-bottom: 5px solid rgba(255,210,136, .46);
-`
+  border-bottom: 5px solid rgba(255, 210, 136, 0.46);
+  z-index: 900;
+`;
 
 const TopNavMainLogo = styled.img`
   position: relative;
   width: 54px;
   left: 12px;
   top: 12px;
-`
+`;
 const TopNavMainInput = styled.input`
   position: relative;
   top: 30px;
@@ -28,22 +29,30 @@ const TopNavMainInput = styled.input`
   outline: none;
   bottom: 10px;
   border: none;
-  border-bottom: solid 2px;
-  color: #FEAE11;
-`
-
-
-
+  border-bottom: solid 2px #feae11;
+  color: #999999;
+`;
+const SearchButton = styled.button`
+  background-color: transparent;
+  background-image: url("./images/search.png");
+  background-size: cover;
+  border: none;
+  position: relative;
+  width: 25px;
+  height: 25px;
+  left: 40px;
+  top: 25px;
+`;
 const TopNavMain = () => {
   return (
     <TopNavMainBox>
       <Link to="/">
-          <TopNavMainLogo src="../images/onlylogo.png" alt="arrow.png"></TopNavMainLogo>
+        <TopNavMainLogo src="../images/onlylogo.png" alt="arrow.png" />
       </Link>
-      <TopNavMainInput placeholder="검색어"></TopNavMainInput>
+      <TopNavMainInput placeholder="검색어" />
+      <SearchButton />
     </TopNavMainBox>
-  )
-
+  );
 };
 
 export default TopNavMain;

@@ -9,6 +9,7 @@ const BottomNavBlock = styled.div`
   display: flex;
   // flex-direction: row;
   border-top: 1px solid #c5c5c5;
+  background-color: white;
 `;
 
 const IconImg = styled.div`
