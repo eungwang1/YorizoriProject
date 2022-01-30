@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { CookOrderState } from "./_Atom";
+import { CookOrderState, modalStateAtom } from "./_Atom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import {
   CookOrderWrappr,
@@ -14,6 +14,14 @@ import {
 const CookOrderList = () => {
   const CookOrderList = useRecoilValue(CookOrderState);
   const setCookOrderList = useSetRecoilState(CookOrderState);
+
+  const modalState = useRecoilValue(modalStateAtom);
+  const setModalState = useSetRecoilState(modalStateAtom);
+
+  const openModal = (e) => {
+    setModalState(true);
+  };
+
   const deleteCookOrder = (index) => {
     setCookOrderList((oldList) => {
       const newList = oldList.filter(function (el, i) {
@@ -29,14 +37,15 @@ const CookOrderList = () => {
         return (
           <CookOrderWrappr key={`wrapper_${index}`}>
             <OrderNum>{index + 1}</OrderNum>
-
             <TimeContentWrapper>
               <OrderText
                 key={`cookorder_${index}`}
                 half
                 placeholder="예) 소고기 기름기를 떼어내고 ... "
               ></OrderText>
-              <TimeSetBtn key={`cookorder_time_${index}`}>시간 설정하기</TimeSetBtn>
+              <TimeSetBtn onClick={openModal} type="button" key={`cookorder_time_${index}`}>
+                시간 설정하기
+              </TimeSetBtn>
             </TimeContentWrapper>
 
             <ImgBoxSmall key={`cookorder_img_${index}`}></ImgBoxSmall>

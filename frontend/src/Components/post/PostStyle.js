@@ -34,8 +34,8 @@ export const ContentText = styled.textarea`
   ${(props) =>
     props.tag &&
     css`
-      height: 150px;
-      padding: 8px 14px 40px 14px;
+      height: 50px;
+      padding: 20px 14px 0px 14px;
       font-size: 1rem;
     `}
   ${(props) =>
@@ -117,7 +117,7 @@ export const ImgBox = styled.div`
   height: 242px;
   background-color: #1111;
   position: relative;
-  background-image: url("../images/camera.png");
+  /* background-image: url("../images/camera.png"); */
   background-repeat: no-repeat;
   background-position: 45px 40px;
   ${(props) =>
@@ -125,6 +125,48 @@ export const ImgBox = styled.div`
     css`
       width: 76px;
       height: 76px;
+    `}
+`;
+
+export const ImgWrapper = styled.div`
+  .deleteBtn {
+    position: absolute;
+    top: 7px;
+    /* left: 333px; */
+    right: 10px;
+    color: white;
+    border-radius: 4px;
+    background-color: #a3a3a3;
+    text-align: center;
+    width: 19px;
+    z-index: 900;
+    border: none;
+  }
+
+  .addPhotoIcon {
+    display: none;
+  }
+  .fileName {
+    display: none;
+  }
+  .fileSize {
+    display: none;
+  }
+  .big {
+    width: 100vw;
+    height: 242px;
+  }
+
+  ${(props) =>
+    props.big &&
+    css`
+      .label {
+        background-repeat: no-repeat;
+        position: absolute;
+        width: 100vw;
+        background-size: contain;
+        background-image: url("../images/camera.png");
+      }
     `}
 `;
 
@@ -243,26 +285,51 @@ export const ImgBoxSmall = styled.div`
   height: 76px;
   position: relative;
   background-color: #1111;
-  ::before {
-    content: "+";
+  .deleteBtn {
     position: absolute;
-    left: 27px;
-    top: 14px;
-    color: #9999;
-    font-size: 2.5rem;
+    top: 0px;
+    /* left: 333px; */
+    right: 0px;
+    color: white;
+    border-radius: 4px;
+    background-color: #a3a3a3;
+    text-align: center;
+    width: 19px;
+    z-index: 999;
+    border: none;
+  }
+  .addPhotoIcon {
+    display: none;
+  }
+  .fileName {
+    display: none;
+  }
+  .fileSize {
+    display: none;
+  }
+  .big {
+    height: 76px;
+    width: 76px;
+  }
+  .label {
+    background-repeat: no-repeat;
+    position: absolute;
+    width: 76px;
+    background-size: contain;
+    background-image: url("../images/plusAlbum.png");
   }
   ${(props) =>
     props.album &&
     css`
       + div {
-        margin-left: 10px;
+        margin-left: 12px;
       }
     `}
 `;
 
 export const OrderNum = styled.div`
   color: white;
-  width: 10px;
+  width: 20px;
   padding: 0px 5px;
   background-color: #feae11;
   border-radius: 110px;
@@ -278,4 +345,20 @@ export const TimeSetBtn = styled.button`
   height: 24px;
   font-size: 0.7rem;
   font-weight: 600;
+`;
+
+export const StyledBtn = styled.button`
+  width: 80vw;
+  height: 60px;
+  background-color: #fcad2c;
+  border-radius: 155px;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  padding: 10px 0;
+`;
+
+export const StyledBtnWrapper = styled.div`
+  padding: 30px 0;
+  margin: 0 auto;
 `;

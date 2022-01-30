@@ -6,6 +6,30 @@ import { authAtom } from "../states";
 import { useUserActions } from "../actions";
 import BottomNav from "../Components/nav/BottomNav";
 import TopNav_main from "../Components/nav/TopNav_main";
+import FileUpload from "@mimoid-prog/react-file-upload";
+
+const ImgWrapper = styled.div`
+  position: relative;
+  .preview {
+    display: flex;
+    flex-direction: column;
+
+    width: 100px;
+  }
+  .fileName {
+    display: none;
+  }
+  .fileSize {
+    display: none;
+  }
+  .deleteBtn {
+    position: absolute;
+    top: 110px;
+    left: 27px;
+    color: orange;
+  }
+`;
+
 const HomeBlock = styled.div`
   position: relative;
 `;
@@ -25,7 +49,9 @@ const Home = () => {
   useEffect(() => {
     checkLoginStatus();
   }, []);
-
+  const handleChange = (file) => {
+    console.log(file);
+  };
   return (
     <HomeBlock>
       <TopNav_main />
@@ -39,6 +65,10 @@ const Home = () => {
         <Link to="/post">
           <button>post</button>
         </Link>
+        <h3>Single file upload</h3>
+        <ImgWrapper>
+          <FileUpload name="photo3" onChange={handleChange} shape="rounded" size="big" />
+        </ImgWrapper>
         {state.isLogin && <button onClick={userActions.logout}>logout</button>}
         <Link to="/view_all">
           <button>전체글 보기</button>
