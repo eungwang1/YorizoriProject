@@ -7,6 +7,7 @@ import { useUserActions } from "../actions";
 import BottomNav from "../Components/nav/BottomNav";
 import TopNav_main from "../Components/nav/TopNav_main";
 import FileUpload from "@mimoid-prog/react-file-upload";
+import { recipeNameAtom } from "../Components/old_post/postStates/postStates";
 
 const ImgWrapper = styled.div`
   position: relative;
@@ -52,6 +53,21 @@ const Home = () => {
   const handleChange = (file) => {
     console.log(file);
   };
+
+  const [stepOne, setStepOne] = useState({
+    recipeName: "",
+    desc: "",
+  });
+  const { recipeName, desc } = stepOne;
+  const onChange = (e) => {
+    const { value, name } = e.target;
+    setStepOne({
+      ...stepOne,
+      [name]: value,
+    });
+    console.log(recipeName);
+  };
+
   return (
     <HomeBlock>
       <TopNav_main />
@@ -62,8 +78,14 @@ const Home = () => {
         <Link to="/users/mypage">
           <button>mypage</button>
         </Link>
-        <Link to="/post">
-          <button>post</button>
+        <Link to="/oldpost">
+          <button>oldpost</button>
+        </Link>
+        <Link to="/poststep1">
+          <button>poststep1</button>
+        </Link>
+        <Link to="/poststep2">
+          <button>poststep2</button>
         </Link>
         <h3>Single file upload</h3>
         <ImgWrapper>
@@ -88,36 +110,8 @@ const Home = () => {
           similique, odit praesentium cupiditate temporibus in eum totam atque omnis alias quaerat,
           labore rem molestias, tempora dolore accusantium?
         </div>
-        <div>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo natus molestiae modi
-          similique, odit praesentium cupiditate temporibus in eum totam atque omnis alias quaerat,
-          labore rem molestias, tempora dolore accusantium?
-        </div>{" "}
-        <div>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo natus molestiae modi
-          similique, odit praesentium cupiditate temporibus in eum totam atque omnis alias quaerat,
-          labore rem molestias, tempora dolore accusantium?
-        </div>{" "}
-        <div>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo natus molestiae modi
-          similique, odit praesentium cupiditate temporibus in eum totam atque omnis alias quaerat,
-          labore rem molestias, tempora dolore accusantium?
-        </div>{" "}
-        <div>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo natus molestiae modi
-          similique, odit praesentium cupiditate temporibus in eum totam atque omnis alias quaerat,
-          labore rem molestias, tempora dolore accusantium?
-        </div>{" "}
-        <div>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo natus molestiae modi
-          similique, odit praesentium cupiditate temporibus in eum totam atque omnis alias quaerat,
-          labore rem molestias, tempora dolore accusantium?
-        </div>{" "}
-        <div>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo natus molestiae modi
-          similique, odit praesentium cupiditate temporibus in eum totam atque omnis alias quaerat,
-          labore rem molestias, tempora dolore accusantium?
-        </div>
+        <input name="recipeName" onChange={onChange} value={recipeName}></input>
+        <input name="desc" onChange={onChange} value={desc}></input>
       </div>
       <BottomNav />
     </HomeBlock>
