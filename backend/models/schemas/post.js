@@ -1,12 +1,9 @@
 const { Schema } = require("mongoose");
-
-const Ingredient = new Schema({
-  name: String,
-  amount: String,
-});
+const shortId = require("../types/short-id"); //프론트에서 url 넘겨받을때 post/:postId 부분에서 postId 에 shortId 쓴다고 가정하고 작업했습니다.
 
 const PostSchema = new Schema(
   {
+    postId: shortId,
     //레시피명
     recipeName: {
       type: String,
@@ -41,7 +38,7 @@ const PostSchema = new Schema(
     //완성 사진을 받는 부분입니다.
     doneImage: [{ type: String }],
     //작성글이 받은 좋아요 수
-    likeCount: {
+    likesCount: {
       type: Number,
       default: 0,
     },
@@ -56,7 +53,7 @@ const PostSchema = new Schema(
       default: 0,
     },
     //작성글을 유저와 연결합니다
-    userId: {
+    user: {
       type: Schema.Types.ObjectId,
       ref: "User",
       required: true,

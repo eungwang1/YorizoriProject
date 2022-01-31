@@ -2,11 +2,13 @@ const { Schema } = require("mongoose");
 
 const LikeSchema = new Schema(
   {
-    userId: {
+    userId: String,
+    postId: String,
+    user: {
       type: Schema.Types.ObjectId,
       ref: "User",
     },
-    postId: {
+    post: {
       type: Schema.Types.ObjectId,
       ref: "Post",
     },
