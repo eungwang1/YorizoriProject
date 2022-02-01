@@ -10,6 +10,10 @@ const LikeSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Post",
     },
+    isUnliked: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

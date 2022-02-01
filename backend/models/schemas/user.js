@@ -1,4 +1,5 @@
 const { Schema } = require("mongoose");
+const shortId = require("../types/short-id");
 
 const UserSchema = new Schema(
   {
@@ -6,11 +7,10 @@ const UserSchema = new Schema(
     email: {
       type: String,
       required: true,
-      default: null,
       unique: true,
     },
     //유저닉네임
-    nickname: {
+    nickName: {
       required: true,
       type: String,
       unique: true,
@@ -18,12 +18,15 @@ const UserSchema = new Schema(
     //유저 비밀번호
     password: {
       type: String,
-      required: true,
+      default: null,
     },
     //유저 프로필 사진이 저장된 파일 경로
     profileImage: {
       type: String,
       default: null,
+    },
+    kakaoId: {
+      type: String,
     },
   },
   { timestamps: true }
