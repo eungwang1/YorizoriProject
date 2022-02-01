@@ -16,7 +16,7 @@ router.post(
     //만약 이미 좋아요를 누른 게시물이라면 에러를 던짐 ... 이 부분을 서버에서 검증해야 할까요?
     const currentLike = await Like.findOne({ postId, userId, isUnliked: false });
     if (currentLike) {
-      throw Error("이미 좋아요 한 게시글입니다.");
+      throw new Error("이미 좋아요 한 게시글입니다.");
       return;
     }
     await Like.create({ userId, postId }); //새로운 좋아요 데이터 생성
@@ -52,7 +52,7 @@ router.delete(
     const { id: userId } = req.user;
     const currentLike = await Like.findOne({ postId, userId, isUnliked: false }); //
     if (!currentLike) {
-      throw new Error("좋아요 한 게시글이 없습니다."); // 종아요한 게시글이 없으면 에러 던짐
+      throw new Error("좋아요 한 게시글이 아닙니다."); // 종아요한 게시글이 아니면 에러 던짐
       return;
     }
     currentLike.isUnliked = true;

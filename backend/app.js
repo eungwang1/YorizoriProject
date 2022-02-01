@@ -25,6 +25,7 @@ const usersRouter = require("./routes/users");
 const authRouter = require("./routes/auth");
 const commentRouter = require("./routes/comment");
 const likeRouter = require("./routes/like");
+const followRouter = require("./routes/follow");
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -60,6 +61,7 @@ app.use("/users", usersRouter);
 app.use("/auth", authRouter);
 app.use("/comment", commentRouter);
 app.use("/like", likeRouter);
+app.use("/follow", followRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

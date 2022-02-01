@@ -3,7 +3,7 @@ const { Schema } = require("mongoose");
 const FollowSchema = new Schema(
   {
     //팔로우한 유저를 연결합니다.
-    followId: {
+    followerId: {
       type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
@@ -13,6 +13,10 @@ const FollowSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
+    },
+    isUnfollowed: {
+      type: Boolean,
+      dafault: false,
     },
   },
   { timestamps: true }
