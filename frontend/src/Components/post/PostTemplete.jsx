@@ -1,19 +1,17 @@
-import React, { children } from "react";
+import React, { useEffect } from "react";
 import styled, { css } from "styled-components";
 import PostNav from "../nav/PostNav";
 import NavBottom from "../nav/BottomNav";
 import { StyledP } from "./commonStyle";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-// import { stepUrlAtom } from "./PostAtom/PostAtom";
+import { SubImageStateAtom, MainImageStateAtom, pageStateAtom } from "./PostAtom/PostAtom";
+import { useForm, FormProvider, useFormContext } from "react-hook-form";
 
 const PostTemplete = ({ children, stepNum, page, request }) => {
-  // const stepUrl = useRecoilValue(stepUrlAtom);
-  // const setStepUrl = useSetRecoilState(stepUrlAtom);
-  const navigate = useNavigate();
-
+  const setPageState = useSetRecoilState(pageStateAtom);
   return (
-    <PostTempleteBlock>
+    <PostTempleteBlock autocomplete="off">
       <PostNav />
       <StepDiv>STEP {stepNum}</StepDiv>
       <Pre>
@@ -22,21 +20,29 @@ const PostTemplete = ({ children, stepNum, page, request }) => {
       <ContentsWrapper>{children}</ContentsWrapper>
 
       <BtnWrapper page={page}>
-        <PageBtn type="button" onClick={() => navigate("/poststep1")}>
+        <PageBtn type="button" onClick={() => setPageState(1)}>
           [ 1 ]
         </PageBtn>
-        <PageBtn type="button" onClick={() => navigate("/poststep2")}>
+        <PageBtn type="button" onClick={() => setPageState(2)}>
           [ 2 ]
         </PageBtn>
-        <PageBtn type="button" onClick={() => navigate("/poststep3")}>
+        <PageBtn type="button" onClick={() => setPageState(3)}>
           [ 3 ]
         </PageBtn>
-        <PageBtn type="button" onClick={() => navigate("/poststep4")}>
+        <PageBtn type="button" onClick={() => setPageState(4)}>
           [ 4 ]
         </PageBtn>
       </BtnWrapper>
-      <StyledBtn page={page}>작성 완료</StyledBtn>
-      <NavBottom />
+      <StyledBtn
+        page={page}
+        type="submit"
+        onClick={() => {
+          localStorage.clear();
+        }}
+      >
+        작성 완료
+      </StyledBtn>
+      <NavBottom post={"post"} />
     </PostTempleteBlock>
   );
 };
@@ -68,7 +74,7 @@ const StyledBtn = styled.button`
   }}
 `;
 
-const PostTempleteBlock = styled.form`
+const PostTempleteBlock = styled.div`
   display: flex;
   flex-direction: column;
   width: 100vw;

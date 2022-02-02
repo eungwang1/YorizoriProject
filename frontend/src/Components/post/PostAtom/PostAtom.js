@@ -5,21 +5,68 @@ export const stepUrlAtom = atom({
   default: null,
 });
 
-//요리제목
-export const recipeNameAtom = atom({
-  key: "recipeName",
-  default: null,
+export const IngredientsListAtom = atom({
+  key: "IngredientListState",
+  default: ["waqeqcasdcq"],
 });
-//요리소개
-export const descAtom = atom({
-  key: "desc",
+
+export const SourceListAtom = atom({
+  key: "SourceListState",
+  default: ["dqwcdqwcdzx"],
+});
+
+export const OrderListAtom = atom({
+  key: "OrderListState",
+  default: ["cdsacqwecasd"],
+});
+
+export const MainImageStateAtom = atom({
+  key: "MainImageState",
+  default: {
+    file: [],
+    state: false,
+    preview: "",
+  },
+});
+
+export const SubImageStateAtom = atom({
+  key: "SubImageState",
+  default: {
+    file: Array.from({ length: 100 }, () => 0),
+    state: false,
+    preview: Array.from({ length: 100 }, () => 0),
+  },
+});
+
+export const SubModalStateAtom = atom({
+  key: "SubModalState",
+  default: {
+    state: false,
+    index: "",
+  },
+});
+
+export const PreviewRefAtom = atom({
+  key: "PreviewRef",
   default: null,
 });
 
-export const stepOneAtom = atom({
-  key: "stepOne",
-  default: {
-    recipeName: "",
-    desc: "",
-  },
+export const DeleteIndexAtom = atom({
+  key: "deleteIndex",
+  default: 0,
+});
+
+export const pageStateAtom = atom({
+  key: "pageState",
+  default: 1,
+});
+
+export const cookInfoAtom = atom({
+  key: "cookInfo",
+  default: {},
+});
+
+export const categoryAtom = atom({
+  key: "category",
+  default: {},
 });

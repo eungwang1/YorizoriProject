@@ -5,7 +5,9 @@ const BottomNavBlock = styled.div`
   height: 80px;
   width: 100%;
   position: fixed;
-  bottom: 0;
+  bottom: ${(props) => {
+    return props.post ? "14px" : "0";
+  }};
   display: flex;
   /* flex-direction: row; */
   border-top: 1px solid #c5c5c5;
@@ -55,9 +57,9 @@ const IconImg = styled.div`
     `}
 `;
 
-const BottomNav = () => {
+const BottomNav = ({ post }) => {
   return (
-    <BottomNavBlock>
+    <BottomNavBlock post={post}>
       <IconImg write />
       <IconImg home />
       <IconImg recipe />

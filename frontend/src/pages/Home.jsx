@@ -68,6 +68,22 @@ const Home = () => {
     console.log(recipeName);
   };
 
+  const [ingredientState, setIngredientState] = useState([
+    {
+      test: "test",
+      id: 1,
+    },
+  ]);
+  const testClick = () => {
+    setIngredientState((el) => [
+      ...el,
+      {
+        test2: "test2",
+        id: 2,
+      },
+    ]);
+  };
+  console.log(ingredientState);
   return (
     <HomeBlock>
       <TopNav_main />
@@ -78,15 +94,11 @@ const Home = () => {
         <Link to="/users/mypage">
           <button>mypage</button>
         </Link>
-        <Link to="/oldpost">
-          <button>oldpost</button>
+
+        <Link to="/post">
+          <button>post</button>
         </Link>
-        <Link to="/poststep1">
-          <button>poststep1</button>
-        </Link>
-        <Link to="/poststep2">
-          <button>poststep2</button>
-        </Link>
+
         <h3>Single file upload</h3>
         <ImgWrapper>
           <FileUpload name="photo3" onChange={handleChange} shape="rounded" size="big" />
@@ -112,6 +124,7 @@ const Home = () => {
         </div>
         <input name="recipeName" onChange={onChange} value={recipeName}></input>
         <input name="desc" onChange={onChange} value={desc}></input>
+        <button onClick={testClick}>test</button>
       </div>
       <BottomNav />
     </HomeBlock>
