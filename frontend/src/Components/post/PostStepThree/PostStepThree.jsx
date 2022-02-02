@@ -48,11 +48,6 @@ const PostStepThree = () => {
     console.log(subModalState);
   }, [subModalState.state, subImage]);
 
-  useEffect(() => {
-    console.log(`deleteIndex : ${deleteIndex}`);
-    console.log(subImage);
-  });
-
   const deleteImg = () => {
     setSubImage((oldList) => {
       const newList = {
@@ -79,7 +74,7 @@ const PostStepThree = () => {
         <DeleteImg onClick={deleteImg}>삭제하기</DeleteImg>
         <ModalClose onClick={closePreview}>x</ModalClose>
       </ModalBox>
-      <PostTemplete stepNum={3} page={3} request={"요리순서를 추가해 주세요."}>
+      <PostTemplete stepNum={3} page={3} request={"요리순서를 추가해 주세요.(1개 이상 필수)"}>
         <ContainerDiv big>
           <OrderList></OrderList>
           <AddOrder></AddOrder>

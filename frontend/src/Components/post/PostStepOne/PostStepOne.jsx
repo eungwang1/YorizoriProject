@@ -77,7 +77,7 @@ const PostStepOne = () => {
   };
 
   return (
-    <PostTemplete stepNum={1} page={1} request={"레시피 제목을 입력해주세요."}>
+    <PostTemplete stepNum={1} page={1} request={"레시피 제목을 입력해주세요.(필수)"}>
       <ModalBackground
         modalState={modalState}
         onClick={() => {
@@ -97,6 +97,7 @@ const PostStepOne = () => {
         ) : (
           <ImgUploadLabel ref={ImgLabel} htmlFor="main_img" />
         )}
+
         <ImgUploadInput
           accept="image/*"
           ref={ImgInput}
@@ -106,7 +107,8 @@ const PostStepOne = () => {
           type="file"
         />
       </PositionRelative>
-      <StyledP stepOne>간단한 레시피 소개를 해주세요.{<br />}(필수사항은 아닙니다.)</StyledP>
+      {/* <StyledP stepOne>간단한 레시피 소개를 해주세요.{<br />}(필수사항은 아닙니다.)</StyledP> */}
+      <StyledP stepOne>간단한 레시피 소개를 해주세요.(선택)</StyledP>
       <StyledTextArea
         {...register(`desc`)}
         placeholder="직접 백종원 선생님의 레시피를 참고하여 변형하였습니다. "

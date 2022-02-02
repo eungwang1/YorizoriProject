@@ -50,7 +50,7 @@ const IngredientsList = () => {
               key={`ingredient_${index}`}
             ></Ingredient>
             <Volume
-              {...register(`volume_${index + 1}`)}
+              {...register(`ingredientVolume_${index + 1}`)}
               placeholder="200ml"
               key={`ingredient_volume_${index}`}
             ></Volume>

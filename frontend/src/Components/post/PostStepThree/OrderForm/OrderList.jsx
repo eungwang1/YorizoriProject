@@ -137,6 +137,7 @@ const OrderList = () => {
                 min="0"
                 key={`TimeInput_min_${index}`}
               />
+
               <p>:</p>
               <TimeInput
                 {...register(`orderTimeSec_${index + 1}`)}

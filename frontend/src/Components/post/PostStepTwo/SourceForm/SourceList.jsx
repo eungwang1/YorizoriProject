@@ -49,7 +49,7 @@ const SourceList = () => {
               key={`source_${index}`}
             ></Ingredient>
             <Volume
-              {...register(`volume_${index + 1}`)}
+              {...register(`sourceVolume_${index + 1}`)}
               placeholder="한 큰술"
               key={`source_volume_${index}`}
             ></Volume>
