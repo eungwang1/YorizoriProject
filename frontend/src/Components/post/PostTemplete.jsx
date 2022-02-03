@@ -5,31 +5,34 @@ import NavBottom from "../nav/BottomNav";
 import { StyledP } from "./commonStyle";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { SubImageStateAtom, MainImageStateAtom, pageStateAtom } from "./PostAtom/PostAtom";
+import { SubImageStateAtom, MainImageStateAtom, postPageStateAtom } from "./PostAtom/PostAtom";
 import { useForm, FormProvider, useFormContext } from "react-hook-form";
 
 const PostTemplete = ({ children, stepNum, page, request }) => {
-  const setPageState = useSetRecoilState(pageStateAtom);
+  const postPageState = useRecoilValue(postPageStateAtom);
+  const setPostpostPageState = useSetRecoilState(postPageStateAtom);
   return (
     <PostTempleteBlock autocomplete="off">
       <PostNav />
+
       <StepDiv>STEP {stepNum}</StepDiv>
+
       <Pre>
         <StyledP temp>{request}</StyledP>
       </Pre>
-      <ContentsWrapper>{children}</ContentsWrapper>
+      <ContentsWrapper postPageState={postPageState}>{children}</ContentsWrapper>
 
       <BtnWrapper page={page}>
-        <PageBtn type="button" onClick={() => setPageState(1)}>
+        <PageBtn type="button" onClick={() => setPostpostPageState(1)}>
           [ 1 ]
         </PageBtn>
-        <PageBtn type="button" onClick={() => setPageState(2)}>
+        <PageBtn type="button" onClick={() => setPostpostPageState(2)}>
           [ 2 ]
         </PageBtn>
-        <PageBtn type="button" onClick={() => setPageState(3)}>
+        <PageBtn type="button" onClick={() => setPostpostPageState(3)}>
           [ 3 ]
         </PageBtn>
-        <PageBtn type="button" onClick={() => setPageState(4)}>
+        <PageBtn type="button" onClick={() => setPostpostPageState(4)}>
           [ 4 ]
         </PageBtn>
       </BtnWrapper>
@@ -42,12 +45,16 @@ const PostTemplete = ({ children, stepNum, page, request }) => {
       >
         작성 완료
       </StyledBtn>
-      <NavBottom post={"post"} />
+      <NavBottom />
     </PostTempleteBlock>
   );
 };
 
 export default PostTemplete;
+
+const MarginAuto = styled.div`
+  margin: 0 auto;
+`;
 
 const Pre = styled.pre`
   margin: 0;
@@ -59,12 +66,11 @@ const StyledBtn = styled.button`
   background: #fcad2c;
   border-radius: 50px;
   color: white;
-  position: absolute;
-  bottom: 100px;
   font-size: 1.1rem;
   font-weight: 550;
   border: none;
   display: none;
+  margin-top: 10px;
   ${(props) => {
     if (props.page === 4) {
       return css`
@@ -86,7 +92,7 @@ const StepDiv = styled.div`
   padding: 35px 20px 10px 30px;
   font-size: 1.5rem;
   color: rgba(0, 0, 0, 0.5);
-  width: 100vw;
+  margin-right: 232px;
 `;
 
 const ContentsWrapper = styled.div`
@@ -95,31 +101,26 @@ const ContentsWrapper = styled.div`
   height: 50vh;
   width: 100vw;
   align-items: center;
+  ${(props) =>
+    props.postPageState === 4 &&
+    css`
+      height: 42vh;
+    `}
 `;
 
 const BtnWrapper = styled.div`
   display: flex;
   align-items: center;
-  padding-bottom: 100px;
-  height: 100px;
+  margin-top: 10px;
   button:nth-child(${(props) => props.page}) {
     color: #feae11;
   }
-  ${(props) => {
-    if (props.page === 4) {
-      return css`
-        position: absolute;
-        bottom: 110px;
-      `;
-    }
-  }}
 `;
 
 const PageBtn = styled.button`
   + button {
     margin-left: 3px;
   }
-  margin-top: 40px;
   font-weight: 700;
   font-size: 1rem;
   background-color: white;

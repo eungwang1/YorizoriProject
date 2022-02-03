@@ -56,8 +56,8 @@ export const DeleteIndexAtom = atom({
   default: 0,
 });
 
-export const pageStateAtom = atom({
-  key: "pageState",
+export const postPageStateAtom = atom({
+  key: "postPageState",
   default: 1,
 });
 

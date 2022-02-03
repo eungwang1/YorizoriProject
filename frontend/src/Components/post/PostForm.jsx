@@ -3,7 +3,7 @@ import styled from "styled-components";
 import PostTemplete from "./PostTemplete";
 import { useForm, FormProvider, useFormContext } from "react-hook-form";
 import {
-  pageStateAtom,
+  postPageStateAtom,
   MainImageStateAtom,
   SubImageStateAtom,
   categoryAtom,
@@ -28,7 +28,7 @@ document.addEventListener(
 );
 
 const PostForm = () => {
-  const [pageState, setPageState] = useRecoilState(pageStateAtom);
+  const [postPageState, setPostpostPageState] = useRecoilState(postPageStateAtom);
   const mainImage = useRecoilValue(MainImageStateAtom);
   const cookInfo = useRecoilValue(cookInfoAtom);
   const category = useRecoilValue(categoryAtom);
@@ -53,7 +53,7 @@ const PostForm = () => {
       ...category,
     };
 
-    Invalidation(submitData, setPageState);
+    Invalidation(submitData, setPostpostPageState);
     console.log(submitData);
     console.log(formData.get("subImg_1"));
     console.log(formData.get("subImg_2"));
@@ -70,13 +70,13 @@ const PostForm = () => {
   return (
     <FormProvider {...methods}>
       <PostFormBlock onSubmit={methods.handleSubmit(onSubmit)}>
-        {pageState === 1 ? (
+        {postPageState === 1 ? (
           <PostStepOne></PostStepOne>
-        ) : pageState === 2 ? (
+        ) : postPageState === 2 ? (
           <PostStepTwo></PostStepTwo>
-        ) : pageState === 3 ? (
+        ) : postPageState === 3 ? (
           <PostStepThree></PostStepThree>
-        ) : pageState === 4 ? (
+        ) : postPageState === 4 ? (
           <PostStepFour></PostStepFour>
         ) : (
           <PostStepOne></PostStepOne>

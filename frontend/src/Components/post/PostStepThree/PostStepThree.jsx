@@ -45,7 +45,6 @@ const PostStepThree = () => {
       previewRef.current.src = preview[index];
       setDeleteIndex(subModalState.index);
     }
-    console.log(subModalState);
   }, [subModalState.state, subImage]);
 
   const deleteImg = () => {

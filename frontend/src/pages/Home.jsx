@@ -8,33 +8,12 @@ import BottomNav from "../Components/nav/BottomNav";
 import TopNav_main from "../Components/nav/TopNav_main";
 import FileUpload from "@mimoid-prog/react-file-upload";
 import { recipeNameAtom } from "../Components/old_post/postStates/postStates";
+import { useSetRecoilState } from "recoil";
+import { pageStateAtom } from "../states";
 
-const ImgWrapper = styled.div`
-  position: relative;
-  .preview {
-    display: flex;
-    flex-direction: column;
-
-    width: 100px;
-  }
-  .fileName {
-    display: none;
-  }
-  .fileSize {
-    display: none;
-  }
-  .deleteBtn {
-    position: absolute;
-    top: 110px;
-    left: 27px;
-    color: orange;
-  }
-`;
-
-const HomeBlock = styled.div`
-  position: relative;
-`;
 const Home = () => {
+  const setPageState = useSetRecoilState(pageStateAtom);
+
   console.log("랜더링");
   const userActions = useUserActions();
   const [state, setState] = useState({
@@ -49,6 +28,10 @@ const Home = () => {
   };
   useEffect(() => {
     checkLoginStatus();
+    setPageState("home");
+    return () => {
+      setPageState("");
+    };
   }, []);
   const handleChange = (file) => {
     console.log(file);
@@ -130,5 +113,31 @@ const Home = () => {
     </HomeBlock>
   );
 };
+
+const ImgWrapper = styled.div`
+  position: relative;
+  .preview {
+    display: flex;
+    flex-direction: column;
+
+    width: 100px;
+  }
+  .fileName {
+    display: none;
+  }
+  .fileSize {
+    display: none;
+  }
+  .deleteBtn {
+    position: absolute;
+    top: 110px;
+    left: 27px;
+    color: orange;
+  }
+`;
+
+const HomeBlock = styled.div`
+  position: relative;
+`;
 
 export default Home;

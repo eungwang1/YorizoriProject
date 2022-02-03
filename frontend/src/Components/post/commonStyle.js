@@ -1,11 +1,12 @@
 import styled, { css } from "styled-components";
 
 export const StyledP = styled.p`
-  padding-left: 30px;
-  width: 100vw;
+  padding-left: 12px;
   font-size: 0.8rem;
   color: rgba(0, 0, 0, 0.5);
   font-weight: 600;
+  width: 315px;
+
   ${(props) =>
     props.stepOne &&
     css`
@@ -14,7 +15,7 @@ export const StyledP = styled.p`
   ${(props) =>
     props.stepFour &&
     css`
-      padding-left: 24px;
+      padding-left: 3px;
       height: 11px;
     `}
     ${(props) =>

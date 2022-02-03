@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import Buttons from "../Components/viewAll/Buttons";
 import Postzone from "../Components/viewAll/Postzone";
 import TopNav_main from "../Components/nav/TopNav_main";
 import BottomNav from "../Components/nav/BottomNav";
 import Modal from "../Components/viewAll/Modal";
+import { pageStateAtom } from "../states";
+import { useSetRecoilState } from "recoil";
 
 const ViewAllPageBlock = styled.div`
   font-size: 18px;
@@ -16,6 +18,14 @@ const ViewAllPageBlock = styled.div`
 `;
 
 const ViewAllPage = () => {
+  const setPageState = useSetRecoilState(pageStateAtom);
+
+  useEffect(() => {
+    setPageState("viewAllPage");
+    return () => {
+      setPageState("");
+    };
+  }, []);
   return (
     <ViewAllPageBlock>
       <Modal />
