@@ -90,7 +90,7 @@ const DropdownWrapper = styled.div`
   }
 `;
 const Buttons = () => {
-  const randomButton = useRecoilValue(buttonState);
+  // const randomButton = useRecoilValue(buttonState);
   const setRandomButton = useSetRecoilState(buttonState);
 
   const randompost = () => {

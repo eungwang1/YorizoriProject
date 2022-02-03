@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import ReactLoading from "react-loading";
 const Wrapper = styled.div`
   text-align: center;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   .sprite {
     display: inline-block;
     flex-shrink: 0;
@@ -64,88 +69,65 @@ const HeartCommentCount = styled.span`
   margin-right: 8px;
 `;
 const Postzone = () => {
+  const [target, setTarget] = useState(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [countPost, setCountPost] = useState(4);
+
+  useEffect(() => {
+    console.log(countPost);
+  }, [countPost]);
+
+  const getMoreItem = async () => {
+    setIsLoaded(true);
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    setCountPost((countPost) => countPost + 4);
+    setIsLoaded(false);
+  };
+
+  const onIntersect = async ([entry], observer) => {
+    if (entry.isIntersecting && !isLoaded) {
+      observer.unobserve(entry.target);
+      await getMoreItem();
+      observer.observe(entry.target);
+    }
+  };
+
+  useEffect(() => {
+    let observer;
+    if (target) {
+      observer = new IntersectionObserver(onIntersect, {
+        threshold: 0.4,
+      });
+      observer.observe(target);
+    }
+    return () => observer && observer.disconnect();
+  }, [target]);
+
   return (
     <Wrapper>
       <WrapperPost>
-        <Link to="/detail/" style={{ textDecoration: "none", color: "inherit" }}>
-          <div>
-            <Img />
-            <TextBox>
-              <Title>바스바스감바스</Title>
-              <Author>고래</Author>
-              <WrapperHeartComment>
-                <span className="sprite heart" /> <HeartCommentCount>31</HeartCommentCount>
-                <span className="sprite comment" /> <HeartCommentCount>7</HeartCommentCount>
-              </WrapperHeartComment>
-            </TextBox>
-          </div>
-        </Link>
-        <Link to="/detail/" style={{ textDecoration: "none", color: "inherit" }}>
-          <div>
-            <Img />
-            <TextBox>
-              <Title>바스바스감바스</Title>
-              <Author>고래</Author>
-              <WrapperHeartComment>
-                <span className="sprite heart" /> <HeartCommentCount>31</HeartCommentCount>
-                <span className="sprite comment" /> <HeartCommentCount>7</HeartCommentCount>
-              </WrapperHeartComment>
-            </TextBox>
-          </div>
-        </Link>
-        <Link to="/detail/" style={{ textDecoration: "none", color: "inherit" }}>
-          <div>
-            <Img />
-            <TextBox>
-              <Title>바스바스감바스</Title>
-              <Author>고래</Author>
-              <WrapperHeartComment>
-                <span className="sprite heart" /> <HeartCommentCount>31</HeartCommentCount>
-                <span className="sprite comment" /> <HeartCommentCount>7</HeartCommentCount>
-              </WrapperHeartComment>
-            </TextBox>
-          </div>
-        </Link>
-        <Link to="/detail/" style={{ textDecoration: "none", color: "inherit" }}>
-          <div>
-            <Img />
-            <TextBox>
-              <Title>바스바스감바스</Title>
-              <Author>고래</Author>
-              <WrapperHeartComment>
-                <span className="sprite heart" /> <HeartCommentCount>31</HeartCommentCount>
-                <span className="sprite comment" /> <HeartCommentCount>7</HeartCommentCount>
-              </WrapperHeartComment>
-            </TextBox>
-          </div>
-        </Link>
-        <Link to="/detail/" style={{ textDecoration: "none", color: "inherit" }}>
-          <div>
-            <Img />
-            <TextBox>
-              <Title>바스바스감바스</Title>
-              <Author>고래</Author>
-              <WrapperHeartComment>
-                <span className="sprite heart" /> <HeartCommentCount>31</HeartCommentCount>
-                <span className="sprite comment" /> <HeartCommentCount>7</HeartCommentCount>
-              </WrapperHeartComment>
-            </TextBox>
-          </div>
-        </Link>
-        <Link to="/detail/" style={{ textDecoration: "none", color: "inherit" }}>
-          <div>
-            <Img />
-            <TextBox>
-              <Title>바스바스감바스</Title>
-              <Author>고래</Author>
-              <WrapperHeartComment>
-                <span className="sprite heart" /> <HeartCommentCount>31</HeartCommentCount>
-                <span className="sprite comment" /> <HeartCommentCount>7</HeartCommentCount>
-              </WrapperHeartComment>
-            </TextBox>
-          </div>
-        </Link>
+        {[...Array(countPost)].map((n, index) => {
+          return (
+            <Link to="/detail/" style={{ textDecoration: "none", color: "inherit" }}>
+              <div>
+                <Img />
+                <TextBox>
+                  <Title>바스바스감바스</Title>
+                  <Author>고래</Author>
+                  <WrapperHeartComment>
+                    <span className="sprite heart" /> <HeartCommentCount>31</HeartCommentCount>
+                    <span className="sprite comment" /> <HeartCommentCount>7</HeartCommentCount>
+                  </WrapperHeartComment>
+                </TextBox>
+              </div>
+            </Link>
+          );
+        })}
       </WrapperPost>
+
+      <div ref={setTarget} className="Target-Element">
+        {isLoaded && <ReactLoading type="bubbles" color="#feae11" height="40px" />}
+      </div>
     </Wrapper>
   );
 };

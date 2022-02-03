@@ -5,6 +5,7 @@ import RegisterPage from "./pages/RegisterPage";
 import MyPage from "./pages/MyPage";
 import MyPageEdit from "./pages/MyPageEdit";
 import ViewAllPage from "./pages/ViewAllPage";
+import PostDetailPage from "./pages/PostDetailPage";
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import { RecoilRoot } from "recoil";
@@ -21,6 +22,8 @@ function App() {
         <Route element={<RegisterPage />} path="/register" />
         {/* <Route element={<OldPostPage />} path="/oldpost" /> */}
         <Route element={<ViewAllPage />} path="/view_all" />
+        <Route element={<PostDetailPage />} path="/detail" />
+
         <Route element={<MyPage />} path="/users/mypage" />
         <Route element={<MyPageEdit />} path="/users/edit" />
         <Route element={<PostPage />} path="/post" />
