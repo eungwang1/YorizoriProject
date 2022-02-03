@@ -24,8 +24,19 @@ export const MypageResipeBox = styled.button`
   cursor: pointer;
   height: 55px;
   margin-bottom: 10px;
-  margin-top: 10px;
+  margin-top: 8px;
   align-items: center;
   display: flex;
   justify-content: space-between;
+
+  img {
+    margin-right: 20px;
+    transition: .5s;
+  }
+  
+  .buttonMoveTop {
+    transform: scaleY(-1);
+    transition: .5s;
+  }
+  
 `

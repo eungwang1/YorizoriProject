@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import ViewAll from "../Components/viewAll/ViewAll";
+import { pageStateAtom } from "../states";
+import { useSetRecoilState } from "recoil";
 
 const ViewAllPageBlock = styled.div``;
 
