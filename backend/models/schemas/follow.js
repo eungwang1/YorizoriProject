@@ -16,7 +16,7 @@ const FollowSchema = new Schema(
     },
     isUnfollowed: {
       type: Boolean,
-      dafault: false,
+      default: false,
     },
   },
   { timestamps: true }

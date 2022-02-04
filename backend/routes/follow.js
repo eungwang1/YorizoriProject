@@ -4,7 +4,6 @@ const User = require("../models/User");
 const { isLoggedIn } = require("./middlewares");
 const router = express.Router();
 const asyncHandler = require("../utils/asyncHandler");
-const { findOne } = require("../models/User");
 
 // 다른 유저 follow 요청 post
 router.post(
@@ -35,7 +34,7 @@ router.delete(
   asyncHandler(async (req, res, next) => {
     const { id: followeeId } = req.user;
     const { followerId } = req.body;
-    const currentFollow = await findOne({ followeeId, followerId, isUnfollowed: false });
+    const currentFollow = await Follow.findOne({ followeeId, followerId, isUnfollowed: false });
     if (!currentFollow) {
       throw new Error("팔로우한 유저가 아닙니다."); //조회했을 때 데이터가 없으면 에러던집
       return;
