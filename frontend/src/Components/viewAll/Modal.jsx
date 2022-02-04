@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { buttonState } from "./ViewAllAtom";
+import { Link } from "react-router-dom";
 
 const ModalWrapping = styled.div`
   display: ${(props) => (props.RandomButtonPush === true ? "flex" : "none")};
@@ -144,7 +145,9 @@ const Modal = () => {
         <div>
           <CloseButton onClick={closeModal} />
           <Recommendtext>랜덤으로 메뉴를 추천해드려요</Recommendtext>
-          <Img />
+          <Link to="/detail/">
+            <Img />
+          </Link>
           <TextBox>
             <Title>바스바스감바스</Title>
             <Author>고래</Author>

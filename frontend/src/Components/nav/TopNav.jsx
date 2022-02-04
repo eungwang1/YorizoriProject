@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { use } from "react-dom";
 const TopNavBox = styled.div`
   height: 50px;
@@ -22,11 +22,14 @@ const TopBackBox = styled.img`
 `;
 
 const TopNav = () => {
+  let navigate = useNavigate();
   return (
     <TopNavBox>
-      <Link to="/">
-        <TopBackBox src="../images/arrow.png" alt="arrow.png"></TopBackBox>
-      </Link>
+      <TopBackBox
+        src="../images/arrow.png"
+        alt="arrow.png"
+        onClick={() => navigate(-1)}
+      ></TopBackBox>
     </TopNavBox>
   );
 };
