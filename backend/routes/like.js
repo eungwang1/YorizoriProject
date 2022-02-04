@@ -34,12 +34,13 @@ router.get(
   isLoggedIn,
   asyncHandler(async (req, res, next) => {
     const { postId } = req.params; //url에서 postId 받고
-    const likeUserList = await Like.find({ postId, isUnliked: false }).populate("userId"); //해당 포스트의 좋아요만 필터링하고 각각 좋아요를 누른 유저의 정보를 받아옴
-    const newList = likeUserList.map(({ userId: { password, ...restUserInfo }, ...restInfo }) => ({
-      user: { ...restUserInfo },
-      ...restInfo,
-    })); // 유저가 담긴 배열에서 passport를 제외한 정보 , 그리고 나머지 정보들을 뽑아서 정리된 배열을 만듦
-    res.status(200).json(newList); //좋아요를 누른 유저 정보가 담긴 배열을 응답
+    //해당 게시글의 좋아요만 필터링하고 , 유저의 password만 제외한 정보들을 userId에 담음
+    const likeUserList = await Like.find({ postId, isUnliked: false }).populate({
+      path: "userId",
+      select: "-password",
+    });
+    console.log(likeUserList);
+    res.status(200).json({ likeUserList }); //좋아요를 누른 유저 정보가 담긴 배열을 응답
   })
 );
 
