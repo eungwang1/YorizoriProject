@@ -7,6 +7,7 @@
     "nodemon": "nodemon ./bin/www"
   },
   "dependencies": {
+    "aws-sdk": "^2.1068.0",
     "axios": "^0.25.0",
     "bcrypt": "^5.0.1",
     "connect-mongo": "^4.6.0",
@@ -22,6 +23,7 @@
     "mongoose": "^6.1.8",
     "morgan": "~1.9.1",
     "multer": "^1.4.4",
+    "multer-s3": "^2.10.0",
     "nanoid": "^3.2.0",
     "nodemon": "^2.0.15",
     "passport": "^0.5.2",

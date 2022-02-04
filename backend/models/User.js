@@ -19,6 +19,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
+    profileName: {
+      type: String,
+      default: null,
+    },
     kakaoId: {
       type: String,
     },
