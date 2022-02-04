@@ -1,7 +1,7 @@
+const mongoose = require("mongoose");
 const { Schema } = require("mongoose");
-const shortId = require("../types/short-id"); //프론트에서 url 넘겨받을때 post/:postId 부분에서 postId 에 shortId 쓴다고 가정하고 작업했습니다.
 
-const PostSchema = new Schema(
+const PostSchema = new mongoose.Schema(
   {
     //레시피명
     recipeName: {
@@ -9,50 +9,63 @@ const PostSchema = new Schema(
       required: true,
     },
     //요리 소개
-    desc: String,
-    //종류별
-    category: String,
-    //상황별 :
-    condition: String,
-    //재료별
-    material: String,
-    //방법별
-    cook: String,
-    //인원수
-    servings: String,
-    //요리 시간
-    time: Number,
-    //난이도
-    diffic: Number,
-    //재료 [{재료1:'김치',양:'두주먹'}]
-    ingredient: [{ name: String, amount: String }],
+    desc: {
+      type: String,
+      required: true,
+    },
+    //재료소개
+    ingredient: [
+      {
+        ingre_name: { type: String, required: true },
+        ingre_count: { type: String, required: true },
+      },
+    ],
     //양념
-    seasoning: [{ name: String, amount: String }],
+    seasoning: { type: Array },
     //조리과정
-    process: [{ type: String }],
+    //타이머 값 어떻게 받아야할지 일단 데이터 테스트할때는 05:00으로 테스트 하기위해서 String 으로 설정하였습니다.
+    process: [{ txt: { type: String, required: true }, process_time: { type: String } }],
     //조리과정 이미지
     processImage: [{ type: String }],
     // 썸네일
-    thumbnail: { type: String, required: true, default: "" },
+    thumbnail: { type: String, default: "" },
     //완성 사진을 받는 부분입니다.
     doneImage: [{ type: String }],
-    //작성글이 받은 좋아요 수
-
-    //이 부분은 빼는 게 나을 것 같기도 해요....
-    // likesCount: {
-    //   type: Number,
-    //   default: 0,
-    // },
-    // //작성글이 받은 댓글 수
-    // commentsCount: {
-    //   type: Number,
-    //   default: 0,
-    // },
-    // //작성글이 보여진 횟수
-    // viewCount: {
-    //   type: Number,
-    //   default: 0,
-    // },
+    //종류별
+    category: {
+      type: String,
+      required: true,
+    },
+    //상황별 :
+    condition: {
+      type: String,
+      required: true,
+    },
+    //재료별
+    material: {
+      type: String,
+      required: true,
+    },
+    //방법별
+    cook: {
+      type: String,
+      required: true,
+    },
+    //인원수
+    servings: {
+      type: String,
+      required: true,
+    },
+    //요리 시간
+    time: {
+      type: String,
+      required: true,
+    },
+    //난이도
+    diffic: {
+      type: String,
+      required: true,
+    },
 
     //작성글을 유저와 연결합니다
     userId: {
@@ -63,5 +76,4 @@ const PostSchema = new Schema(
   },
   { timestamps: true }
 );
-
-module.exports = PostSchema;
+module.exports = mongoose.model("Post", PostSchema);
