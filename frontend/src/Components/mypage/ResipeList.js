@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 
 const ResipeMenus = styled.div`
   span {
+    font-family: 'Montserrat', sans-serif;
     font-size: 16px;
     margin-top: 4px;
     margin-left: 30px;
@@ -13,7 +14,7 @@ const ResipeMenus = styled.div`
 
 const ResipeListBox = styled.div`
   width: 300px;
-  position: relative;
+  height: 100%;
   left: 32px;
   display: flex;
   flex-wrap: wrap;
@@ -21,7 +22,9 @@ const ResipeListBox = styled.div`
   text-align: center;
 
   img {
-    margin: 10px 25px 0px 25px;
+    position: relative;
+    bottom: 15px;
+    margin: 10px 25px 5px 25px;
     width: 100px;
     height: 100px;
     border-radius: 15px;
@@ -29,11 +32,13 @@ const ResipeListBox = styled.div`
   }
   
   p {
+    font-family: sans-serif;
+    position: relative;
+    bottom: 15px;
     margin: 0px;
   }
 `
 const ResipeListItem = styled.div`
-
 `
 
 export default function ResipeButton(props) {
@@ -67,7 +72,7 @@ export default function ResipeButton(props) {
       </MypageResipeBox>
           {
             onResipe 
-            ? <ResipeListBox>
+            ?  <ResipeListBox>
                 <ResipeListItem>
                   <Link to="/">
                     <img src="../images/food1.jpg" alt=""/>
@@ -80,6 +85,25 @@ export default function ResipeButton(props) {
                   </Link>
                   <p>고기 레시피</p>
                 </ResipeListItem>
+                <ResipeListItem>
+                  <Link to="/">
+                    <img src="../images/food2.jpg" alt=""/>
+                  </Link>
+                  <p>고기 레시피</p>
+                </ResipeListItem>
+                <ResipeListItem>
+                  <Link to="/">
+                    <img src="../images/food2.jpg" alt=""/>
+                  </Link>
+                  <p>고기 레시피</p>
+                </ResipeListItem>
+                <ResipeListItem>
+                  <Link to="/">
+                    <img src="../images/food2.jpg" alt=""/>
+                  </Link>
+                  <p>고기 레시피</p>
+                </ResipeListItem>
+               
               </ResipeListBox> 
             : ""
           }

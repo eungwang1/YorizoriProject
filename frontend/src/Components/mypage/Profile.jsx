@@ -15,6 +15,7 @@ const MyPageImage = styled.img`
   background-size: cover;
 
   + p {
+    font-family: sans-serif;
     margin: 0;
     font-size: 18px;
   }
@@ -32,6 +33,7 @@ const MyPageMainProfileEdit = styled.button`
   cursor: pointer;
   color: white;
   margin-top: 14px;
+  margin-bottom: 35px;
 `
 
 
@@ -57,10 +59,12 @@ const MyPageTemplate = () => {
               <ResipeButton nums="1"/>
               <ResipeButton nums="2"/>
               <ResipeButton nums="3"/>
+              <div style={{width: "300px", height: "70px"}}></div>
               
             </MyPageMainBtnBox>
           </MyPageMainImgBox>
         </MyPageMainBox>
+
       <NavBottom />
     </div>
   
