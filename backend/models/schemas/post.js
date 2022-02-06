@@ -73,6 +73,12 @@ const PostSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+
+    //DB에는 삭제안되지만, 게시물 조회할때 useYN:true 인 값만 노출되어주는 컬럼
+    useYN: {
+      type: Boolean,
+      default: true,
+    },
   },
   { timestamps: true }
 );

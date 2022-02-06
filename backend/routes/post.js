@@ -59,7 +59,7 @@ router.get("/", async (req, res, next) => {
 router.get("/:postId", async (req, res, next) => {
   const { postId } = req.params;
   try {
-    const posts = await Post.findById(postId);
+    const posts = await Post.findById(postId).findOne({ useYN: true });
     if (!posts) {
       res.status(404).send("해당하는 postId가 없습니다.");
       return;
@@ -92,8 +92,15 @@ router.patch("/:postId", isLoggedIn, async (req, res, next) => {
 router.delete("/:postId", isLoggedIn, async (req, res, next) => {
   const { postId } = req.params;
   try {
-    await Post.findByIdAndDelete(postId); // postId 찾아 삭제
-    res.status(204); //Noconnect
+    const posts = await Post.findById(postId).findOne({ useYN: true }); // postId 찾아 삭제
+    if (!posts) {
+      res.status(404).json({ message: "해당하는 postId가 없습니다." });
+      return;
+    }
+    posts.useYN = false;
+    posts.save();
+
+    res.status(200).json({ message: "레시피 삭제가 완료되었습니다." });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
