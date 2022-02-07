@@ -13,17 +13,13 @@ router.post(
     const { postId } = req.body; // body에서 postId 받고 ,
     const { id: userId } = req.user; //req.user 에서 userId 꺼내고
 
-    //만약 이미 좋아요를 누른 게시물이라면 에러를 던짐 ... 이 부분을 서버에서 검증해야 할까요?
+    //만약 이미 좋아요를 누른 게시물이라면 에러를 던짐
     const currentLike = await Like.findOne({ postId, userId, isUnliked: false });
     if (currentLike) {
       throw new Error("이미 좋아요 한 게시글입니다.");
       return;
     }
     await Like.create({ userId, postId }); //새로운 좋아요 데이터 생성
-
-    // post 스키마에 likeCount 나 commentsCount 같은 카운팅 프로퍼티는 빼는 게 나을 것 같습니다.
-    // post.likesCount += 1; 해당 포스트에 좋아요 횟수 하나 추가
-    // await post.save();
     res.status(200).json({ message: "좋아요 한 목록에 추가되었습니다." });
   })
 );
@@ -33,18 +29,17 @@ router.get(
   "/:postId",
   isLoggedIn,
   asyncHandler(async (req, res, next) => {
-    const { postId } = req.params; //url에서 postId 받고
+    const { postId } = req.params;
     //해당 게시글의 좋아요만 필터링하고 , 유저의 password만 제외한 정보들을 userId에 담음
     const likeUserList = await Like.find({ postId, isUnliked: false }).populate({
       path: "userId",
       select: "-password",
     });
-    console.log(likeUserList);
     res.status(200).json({ likeUserList }); //좋아요를 누른 유저 정보가 담긴 배열을 응답
   })
 );
 
-//좋아요 삭제 기능 ... db에서 아예 지우는 것이 아니라 isUnliked 값을 true로 바꾸무
+//좋아요 삭제 delete isUnliked = true 로 바꿔서 관리
 router.delete(
   "/",
   isLoggedIn,
@@ -57,7 +52,7 @@ router.delete(
       return;
     }
     currentLike.isUnliked = true;
-    currentLike.save();
+    await currentLike.save();
     res.status(200).json({ message: "좋아요 한 목록에서 삭제되었습니다." });
   })
 );

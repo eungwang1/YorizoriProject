@@ -36,11 +36,11 @@ router.delete(
     const { followerId } = req.body;
     const currentFollow = await Follow.findOne({ followeeId, followerId, isUnfollowed: false });
     if (!currentFollow) {
-      throw new Error("팔로우한 유저가 아닙니다."); //조회했을 때 데이터가 없으면 에러던집
+      throw new Error("팔로우한 유저가 아닙니다."); //조회했을 때 기존에 팔로우 중인 유저가 아니라면 에러던집
       return;
     }
     currentFollow.isUnfollowed = true; //isUnfollowed 값을 true로 바꿔 삭제된 데이터로 관리
-    currentFollow.save();
+    await currentFollow.save();
 
     res.status(200).json({ message: "팔로우한 유저에서 삭제되었습니다." });
   })
