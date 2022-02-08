@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import { useRecoilState } from "recoil";
 import { SourceListAtom } from "../../PostAtom/PostAtom";
@@ -7,11 +7,11 @@ import { useForm, useFormContext } from "react-hook-form";
 
 const SourceList = () => {
   const [SourceList, setSourceList] = useRecoilState(SourceListAtom);
-  const { watch, setValue } = useForm();
-  const { register } = useFormContext();
+
+  const { register, setValue } = useFormContext();
   const deleteIngredient = (index) => {
     setValue(`source_${index + 1}`, "");
-    setValue(`volume_${index + 1}`, "");
+    setValue(`sourceVolume_${index + 1}`, "");
 
     setSourceList((oldList) => {
       const newList = oldList.filter(function (el, i) {
@@ -20,23 +20,6 @@ const SourceList = () => {
       return newList;
     });
   };
-
-  // useEffect(() => {
-  //   const subscription = watch((value) => {
-  //     console.log(value);
-  //     localStorage.setItem("source", JSON.stringify(value));
-  //   });
-  // }, [watch]);
-
-  // useEffect(() => {
-  //   if (localStorage.getItem("source")) {
-  //     const getSource = JSON.parse(localStorage.getItem("source"));
-  //     SourceList.forEach((el, idx) => {
-  //       setValue(`source_${idx + 1}`, eval(`getSource.source_${idx + 1}`));
-  //       setValue(`volume_${idx + 1}`, eval(`getSource.volume_${idx + 1}`));
-  //     });
-  //   }
-  // }, []);
 
   return (
     <>

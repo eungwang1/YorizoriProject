@@ -1,4 +1,3 @@
-
 import { useSetRecoilState } from "recoil";
 import { authAtom, usersAtom } from "../states";
 import { useNavigate } from "react-router-dom";
@@ -7,8 +6,9 @@ import React, { useState } from "react";
 export { useUserActions };
 
 function useUserActions() {
-  const baseUrl = `api/auth`;
+  const baseUrl = `/auth`;
   const setAuth = useSetRecoilState(authAtom);
+
   const setUsers = useSetRecoilState(usersAtom);
   const navigate = useNavigate();
   return {
@@ -20,7 +20,6 @@ function useUserActions() {
   async function login(email, password) {
     try {
       const user = await axios.post(`${baseUrl}/login`, { email, password });
-      console.log(user);
       localStorage.setItem("user", JSON.stringify(user));
       navigate("/");
     } catch (e) {
@@ -31,9 +30,9 @@ function useUserActions() {
     }
   }
 
-  async function register(email, password, name) {
+  async function register(email, nickName, password) {
     try {
-      await axios.post(`${baseUrl}/register`, { email, password });
+      await axios.post(`${baseUrl}/join`, { email, nickName, password });
       navigate("/login");
     } catch (e) {
       console.error(e);
@@ -46,9 +45,16 @@ function useUserActions() {
     }
   }
 
-  function logout() {
-    localStorage.removeItem("user");
-    setAuth(null);
-    navigate("/login");
+  async function logout() {
+    try {
+      await axios.get(`${baseUrl}/logout`);
+      localStorage.removeItem("user");
+      setAuth(null);
+      navigate("/");
+    } catch (e) {
+      if (e.response.status === 403) {
+        alert("로그아웃 상태입니다.");
+      }
+    }
   }
 }

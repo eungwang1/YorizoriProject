@@ -1,5 +1,4 @@
 import React from "react";
-import styled, { css } from "styled-components";
 import PostTemplete from "../PostTemplete";
 import { StyledP, ContainerDiv } from "../commonStyle";
 import IngredientsList from "./IngredientForm/IngredientsList";
@@ -14,7 +13,7 @@ const PostStepTwo = () => {
         <IngredientsList></IngredientsList>
         <AddIngredients></AddIngredients>
       </ContainerDiv>
-      <StyledP>양념을 추가해 주세요.(1개 이상 필수)</StyledP>
+      <StyledP>양념을 추가해 주세요.(선택)</StyledP>
       <ContainerDiv>
         <SourceList></SourceList>
         <AddSource></AddSource>

@@ -2,7 +2,15 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { StyledButton, StyledInput, ErrorText, StyledDiv, CenterLink, StyledHr } from "./AuthStyle";
+import {
+  StyledButton,
+  StyledInput,
+  ErrorText,
+  StyledDiv,
+  CenterLink,
+  StyledHr,
+  DivWrapper,
+} from "./AuthStyle";
 import { useUserActions } from "../../actions";
 import { useRecoilValue } from "recoil";
 import { authAtom } from "../../states";
@@ -11,6 +19,10 @@ const LoginFormBlock = styled.form`
   display: flex;
   flex-direction: column;
   position: relative;
+`;
+const KakaoImg = styled.img`
+  width: 38px;
+  margin: 10px auto 0px auto;
 `;
 
 const LoginForm = () => {
@@ -56,6 +68,12 @@ const LoginForm = () => {
         <StyledDiv login>회원가입</StyledDiv>
         <StyledHr login />
       </CenterLink>
+
+      <DivWrapper>
+        <StyledDiv easyLogin>간편 로그인</StyledDiv>
+        <StyledHr easyLogin />
+      </DivWrapper>
+      <KakaoImg src="./images/kakao.png" />
     </LoginFormBlock>
   );
 };

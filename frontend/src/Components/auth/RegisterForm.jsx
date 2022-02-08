@@ -37,8 +37,8 @@ const RegisterForm = () => {
   } = useForm();
 
   // 폼 데이터 확인
-  const onSubmit = ({ email, password }) => {
-    return userActions.register(email, password);
+  const onSubmit = ({ email, nickName, password }) => {
+    return userActions.register(email, nickName, password);
   };
   // 렌더링 횟수 및 에러확인
   console.log("랜더링");
@@ -66,7 +66,7 @@ const RegisterForm = () => {
 
       <InputLabel htmlFor="name">닉네임</InputLabel>
       <StyledInput
-        {...register("name", {
+        {...register("nickName", {
           minLength: 2,
           required: true,
         })}
@@ -111,13 +111,6 @@ const RegisterForm = () => {
       )}
 
       <StyledButton>회원가입</StyledButton>
-
-      <DivWrapper>
-        <StyledDiv>간편 회원가입</StyledDiv>
-        <StyledHr />
-      </DivWrapper>
-
-      <KakaoImg src="./images/kakao.png" />
     </RegisterFormBlock>
   );
 };

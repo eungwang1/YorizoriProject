@@ -1,29 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { cookInfoAtom } from "../PostAtom/PostAtom";
-import styled from "styled-components";
 import { DropdownWrapper } from "../commonStyle";
 import { Dropdown } from "react-dropdown-now";
 import { useRecoilState } from "recoil";
 
 const CookInfoDropdown = () => {
   const [cookInfo, setCookInfo] = useRecoilState(cookInfoAtom);
-
-  // useEffect(() => {
-  //   if (localStorage.getItem("cookInfo")) {
-  //     const getCookInfo = JSON.parse(localStorage.getItem("cookInfo"));
-  //     setCookInfo({
-  //       servings: getCookInfo.servings,
-  //       time: getCookInfo.time,
-  //       diffic: getCookInfo.diffic,
-  //     });
-  //   }
-  // }, []);
-
-  // console.log(cookInfo);
-
-  // useEffect(() => {
-  //   localStorage.setItem("cookInfo", JSON.stringify(cookInfo));
-  // }, [cookInfo]);
 
   return (
     <>

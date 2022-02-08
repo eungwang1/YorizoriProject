@@ -3,10 +3,8 @@ import styled, { css } from "styled-components";
 import PostNav from "../nav/PostNav";
 import NavBottom from "../nav/BottomNav";
 import { StyledP } from "./commonStyle";
-import { useNavigate } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { SubImageStateAtom, MainImageStateAtom, postPageStateAtom } from "./PostAtom/PostAtom";
-import { useForm, FormProvider, useFormContext } from "react-hook-form";
+import { postPageStateAtom } from "./PostAtom/PostAtom";
 
 const PostTemplete = ({ children, stepNum, page, request }) => {
   const postPageState = useRecoilValue(postPageStateAtom);

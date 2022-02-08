@@ -1,143 +1,71 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
-import { useRecoilValue } from "recoil";
-import { authAtom } from "../states";
+import { Link, useNavigate } from "react-router-dom";
 import { useUserActions } from "../actions";
 import BottomNav from "../Components/nav/BottomNav";
 import TopNav_main from "../Components/nav/TopNav_main";
 import FileUpload from "@mimoid-prog/react-file-upload";
-import { recipeNameAtom } from "../Components/old_post/postStates/postStates";
-import { useSetRecoilState } from "recoil";
+import { useSetRecoilState, useRecoilValue } from "recoil";
+import { authAtom } from "../states";
 import { pageStateAtom } from "../states";
 
 const Home = () => {
   const setPageState = useSetRecoilState(pageStateAtom);
+  const navigate = useNavigate();
 
-  console.log("랜더링");
+  //authCheck === true -> 로그인 상태
+  //authCheck === false -> 로그아웃 상태
+  const authCheck = useRecoilValue(authAtom);
+
   const userActions = useUserActions();
-  const [state, setState] = useState({
-    isLogin: false,
-  });
-  const checkLoginStatus = () => {
-    if (JSON.parse(localStorage.getItem("user"))) {
-      setState({
-        isLogin: true,
-      });
-    }
-  };
+
   useEffect(() => {
-    checkLoginStatus();
+    console.log(authCheck);
     setPageState("home");
     return () => {
       setPageState("");
     };
   }, []);
-  const handleChange = (file) => {
-    console.log(file);
-  };
 
-  const [stepOne, setStepOne] = useState({
-    recipeName: "",
-    desc: "",
-  });
-  const { recipeName, desc } = stepOne;
-  const onChange = (e) => {
-    const { value, name } = e.target;
-    setStepOne({
-      ...stepOne,
-      [name]: value,
-    });
-    console.log(recipeName);
-  };
-
-  const [ingredientState, setIngredientState] = useState([
-    {
-      test: "test",
-      id: 1,
-    },
-  ]);
-  const testClick = () => {
-    setIngredientState((el) => [
-      ...el,
-      {
-        test2: "test2",
-        id: 2,
-      },
-    ]);
-  };
-  console.log(ingredientState);
   return (
     <HomeBlock>
       <TopNav_main />
-      <div style={{ marginTop: "80px", paddingBottom: "90px" }}>
-        <Link to="/login">
-          <button>login</button>
-        </Link>
-        <Link to="/users/mypage">
-          <button>mypage</button>
-        </Link>
-
-        <Link to="/post">
-          <button>post</button>
-        </Link>
-
-        <h3>Single file upload</h3>
-        <ImgWrapper>
-          <FileUpload name="photo3" onChange={handleChange} shape="rounded" size="big" />
-        </ImgWrapper>
-        {state.isLogin && <button onClick={userActions.logout}>logout</button>}
-        <Link to="/view_all">
-          <button>전체글 보기</button>
-        </Link>
-        <div>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo natus molestiae modi
-          similique, odit praesentium cupiditate temporibus in eum totam atque omnis alias quaerat,
-          labore rem molestias, tempora dolore accusantium?
-        </div>
-        <div>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo natus molestiae modi
-          similique, odit praesentium cupiditate temporibus in eum totam atque omnis alias quaerat,
-          labore rem molestias, tempora dolore accusantium?
-        </div>
-        <div>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo natus molestiae modi
-          similique, odit praesentium cupiditate temporibus in eum totam atque omnis alias quaerat,
-          labore rem molestias, tempora dolore accusantium?
-        </div>
-        <input name="recipeName" onChange={onChange} value={recipeName}></input>
-        <input name="desc" onChange={onChange} value={desc}></input>
-        <button onClick={testClick}>test</button>
-      </div>
+      <ButtonWrapper>
+        {!authCheck && <StyledBtn onClick={() => navigate("/login")}>login</StyledBtn>}
+        {authCheck && <StyledBtn onClick={userActions.logout}>logout</StyledBtn>}
+        <StyledBtn onClick={() => navigate("/users/mypage")}>mypage</StyledBtn>
+        <StyledBtn onClick={() => navigate("post")}>post</StyledBtn>
+        <StyledBtn onClick={() => navigate("/view_all")}>전체글 보기</StyledBtn>
+      </ButtonWrapper>
       <BottomNav />
     </HomeBlock>
   );
 };
 
-const ImgWrapper = styled.div`
+const HomeBlock = styled.div`
   position: relative;
-  .preview {
-    display: flex;
-    flex-direction: column;
+`;
 
-    width: 100px;
-  }
-  .fileName {
-    display: none;
-  }
-  .fileSize {
-    display: none;
-  }
-  .deleteBtn {
-    position: absolute;
-    top: 110px;
-    left: 27px;
-    color: orange;
+const StyledBtn = styled.button`
+  border: none;
+  background-color: #feae11;
+  width: 120px;
+  color: white;
+  font-size: 1rem;
+  padding: 10px;
+  border-radius: 10px;
+  + button {
+    margin-top: 20px;
   }
 `;
 
-const HomeBlock = styled.div`
-  position: relative;
+const ButtonWrapper = styled.div`
+  margin: auto 0;
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 export default Home;

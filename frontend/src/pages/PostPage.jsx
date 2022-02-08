@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import PostForm from "../Components/post/PostForm";
 import { pageStateAtom } from "../states";
-import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 const PostPageBlock = styled.div``;
 
 const PostPage = () => {

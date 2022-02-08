@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import styled from "styled-components";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { ResetTextarea, Preview } from "../../commonStyle";
@@ -17,27 +17,7 @@ const OrderList = () => {
   const subImage = useRecoilValue(SubImageStateAtom);
   const setSubImage = useSetRecoilState(SubImageStateAtom);
 
-  const { watch, setValue } = useForm();
-  const { register } = useFormContext();
-
-  // useEffect(() => {
-  //   const subscription = watch((value) => {
-  //     console.log(value);
-  //     localStorage.setItem("order", JSON.stringify(value));
-  //   });
-  //   console.log(subImage);
-  // }, [watch, subImage]);
-
-  // useEffect(() => {
-  //   if (localStorage.getItem("order")) {
-  //     const getOrder = JSON.parse(localStorage.getItem("order"));
-  //     OrderList.forEach((el, idx) => {
-  //       setValue(`order_${idx + 1}`, eval(`getOrder.order_${idx + 1}`));
-  //       setValue(`orderTimeMin_${idx + 1}`, eval(`getOrder.orderTimeMin_${idx + 1}`));
-  //       setValue(`orderTimeSec_${idx + 1}`, eval(`getOrder.orderTimeSec_${idx + 1}`));
-  //     });
-  //   }
-  // }, []);
+  const { register, setValue } = useFormContext();
 
   const deleteIngredient = (index) => {
     setValue(`order_${index + 1}`, "");
@@ -64,7 +44,6 @@ const OrderList = () => {
 
   const handleImage = (e, index) => {
     let cur_file = e.target.files[0];
-    console.log(e.target);
     const filesInArr = Array.from(e.target.files);
     const previewArr = [window.URL.createObjectURL(cur_file)];
     if (cur_file) {
@@ -133,6 +112,7 @@ const OrderList = () => {
               <TimeInput
                 {...register(`orderTimeMin_${index + 1}`)}
                 placeholder="05"
+                defaultValue="00"
                 type="number"
                 min="0"
                 key={`TimeInput_min_${index}`}
@@ -142,6 +122,7 @@ const OrderList = () => {
               <TimeInput
                 {...register(`orderTimeSec_${index + 1}`)}
                 placeholder="00"
+                defaultValue="00"
                 type="number"
                 max="60"
                 min="0"

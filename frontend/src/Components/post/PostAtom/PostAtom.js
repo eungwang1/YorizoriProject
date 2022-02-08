@@ -10,6 +10,11 @@ export const IngredientsListAtom = atom({
   default: ["waqeqcasdcq"],
 });
 
+// export const IngredientAtom = atom({
+//   key: "Ingredient",
+//   default: [],
+// });
+
 export const SourceListAtom = atom({
   key: "SourceListState",
   default: ["dqwcdqwcdzx"],

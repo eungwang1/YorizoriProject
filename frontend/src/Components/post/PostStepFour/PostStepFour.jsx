@@ -6,8 +6,6 @@ import { Dropdown } from "react-dropdown-now";
 import CategoryDropdown from "./CategoryDropdown";
 import CookInfoDropdown from "./CookInfoDropdown";
 
-const PostStepFourBlock = styled.div``;
-
 const PostStepFour = () => {
   return (
     <PostTemplete

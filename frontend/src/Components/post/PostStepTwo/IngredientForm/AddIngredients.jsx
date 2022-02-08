@@ -1,8 +1,7 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React from "react";
 import { AddBtn } from "../../commonStyle";
 
-import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 
 import { IngredientsListAtom } from "../../PostAtom/PostAtom";
 

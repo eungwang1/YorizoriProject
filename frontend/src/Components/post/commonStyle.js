@@ -198,16 +198,28 @@ export const ModalBox = styled.div`
   border-radius: 11px;
   font-weight: 900;
   display: ${(props) => (props.modalState === true ? "flex" : "none")};
-  justify-content: center;
+  justify-content: center !important;
   align-items: center;
   flex-direction: column;
   z-index: 999;
-
+  /* 
   ${(props) =>
     props.sub &&
     css`
       right: 7px;
-    `}
+    `} */
+`;
+export const ModalBackground = styled.div`
+  display: ${(props) => (props.modalState === true ? "flex" : "none")};
+
+  position: fixed;
+  top: -150px;
+  width: 100%;
+  height: 150%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 500;
+  justify-content: center;
+  overflow: hidden;
 `;
 
 export const ImgBox = styled.img`
@@ -238,17 +250,4 @@ export const ModalClose = styled.div`
   width: 20px;
   height: 20px;
   text-align: center;
-`;
-
-export const ModalBackground = styled.div`
-  display: ${(props) => (props.modalState === true ? "flex" : "none")};
-
-  position: fixed;
-  top: -150px;
-  width: 100%;
-  height: 150%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 500;
-  justify-content: center;
-  overflow: hidden;
 `;

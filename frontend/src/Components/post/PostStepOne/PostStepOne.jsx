@@ -20,8 +20,9 @@ const PostStepOne = () => {
   const ImgLabel = useRef();
   const ImgInput = useRef();
   const PreviewRef = useRef();
-  const { watch, setValue } = useForm();
+  const { watch } = useForm();
   const { register } = useFormContext();
+
   const mainImage = useRecoilValue(MainImageStateAtom);
   const setMainImage = useSetRecoilState(MainImageStateAtom);
 
@@ -32,20 +33,8 @@ const PostStepOne = () => {
   });
 
   useEffect(() => {
-    // const subscription = watch((value) => {
-    //   localStorage.setItem("TitleAndDesc", JSON.stringify(value));
-    // });
-
     PreviewRef.current.src = mainImage.preview;
   }, [watch, mainImage]);
-
-  // useEffect(() => {
-  //   if (localStorage.getItem("TitleAndDesc")) {
-  //     const stepOne = JSON.parse(localStorage.getItem("TitleAndDesc"));
-  //     setValue("recipeName", stepOne.recipeName);
-  //     setValue("desc", stepOne.desc);
-  //   }
-  // }, []);
 
   const handleImage = (e) => {
     let cur_file = e.target.files[0];
@@ -101,13 +90,11 @@ const PostStepOne = () => {
         <ImgUploadInput
           accept="image/*"
           ref={ImgInput}
-          // {...register("main_img")}
           onChange={handleImage}
           id="main_img"
           type="file"
         />
       </PositionRelative>
-      {/* <StyledP stepOne>간단한 레시피 소개를 해주세요.{<br />}(필수사항은 아닙니다.)</StyledP> */}
       <StyledP stepOne>간단한 레시피 소개를 해주세요.(선택)</StyledP>
       <StyledTextArea
         {...register(`desc`)}

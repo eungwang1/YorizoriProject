@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { DropdownWrapper } from "../commonStyle";
 import { Dropdown } from "react-dropdown-now";
 import { categoryAtom } from "../PostAtom/PostAtom";
@@ -7,24 +7,6 @@ import { useRecoilState } from "recoil";
 const CategoryDropdown = () => {
   const [category, setCategory] = useRecoilState(categoryAtom);
 
-  // useEffect(() => {
-  //   if (localStorage.getItem("category")) {
-  //     const getCategory = JSON.parse(localStorage.getItem("category"));
-  //     setCategory({
-  //       category: getCategory.category,
-  //       material: getCategory.material,
-  //       condition: getCategory.condition,
-  //       cook: getCategory.cook,
-  //     });
-  //   }
-  // }, []);
-
-  // console.log(category);
-
-  // useEffect(() => {
-  //   localStorage.setItem("category", JSON.stringify(category));
-  // }, [category]);
-
   return (
     <>
       <DropdownWrapper>
@@ -32,7 +14,6 @@ const CategoryDropdown = () => {
           placeholder={category.category ? category.category : "종류별"}
           options={["한식", "중식", "일식", "아시안", "양식", "기타"]}
           onSelect={(value) => {
-            console.log("selected!", value);
             setCategory({
               ...category,
               category: value.value,
@@ -43,7 +24,6 @@ const CategoryDropdown = () => {
           placeholder={category.material ? category.material : "재료별"}
           options={["육류", "채소류", "해물류", "과일류", "달걀/유제품", "기타"]}
           onSelect={(value) => {
-            console.log("selected!", value);
             setCategory({
               ...category,
               material: value.value,
@@ -66,7 +46,6 @@ const CategoryDropdown = () => {
             "기타",
           ]}
           onSelect={(value) => {
-            console.log("selected!", value);
             setCategory({
               ...category,
               condition: value.value,
@@ -77,7 +56,6 @@ const CategoryDropdown = () => {
           placeholder={category.cook ? category.cook : "방법별"}
           options={["볶음", "무침", "비빔", "끓이기", "굽기", "삶기", "튀김", "기타"]}
           onSelect={(value) => {
-            console.log("selected!", value);
             setCategory({
               ...category,
               cook: value.value,

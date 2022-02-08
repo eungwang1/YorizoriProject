@@ -85,12 +85,20 @@ export const StyledDiv = styled.div`
   margin-top: 2px;
   width: 100px;
   font-weight: 900;
-  color: #9999;
-  font-size: 0.8rem;
+  color: #4c4545bd;
+  font-size: 0.9rem;
+  ${(props) =>
+    props.easyLogin &&
+    css`
+      color: #9999;
+      margin-top: 2px;
+      font-size: 0.75rem;
+      width: 83px;
+    `}
 `;
 
 export const DivWrapper = styled.div`
-  margin-top: 10px;
+  margin-top: 30px;
   position: relative;
   display: flex;
   width: 100%;
@@ -108,13 +116,19 @@ export const CenterLink = styled(Link)`
 `;
 
 export const StyledHr = styled.hr`
-  border: 0.6px solid #9999;
+  border: 0.6px solid #4c4545bd;
   opacity: 0.6;
   width: 100%;
   ${(props) =>
     props.login &&
     css`
-      margin-top: 20px;
-      width: 50px;
+      margin-top: 23px;
+      width: 57px;
+    `}
+  ${(props) =>
+    props.easyLogin &&
+    css`
+      border: 0.05px solid #9999;
+      opacity: 0.3;
     `}
 `;

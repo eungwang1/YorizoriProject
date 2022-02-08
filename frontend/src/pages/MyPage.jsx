@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import styled from "styled-components";
 import Profile from "../Components/mypage/Profile";
 import { pageStateAtom } from "../states";
 import { useSetRecoilState } from "recoil";
