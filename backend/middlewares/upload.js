@@ -37,6 +37,9 @@ const recipeStorage = multerS3({
   key: function (req, file, cb) {
     cb(null, `uploads/${Date.now().toString()}_${file.originalname}`);
   }, // The name of the file
+
+  //파일 최대크기 설정(5MB)
+  limits: { fileSize: 5 * 1024 * 1024 },
 });
 
 exports.profileUpload = multer({ storage: profileStorage });
