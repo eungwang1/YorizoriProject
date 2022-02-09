@@ -33,11 +33,21 @@ const OrderList = () => {
     setSubImage((oldList) => {
       const newList = {
         ...oldList,
-        file: oldList.file.filter((el, idx) => Number(index + 1) !== Number(idx)),
-        preview: oldList.preview.filter((el, idx) => Number(index + 1) !== Number(idx)),
+        file: oldList.file.map((el, idx) => {
+          if (Number(index) !== Number(idx - 1)) {
+            return el;
+          } else {
+            return 0;
+          }
+        }),
+        preview: oldList.preview.map((el, idx) => {
+          if (Number(index) !== Number(idx - 1)) {
+            return el;
+          } else {
+            return 0;
+          }
+        }),
       };
-      newList.file.push(0);
-      newList.preview.push(0);
       return newList;
     });
   };

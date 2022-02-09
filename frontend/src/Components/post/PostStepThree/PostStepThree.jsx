@@ -39,6 +39,8 @@ const PostStepThree = () => {
       console.log(previewRef.current.src);
       previewRef.current.src = preview[index];
       setDeleteIndex(subModalState.index);
+      console.log(subImage);
+      console.log(deleteIndex);
     }
   }, [subModalState.state, subImage]);
 
@@ -46,14 +48,23 @@ const PostStepThree = () => {
     setSubImage((oldList) => {
       const newList = {
         ...oldList,
-        file: oldList.file.filter((el, idx) => Number(deleteIndex) !== Number(idx)),
-        preview: oldList.preview.filter((el, idx) => Number(deleteIndex) !== Number(idx)),
+        file: oldList.file.map((el, idx) => {
+          if (Number(deleteIndex) !== Number(idx)) {
+            return el;
+          } else {
+            return 0;
+          }
+        }),
+        preview: oldList.preview.map((el, idx) => {
+          if (Number(deleteIndex) !== Number(idx)) {
+            return el;
+          } else {
+            return 0;
+          }
+        }),
       };
-      newList.file.push(0);
-      newList.preview.push(0);
       return newList;
     });
-
     setSubModalState({
       ...subModalState,
       state: false,
