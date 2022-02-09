@@ -29,7 +29,7 @@ export const MypageResipeBox = styled.button`
   cursor: pointer;
   height: 55px;
   margin-bottom: 10px;
-  margin-top: 8px;
+  margin-top: 10px;
   align-items: center;
   display: flex;
   justify-content: space-between;
@@ -43,5 +43,4 @@ export const MypageResipeBox = styled.button`
     transform: scaleY(-1);
     transition: .5s;
   }
-  
 `

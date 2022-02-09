@@ -16,8 +16,9 @@ const MyPageImage = styled.img`
 
   + p {
     font-family: sans-serif;
-    margin: 0;
+    margin-top: 15px;
     font-size: 18px;
+    font-weight: 500;
   }
 `
 const MyPageMainProfileEdit = styled.button`
@@ -25,7 +26,7 @@ const MyPageMainProfileEdit = styled.button`
   height: 45px;
   font-weight: bold;
   font-size: 16px;
-  border-radius: 155px;
+  border-radius: 10px;
   background-color: #FEAE11;
   display: inline-block;
   outline: none;
@@ -33,7 +34,7 @@ const MyPageMainProfileEdit = styled.button`
   cursor: pointer;
   color: white;
   margin-top: 14px;
-  margin-bottom: 35px;
+  margin-bottom: 30px;
 `
 
 
@@ -55,6 +56,8 @@ const MyPageTemplate = () => {
                 <MyPageMainProfileEdit type="button" >프로필 수정</MyPageMainProfileEdit>
               </Link>
 
+              <div style={{width: "100%", borderBottom : "1px solid #c5c5c5", marginBottom: "5px"}}>
+              </div>
               <ResipeButton nums="0"/>
               <ResipeButton nums="1"/>
               <ResipeButton nums="2"/>

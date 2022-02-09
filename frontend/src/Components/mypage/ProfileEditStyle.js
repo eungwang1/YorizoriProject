@@ -9,3 +9,12 @@ export const MyPageEditInputBox = styled.div`
 `
 
 
+export const MyPagePasswordEditBox = styled.div`
+  font-size: 14px;
+  color: #A7B6AA;
+  margin-right: 200px;
+
+  span {
+    cursor: pointer;
+  }
+`
