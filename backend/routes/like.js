@@ -29,11 +29,35 @@ router.get(
   isLoggedIn,
   asyncHandler(async (req, res, next) => {
     const { postId } = req.params;
+    let { startIndex, limit } = req.query;
     //해당 게시글의 좋아요만 필터링하고 , 유저의 password만 제외한 정보들을 userId에 담음
-    const likeUserList = await Like.find({ postId, isUnliked: false }).populate({
-      path: "userId",
-      select: "-password",
-    });
+    // startIndex와 limit 을 보내지 않으면 전체데이터를 보내줌
+    if (!startIndex && !limit) {
+      const likeUserList = await Like.find({ postId, isUnliked: false })
+        .sort({ createdAt: -1 })
+        .populate({
+          path: "userId",
+          select: "-password",
+        });
+      res.status(200).json({ likeUserList }); //좋아요를 누른 유저 정보가 담긴 배열을 응답
+      return;
+    }
+    //startIndex 와 limit  중 하나만 보내면 에러를 던짐
+    if (!startIndex || !limit) {
+      throw Error("startIndex와 limit 중 빠진 항목이 있습니다.");
+      return;
+    }
+    //startIndex와 limit으로 정제된 데이터를 보내줌
+    startIndex = parseInt(startIndex);
+    limit = parseInt(limit);
+    const likeUserList = await Like.find({ postId, isUnliked: false })
+      .sort({ createdAt: -1 })
+      .populate({
+        path: "userId",
+        select: "-password",
+      })
+      .skip(startIndex - 1)
+      .limit(limit);
     res.status(200).json({ likeUserList }); //좋아요를 누른 유저 정보가 담긴 배열을 응답
   })
 );

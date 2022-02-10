@@ -62,7 +62,24 @@ router.get(
   isLoggedIn,
   asyncHandler(async (req, res, next) => {
     const { userId } = req.params;
-    const userPosts = await Post.find({ userId, useYN: true });
+    let { startIndex, limit } = req.query;
+    if (!startIndex && !limit) {
+      const userPosts = await Post.find({ userId, useYN: true }).sort({ createdAt: -1 });
+      res.status(200).json({ userPosts });
+      return;
+    }
+    //startIndex 와 limit  중 하나만 보내면 에러를 던짐
+    if (!startIndex || !limit) {
+      throw Error("startIndex와 limit 중 빠진 항목이 있습니다.");
+      return;
+    }
+    //startIndex와 limit으로 정제된 데이터를 보내줌
+    startIndex = parseInt(startIndex);
+    limit = parseInt(limit);
+    const userPosts = await Post.find({ userId, useYN: true })
+      .sort({ createdAt: -1 })
+      .skip(startIndex - 1)
+      .limit(limit);
     res.status(200).json({ userPosts });
   })
 );
@@ -73,10 +90,29 @@ router.get(
   isLoggedIn,
   asyncHandler(async (req, res, next) => {
     const { userId } = req.params;
-    //유저가 좋아요한 like documents 에서 postId만을 뽑아내고
+    let { startIndex, limit } = req.query;
+    //qeury params 가 없으면 전체 데이터 return
+    if (!startIndex && !limit) {
+      //유저가 좋아요한 like documents 에서 postId만을 뽑아내고
+      const likePosts = await Like.find({ userId, isUnliked: false })
+        .sort({ createdAt: -1 })
+        .populate("postId");
+      res.status(200).json({ likePosts });
+      return;
+    }
+    //startIndex 와 limit  중 하나만 보내면 에러를 던짐
+    if (!startIndex || !limit) {
+      throw Error("startIndex와 limit 중 빠진 항목이 있습니다.");
+      return;
+    }
+    //startIndex와 limit으로 정제된 데이터를 보내줌
+    startIndex = parseInt(startIndex);
+    limit = parseInt(limit);
     const likePosts = await Like.find({ userId, isUnliked: false })
       .sort({ createdAt: -1 })
-      .populate("postId");
+      .populate("postId")
+      .skip(startIndex - 1)
+      .limit(limit);
     res.status(200).json({ likePosts });
   })
 );
@@ -90,16 +126,40 @@ router.get(
   isLoggedIn,
   asyncHandler(async (req, res, next) => {
     const { userId } = req.params;
+    let { startIndex, limit } = req.query;
     //유저가 작성한 댓글을 게시글 순으로 정렬한 후 그 안에서 최신글 순서로 정렬합니다.
     const allCommentPosts = await Comment.find({ userId, isDeleted: false })
       .sort({ postId: 1, createdAt: -1 })
       .populate("postId");
     //겹치는 게시글들을 제거하기 위해 각 게시글마다 최신 글을 하나씩 모아 commentPosts 배열을 만듭니다.
-    const commentPosts = allCommentPosts.reduce((acc, post) => {
-      if (acc[acc.length - 1]?.postId._id != post.postId._id) acc.push(post);
-      return acc;
-    }, []);
-    res.status(200).json({ commentPosts });
+    const commentPosts = allCommentPosts
+      .reduce((acc, post) => {
+        if (!post.postId) {
+          return acc;
+        }
+        acc.length === 0
+          ? acc.push(post)
+          : acc[acc.length - 1].postId._id != post.postId._id
+          ? acc.push(post)
+          : acc;
+        return acc;
+      }, [])
+      // 그 후 댓글작성시간 기준으로 내림차순 정렬을 해줍니다.
+      .sort((a, b) => b.createdAt - a.createdAt);
+    if (!startIndex && !limit) {
+      res.status(200).json({ commentPosts });
+      return;
+    }
+    //startIndex 와 limit  중 하나만 보내면 에러를 던짐
+    if (!startIndex || !limit) {
+      throw Error("startIndex와 limit 중 빠진 항목이 있습니다.");
+      return;
+    }
+    //startIndex와 limit으로 정제된 데이터를 보내줌
+    startIndex = parseInt(startIndex);
+    limit = parseInt(limit);
+    const limitedCommentPosts = commentPosts.slice(startIndex - 1, startIndex - 1 + limit);
+    res.status(200).json({ limitedCommentPosts });
   })
 );
 
@@ -109,9 +169,27 @@ router.get(
   isLoggedIn,
   asyncHandler(async (req, res, next) => {
     const { userId } = req.params;
+    let { startIndex, limit } = req.query;
+    if (!startIndex && !limit) {
+      const lastViewedPosts = await History.find({ userId, isLastViewed: true })
+        .sort({ createdAt: -1 })
+        .populate("postId");
+      res.status(200).json({ lastViewedPosts });
+      return;
+    }
+    //startIndex 와 limit  중 하나만 보내면 에러를 던짐
+    if (!startIndex || !limit) {
+      throw Error("startIndex와 limit 중 빠진 항목이 있습니다.");
+      return;
+    }
+    //startIndex와 limit으로 정제된 데이터를 보내줌
+    startIndex = parseInt(startIndex);
+    limit = parseInt(limit);
     const lastViewedPosts = await History.find({ userId, isLastViewed: true })
       .sort({ createdAt: -1 })
-      .populate("postId");
+      .populate("postId")
+      .skip(startIndex - 1)
+      .limit(limit);
     res.status(200).json({ lastViewedPosts });
   })
 );
@@ -122,10 +200,33 @@ router.get(
   isLoggedIn,
   asyncHandler(async (req, res, next) => {
     const { userId } = req.params;
-    const followers = await Follow.find({ followeeId: userId, isUnfollowed: false }).populate({
-      path: "followerId",
-      select: "-password",
-    });
+    let { startIndex, limit } = req.query;
+    if (!startIndex && !limit) {
+      const followers = await Follow.find({ followeeId: userId, isUnfollowed: false })
+        .sort({ createdAt: -1 })
+        .populate({
+          path: "followerId",
+          select: "-password",
+        });
+      res.status(200).json({ followers });
+      return;
+    }
+    //startIndex 와 limit  중 하나만 보내면 에러를 던짐
+    if (!startIndex || !limit) {
+      throw Error("startIndex와 limit 중 빠진 항목이 있습니다.");
+      return;
+    }
+    //startIndex와 limit으로 정제된 데이터를 보내줌
+    startIndex = parseInt(startIndex);
+    limit = parseInt(limit);
+    const followers = await Follow.find({ followeeId: userId, isUnfollowed: false })
+      .sort({ createdAt: -1 })
+      .populate({
+        path: "followerId",
+        select: "-password",
+      })
+      .skip(startIndex - 1)
+      .limit(limit);
     res.status(200).json({ followers });
   })
 );
@@ -136,10 +237,33 @@ router.get(
   isLoggedIn,
   asyncHandler(async (req, res, next) => {
     const { userId } = req.params;
-    const followees = await Follow.find({ followerId: userId, isUnfollowed: false }).populate({
-      path: "followeeId",
-      select: "-password",
-    });
+    let { startIndex, limit } = req.query;
+    if (!startIndex && !limit) {
+      const followees = await Follow.find({ followerId: userId, isUnfollowed: false })
+        .sort({ createdAt: -1 })
+        .populate({
+          path: "followeeId",
+          select: "-password",
+        });
+      res.status(200).json({ followees });
+      return;
+    }
+    //startIndex 와 limit  중 하나만 보내면 에러를 던짐
+    if (!startIndex || !limit) {
+      throw Error("startIndex와 limit 중 빠진 항목이 있습니다.");
+      return;
+    }
+    //startIndex와 limit으로 정제된 데이터를 보내줌
+    startIndex = parseInt(startIndex);
+    limit = parseInt(limit);
+    const followees = await Follow.find({ followerId: userId, isUnfollowed: false })
+      .sort({ createdAt: -1 })
+      .populate({
+        path: "followeeId",
+        select: "-password",
+      })
+      .skip(startIndex - 1)
+      .limit(limit);
     res.status(200).json({ followees });
   })
 );
