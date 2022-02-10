@@ -42,6 +42,8 @@ const LoginForm = () => {
     return userActions.login(email, password);
   };
 
+  const kakaoLogin = () => {};
+
   // 렌더링 횟수 및 에러확인
   console.log("랜더링");
   console.log(errors);
@@ -73,7 +75,7 @@ const LoginForm = () => {
         <StyledDiv easyLogin>간편 로그인</StyledDiv>
         <StyledHr easyLogin />
       </DivWrapper>
-      <KakaoImg src="./images/kakao.png" />
+      <KakaoImg onClick={userActions.kakaoLogin} src="./images/kakao.png" />
     </LoginFormBlock>
   );
 };

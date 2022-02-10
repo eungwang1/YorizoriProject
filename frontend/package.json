@@ -25,6 +25,7 @@
     "recoil": "^0.5.2",
     "slick-carousel": "^1.8.1",
     "styled-components": "^5.3.3",
+    "sweetalert": "^2.1.2",
     "update": "^0.4.2",
     "web-vitals": "^2.1.4"
   },

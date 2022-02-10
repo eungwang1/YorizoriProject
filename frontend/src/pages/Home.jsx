@@ -5,7 +5,7 @@ import { useUserActions } from "../actions";
 import BottomNav from "../Components/nav/BottomNav";
 import TopNav_main from "../Components/nav/TopNav_main";
 import FileUpload from "@mimoid-prog/react-file-upload";
-import { useSetRecoilState, useRecoilValue } from "recoil";
+import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
 import { authAtom } from "../states";
 import { pageStateAtom } from "../states";
 
@@ -15,12 +15,15 @@ const Home = () => {
 
   //authCheck === true -> 로그인 상태
   //authCheck === false -> 로그아웃 상태
-  const authCheck = useRecoilValue(authAtom);
-
+  const [authCheck, setAuthCheck] = useRecoilState(authAtom);
   const userActions = useUserActions();
 
   useEffect(() => {
-    console.log(authCheck);
+    if (localStorage.getItem("user")) {
+      setAuthCheck(true);
+    } else {
+      setAuthCheck(false);
+    }
     setPageState("home");
     return () => {
       setPageState("");

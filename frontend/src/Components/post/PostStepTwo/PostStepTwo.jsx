@@ -13,7 +13,7 @@ const PostStepTwo = () => {
         <IngredientsList></IngredientsList>
         <AddIngredients></AddIngredients>
       </ContainerDiv>
-      <StyledP>양념을 추가해 주세요.(선택)</StyledP>
+      <StyledP>양념을 추가해 주세요.(필수)</StyledP>
       <ContainerDiv>
         <SourceList></SourceList>
         <AddSource></AddSource>

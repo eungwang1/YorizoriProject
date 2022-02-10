@@ -75,3 +75,8 @@ export const categoryAtom = atom({
   key: "category",
   default: {},
 });
+
+export const InvalidationAtom = atom({
+  key: "invalidation",
+  default: false,
+});

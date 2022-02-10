@@ -95,7 +95,7 @@ const PostStepOne = () => {
           type="file"
         />
       </PositionRelative>
-      <StyledP stepOne>간단한 레시피 소개를 해주세요.(선택)</StyledP>
+      <StyledP stepOne>간단한 레시피 소개를 해주세요.(필수)</StyledP>
       <StyledTextArea
         {...register(`desc`)}
         placeholder="직접 백종원 선생님의 레시피를 참고하여 변형하였습니다. "
