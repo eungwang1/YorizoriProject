@@ -134,7 +134,13 @@ router.post(
 router.get(
   "/",
   asyncHandler(async (req, res, next) => {
-    const posts = await Post.find({});
+    const page = Number(req.query.page || 1);
+    const perPage = Number(req.query.perPage || 16);
+
+    const posts = await Post.find({})
+      .sort({ createdAt: -1 }) //최근 순으로 정렬
+      .skip((page - 1) * perPage) // (현재페이지-1) * 페이지당 게시글수
+      .limit(perPage);
     res.status(200).json(posts);
   })
 );
