@@ -2,6 +2,7 @@ const express = require("express");
 const { Post } = require("../models/");
 const { isLoggedIn } = require("./middlewares");
 const { recipeUpload, s3 } = require("../middlewares/upload");
+const { DataBrew } = require("aws-sdk");
 
 const router = express.Router();
 
@@ -11,7 +12,7 @@ router.post(
   isLoggedIn,
   recipeUpload.fields([
     { name: "thumbnail", maxCount: 1 },
-    { name: "processImage" },
+    { name: "copyImage" },
     { name: "doneImage" },
   ]),
   async (req, res, next) => {
@@ -21,7 +22,6 @@ router.post(
       ingredient,
       seasoning,
       process,
-      processTime,
       category,
       condition,
       material,
@@ -35,11 +35,13 @@ router.post(
       //thumbnail 이미지 location DB에 넣기
       thumbnail = req.files.thumbnail[0].location;
 
-      //processImage DB에 넣기
-      let arr_process = [];
-      let process_contents = req.files.processImage;
-      process_contents.forEach((process_contents) => arr_process.push(process_contents.location));
-      processImage = arr_process;
+      //copyImage DB에 넣기
+      let arrCopyImage = [];
+      let CopyImageContents = req.files.copyImage;
+      CopyImageContents.forEach((CopyImageContents) =>
+        arrCopyImage.push(CopyImageContents.location)
+      );
+      copyImage = arrCopyImage;
 
       //doneImage DB에 넣기
       let arr_done = [];
@@ -50,13 +52,13 @@ router.post(
       //이미지의 key값 입력
       thumbnail_key = req.files.thumbnail[0].key;
 
-      //processImage 의 key 값 찾기
+      //copyImage 의 key 값 찾기
       let arr_process_key = [];
-      let process_contents_key = req.files.processImage;
-      process_contents_key.forEach((process_contents) =>
-        arr_process_key.push(process_contents.key)
+      let process_contents_key = req.files.copyImage;
+      process_contents_key.forEach((process_contents_key) =>
+        arr_process_key.push(process_contents_key.key)
       );
-      processImage_key = arr_process_key;
+      copyImage_key = arr_process_key;
 
       //doneImage의 key값 찾기
       let arr_done_key = [];
@@ -64,18 +66,17 @@ router.post(
       done_contents_key.forEach((done_contents) => arr_done_key.push(done_contents.key));
       doneImage_key = arr_done_key;
 
-      await Post.create({
+      const posts = await Post.create({
         userId,
         recipeName,
         desc,
         ingredient,
         seasoning,
         process,
-        processTime,
         thumbnail,
         thumbnail_key,
-        processImage,
-        processImage_key,
+        copyImage,
+        copyImage_key,
         doneImage,
         doneImage_key,
         category,
@@ -87,6 +88,13 @@ router.post(
         diffic,
       });
 
+      //process내부 processImage의 location , key값 부여
+      for (i = 0; i < process.length; i++) {
+        posts.process[i].processImage = copyImage[i];
+        posts.process[i].processImage_key = copyImage_key[i];
+      }
+
+      await posts.save();
       res.status(201).json({ message: "레시피등록이 완료되었습니다." });
     } catch (err) {
       res.status(500).json({ message: err.message });

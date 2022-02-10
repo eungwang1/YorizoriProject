@@ -27,19 +27,22 @@ const PostSchema = new mongoose.Schema(
         ingreCount: { type: String, required: true },
       },
     ],
-    //조리과정
-    process: { type: Array, required: true },
-    //process_time은 분따로 초따로 (ex) min:1 sec:20 저장
-    processTime: [
+    process: [
       {
-        min: { type: Number },
-        sec: { type: Number },
+        explain: { type: String, required: true },
+        processTime: {
+          min: { type: Number },
+          sec: { type: Number },
+        },
+        processImage: { type: String, default: null },
+        processImage_key: { type: String, default: null },
       },
     ],
-    //조리과정 이미지
-    processImage: [{ type: String, required: true }],
-    processImage_key: [{ type: String, default: null }],
-    // 썸네일
+
+    //조리과정 받는 곳
+    copyImage: [{ type: String, required: true }],
+    copyImage_key: [{ type: String, required: true }],
+    // // 썸네일
     thumbnail: { type: String, required: true },
     thumbnail_key: { type: String, default: null },
     //완성 사진을 받는 부분입니다.
