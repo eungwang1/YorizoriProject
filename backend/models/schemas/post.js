@@ -96,6 +96,14 @@ const PostSchema = new mongoose.Schema(
       default: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
+
+PostSchema.virtual("numLikes", {
+  ref: "Like",
+  localField: "_id",
+  foreignField: "postId",
+  count: true,
+});
+
 module.exports = PostSchema;

@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { isLoggedIn } = require("./middlewares");
-const { Like, User } = require("../models/");
+const { Like, User, Post } = require("../models/");
 const asyncHandler = require("../utils/asyncHandler");
 
 //좋아요 눌렀을 때 post
@@ -20,6 +20,31 @@ router.post(
     }
     await Like.create({ userId, postId }); //새로운 좋아요 데이터 생성
     res.status(200).json({ message: "좋아요 한 목록에 추가되었습니다." });
+  })
+);
+
+//
+router.get(
+  "/sortByLike",
+  asyncHandler(async (req, res, next) => {
+    let { startIndex, limit } = req.query;
+    //virtual populate 로 가져온 count option 으로는 sort가 안됩니다..ㅜ
+    const posts = await Post.find().populate({ path: "numLikes" }).sort({ createdAt: -1 });
+    const sortedPosts = posts.sort((a, b) => b.numLikes - a.numLikes);
+    if (!startIndex && !limit) {
+      res.status(200).json({ sortedPosts });
+      return;
+    }
+    //startIndex 와 limit  중 하나만 보내면 에러를 던짐
+    if (!startIndex || !limit) {
+      throw Error("startIndex와 limit 중 빠진 항목이 있습니다.");
+      return;
+    }
+    //startIndex와 limit으로 정제된 데이터를 보내줌
+    startIndex = parseInt(startIndex);
+    limit = parseInt(limit);
+    const limitedSortedPosts = sortedPosts.slice(startIndex - 1, startIndex - 1 + limit);
+    res.status(200).json({ limitedSortedPosts });
   })
 );
 
