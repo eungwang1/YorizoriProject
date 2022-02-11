@@ -2,7 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import { Dropdown } from "react-dropdown-now";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { buttonState } from "./ViewAllAtom";
+import { buttonState, randomPostState } from "./ViewAllAtom";
+import dummy from "../../posts.json";
 
 const Wrapper = styled.div`
   text-align: center;
@@ -29,6 +30,9 @@ const ButtonWrapper = styled.div`
 
 const RandomButtonWapper = styled.div`
   position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   right: 15px;
   top: 89px;
   & > div {
@@ -40,9 +44,6 @@ const RandomButtonWapper = styled.div`
     height: 38px;
   }
   & > p {
-    position: absolute;
-    top: 25px;
-    left: -10px;
     width: 44px;
     color: #feae11;
     font-size: 11px;
@@ -65,12 +66,12 @@ const DropdownWrapper = styled.div`
     border: 2px solid #feae11;
     border-radius: 50px;
     line-height: 36px;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 900;
     color: #feae11;
 
     &:not(:last-child) {
-      margin-right: 11px;
+      margin-right: 8px;
     }
     & > div:not(:first-child) {
       background-color: white;
@@ -89,21 +90,33 @@ const DropdownWrapper = styled.div`
     }
   }
 `;
+
 const Buttons = () => {
   // const randomButton = useRecoilValue(buttonState);
   const setRandomButton = useSetRecoilState(buttonState);
+  const randomPost = useRecoilValue(randomPostState);
+  const setRandomPost = useSetRecoilState(randomPostState);
 
   const randompost = () => {
     setRandomButton(true);
   };
-
+  const getRandomIndex = () => {
+    let random = parseInt(Math.random() * dummy.length);
+    setRandomPost(dummy[random]);
+    console.log(randomPost);
+  };
   return (
     <>
       <Wrapper>
         <ButtonWrapper>
           <button>인기순</button>
           <button>최신순</button>
-          <RandomButtonWapper onClick={randompost}>
+          <RandomButtonWapper
+            onClick={() => {
+              randompost();
+              getRandomIndex();
+            }}
+          >
             <div />
             <p>랜덤메뉴</p>
           </RandomButtonWapper>

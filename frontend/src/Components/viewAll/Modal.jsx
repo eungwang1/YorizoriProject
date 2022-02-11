@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { buttonState } from "./ViewAllAtom";
+import { buttonState, randomPostState } from "./ViewAllAtom";
 import { Link } from "react-router-dom";
+import dummy from "../../posts.json";
 
 const ModalWrapping = styled.div`
   display: ${(props) => (props.RandomButtonPush === true ? "flex" : "none")};
@@ -66,12 +67,11 @@ const Recommendtext = styled.div`
   font-size: 11px;
   margin-bottom: 10px;
 `;
-const Img = styled.div`
-  background-image: url("./images/gam.jpg");
-  background-size: cover;
+const Img = styled.img`
   width: 256px;
   height: 242px;
   border-radius: 10px;
+  object-fit: cover;
 `;
 const TextBox = styled.div`
   width: 207px;
@@ -134,10 +134,28 @@ const ButtonWrapper = styled.div`
 const Modal = () => {
   const randomButton = useRecoilValue(buttonState);
   const setRandomButton = useSetRecoilState(buttonState);
+  const randomPost = useRecoilValue(randomPostState);
+  const setRandomPost = useSetRecoilState(randomPostState);
   const closeModal = () => {
     setRandomButton(false);
     console.log(randomButton);
   };
+  const getRandomIndex = () => {
+    if (randomButton) {
+      let random = parseInt(Math.random() * dummy.length);
+      setRandomPost(dummy[random]);
+      console.log(randomPost);
+    }
+  };
+  let recipeNameValue = randomPost.recipeName;
+  let author = randomPost.recipeName;
+  console.log(recipeNameValue);
+  // if (recipeName.length > 20) {
+  //   recipeName = recipeName.substring(0, 19) + "…";
+  // }
+  // if (author.recipeName.length > 12) {
+  //   author = author.substring(0, 11) + "…";
+  // }
   return (
     <ModalWrapping RandomButtonPush={randomButton}>
       <ModalBackground onClick={closeModal} />
@@ -146,18 +164,18 @@ const Modal = () => {
           <CloseButton onClick={closeModal} />
           <Recommendtext>랜덤으로 메뉴를 추천해드려요</Recommendtext>
           <Link to="/detail/">
-            <Img />
+            <Img src={randomPost.thumbnail} />
           </Link>
           <TextBox>
-            <Title>바스바스감바스</Title>
-            <Author>고래</Author>
+            <Title>{recipeNameValue}</Title>
+            <Author>{author}</Author>
             <WrapperHeartComment>
               <span className="sprite heart" /> <HeartCommentCount>31</HeartCommentCount>
               <span className="sprite comment" /> <HeartCommentCount>7</HeartCommentCount>
             </WrapperHeartComment>
           </TextBox>
           <ButtonWrapper>
-            <button>다른 추천도 준비했어요!</button>
+            <button onClick={getRandomIndex}>다른 추천도 준비했어요!</button>
             <button>
               <div className="sprite2 share" />
             </button>

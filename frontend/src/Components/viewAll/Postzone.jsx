@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import ReactLoading from "react-loading";
+import dummy from "../../posts.json";
 const Wrapper = styled.div`
   text-align: center;
   display: flex;
@@ -29,7 +30,7 @@ const Wrapper = styled.div`
 const WrapperPost = styled.div`
   display: grid;
   margin-top: 15px;
-  grid: auto-flow 241px / repeat(2, 175px);
+  grid: auto-flow 250px / repeat(2, 175px);
   justify-content: center;
   align-items: center;
   justify-items: center;
@@ -39,12 +40,11 @@ const WrapperPost = styled.div`
     height: 228px;
   }
 `;
-const Img = styled.div`
-  background-image: url("./images/gam.jpg");
-  background-size: cover;
+const Img = styled.img`
   width: 160px;
   height: 147px;
   border-radius: 10px;
+  object-fit: cover;
 `;
 const TextBox = styled.div`
   width: 160px;
@@ -106,17 +106,30 @@ const Postzone = () => {
   return (
     <Wrapper>
       <WrapperPost>
-        {[...Array(countPost)].map((n, index) => {
+        {dummy.map((data) => {
+          let recipeName = data.recipeName;
+          let author = data.userId.$oid;
+          if (recipeName.length > 20) {
+            recipeName = recipeName.substring(0, 19) + "…";
+          }
+          if (data.userId.$oid.length > 12) {
+            author = author.substring(0, 11) + "…";
+          }
           return (
-            <Link to="/detail/" style={{ textDecoration: "none", color: "inherit" }}>
+            <Link
+              to={`/detail/${data._id.$oid}}`}
+              style={{ textDecoration: "none", color: "inherit" }}
+              author={data.userId.$oid}
+              title={data.recipeName}
+            >
               <div>
-                <Img />
+                <Img src={data.thumbnail} />
                 <TextBox>
-                  <Title>바스바스감바스</Title>
-                  <Author>고래</Author>
+                  <Title>{recipeName}</Title>
+                  <Author>{author}</Author>
                   <WrapperHeartComment>
-                    <span className="sprite heart" /> <HeartCommentCount>31</HeartCommentCount>
-                    <span className="sprite comment" /> <HeartCommentCount>7</HeartCommentCount>
+                    <span className="sprite heart" /> <HeartCommentCount>42</HeartCommentCount>
+                    <span className="sprite comment" /> <HeartCommentCount>99</HeartCommentCount>
                   </WrapperHeartComment>
                 </TextBox>
               </div>
