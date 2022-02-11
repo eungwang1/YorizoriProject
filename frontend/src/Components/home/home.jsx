@@ -11,6 +11,8 @@ import { pageStateAtom } from "../../states";
 import Slogan from "./slogan";
 import RandomView from "./randomView";
 import FamousView from "./famousView";
+import FamousViewWithSlider from "./famousViewWithSlider";
+import FamousViewWithOneSlider from "./famousViewWithOneSlide";
 
 const HomeBlock = styled.div`
   box-sizing: border-box;
@@ -36,8 +38,9 @@ const Home = () => {
       <TopNav_main />
       <Slogan></Slogan>
       <FamousView></FamousView>
-      <FamousView></FamousView>
-      <FamousView></FamousView>
+      <FamousViewWithOneSlider></FamousViewWithOneSlider>
+      <FamousViewWithSlider></FamousViewWithSlider>
+      {/* <FamousView></FamousView> */}
       {/* <ButtonWrapper>
         {!authCheck && <StyledBtn onClick={() => navigate("/login")}>login</StyledBtn>}
         {authCheck && <StyledBtn onClick={userActions.logout}>logout</StyledBtn>}

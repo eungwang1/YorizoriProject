@@ -1,10 +1,23 @@
 import React, { userRef, useState, useCallback, useMemo, useEffect } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
-import { FamousPostsAtom } from "./homeAtom";
+import {
+  datailedPostAtom,
+  FamousPostsSelector,
+  FamousPostLikeUserSelector,
+  FamousPostCommentUserSelector,
+  detailedPostsLikeUserAtom,
+} from "./homeAtom";
 import axios from "axios";
-import { useRecoilState } from "recoil";
-// import { getFamousList } from "./homeAction";
+import {
+  useRecoilState,
+  useSetRecoilState,
+  useRecoilValue,
+  useRecoilStateLoadable,
+  useRecoilValueLoadable,
+} from "recoil";
+import Slider from "react-slick";
+import { getFamousList } from "./homeAction";
 import {
   ArticleWrapper,
   TextMainWrapper,
@@ -26,26 +39,26 @@ import {
 const FamoustViewRapper = styled.div``;
 
 const FamousView = () => {
-  const baseURL = "http://localhost:8080";
   const navigatge = useNavigate();
-  const [famousLists, setFamousLists] = useRecoilState(FamousPostsAtom);
-  const getFamousList = async (startIndex, limit) => {
-    await axios({
-      baseURL,
-      method: "get",
-      url: "/like/sortByLike",
-      responseType: "json",
-      params: {
-        startIndex: startIndex,
-        limit: limit,
-      },
-    }).then((res) => setFamousLists(res.data.limitedSortedPosts));
+  const setFamousPost = useSetRecoilState(datailedPostAtom);
+  const setFamousPostLikeUser = useSetRecoilState(detailedPostsLikeUserAtom);
+  const famousListsLoadable = useRecoilValueLoadable(FamousPostsSelector);
+  const likeUserLoadble = useRecoilValueLoadable(FamousPostLikeUserSelector);
+  const commentUserCountLoadable = useRecoilValueLoadable(FamousPostCommentUserSelector);
+
+  const clickFamousPostHandler = (item, idx) => {
+    setFamousPost(item);
+    setFamousPostLikeUser(likeUserLoadble.contents[idx].likeUserList);
+    Navigate("/detail");
   };
-
-  useEffect(() => {
-    getFamousList(1, 4);
-  }, []);
-
+  if (
+    famousListsLoadable.state === "loading" ||
+    likeUserLoadble.state === "loading" ||
+    commentUserCountLoadable.state === "loading"
+  ) {
+    return <div>loading...</div>;
+  }
+  console.log("famousListsLoadable", likeUserLoadble.contents);
   return (
     <ArticleWrapper>
       <TextWrapper>
@@ -60,27 +73,36 @@ const FamousView = () => {
         </Link>
       </TextWrapper>
       <ImageWarpper className="iamge">
-        {famousLists.map((item) => {
+        {famousListsLoadable.contents.map((item, idx) => {
           return (
-            <>
-              <ImageWithTag key={item._id}>
-                <StyledImage
-                  src={item.thumbnail}
-                  onClick={() => {
-                    navigatge("/detail");
-                  }}
-                ></StyledImage>
-                <TextBox>
-                  <Title>{item.recipeName}</Title>
-                  <Author>{item.userId.nickName}</Author>
-                  <WrapperHeartComment>
-                    <Heart className="sprite heart" clicked={false} onClick={() => alert("ds")} />{" "}
-                    <HeartCommentCount>311</HeartCommentCount>
-                    <span className="sprite comment" /> <HeartCommentCount>7</HeartCommentCount>
-                  </WrapperHeartComment>
-                </TextBox>
-              </ImageWithTag>
-            </>
+            // <div key={item._id}>
+            <ImageWithTag className="doosan" key={item._id}>
+              <StyledImage
+                src={item.thumbnail}
+                onClick={() => {
+                  clickFamousPostHandler(item, idx);
+                }}
+              ></StyledImage>
+              <TextBox>
+                <Title>{item.recipeName}</Title>
+                <Author>{item.userId.nickName}</Author>
+                <WrapperHeartComment>
+                  <Heart
+                    className="sprite heart"
+                    clicked={false}
+                    onClick={() => alert("하트구현해보자구!")}
+                  />{" "}
+                  <HeartCommentCount>
+                    {likeUserLoadble.contents[idx].likeUserList.length}
+                  </HeartCommentCount>
+                  <span className="sprite comment" />{" "}
+                  <HeartCommentCount>
+                    {commentUserCountLoadable.contents[idx].count}
+                  </HeartCommentCount>
+                </WrapperHeartComment>
+              </TextBox>
+            </ImageWithTag>
+            // </div>
           );
         })}
       </ImageWarpper>

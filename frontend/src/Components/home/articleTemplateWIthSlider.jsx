@@ -8,6 +8,7 @@ const ArticleWrapper = styled.div`
   position: relative;
   padding: 0 15px 0 15px;
   margin-top: 25px;
+  margin-bottom: 100px;
   //   display: flex;
   //   flex-direction: column;
   //   justify-content: center;
@@ -46,7 +47,7 @@ const LinkedText = styled.p`
   text-align: center;
   font-size: 14px;
   justify-self: end;
-  width: 150px;
+  width: 100px;
   line-height: 30px;
   margin-top: 30px;
   margin-bottom: 0px;
@@ -63,19 +64,22 @@ const ImageWarpper = styled.div`
 `;
 
 const ImageWithTag = styled.div`
-  flex-shrink: 0;
-  width: 160px;
+  //   flex-shrink: 0;
+  width: 45%;
   height: 240px;
+  min-width: 160px;
   & + & {
     margin-left: 10px;
   }
 `;
 
 const StyledImage = styled.div`
-  width: 160px;
+  width: 100%;
   height: 150px;
   background-image: url(${(props) => props.src});
   background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 `;
 
 const TextBox = styled.div`
