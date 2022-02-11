@@ -14,7 +14,7 @@ const ViewAllPage = () => {
     return () => {
       setPageState("");
     };
-  }, []);
+  });
   return (
     <ViewAllPageBlock>
       <ViewAll></ViewAll>
