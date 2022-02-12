@@ -6,7 +6,6 @@ import NavTop from "../nav/TopNav"
 import { MyPageMainBox, MyPageMainImgBox, MyPageMainBtnBox, MypageResipeBox} from "./ProfileStyle"
 import ResipeButton from "../mypage/ResipeList"
 
-
 const MyPageImage = styled.img`
   width: 115px;
   height: 115px;

@@ -7,6 +7,8 @@ import { MyPageImage } from "./Profile"
 import { MyPageMainBox, MyPageMainImgBox} from "./ProfileStyle"
 import { MyPageEditInputBox } from "./ProfileEditStyle"
 import { MyPagePasswordEditBox } from "./ProfileEditStyle";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {faCircleCheck, faCircleXmark} from "@fortawesome/free-solid-svg-icons";
 
 const EditMainBox = styled.div`
   
@@ -31,7 +33,6 @@ const EditInput = styled.input`
   border: none;
   border-radius: 10px;
   border: solid 1px #FCAD2C;
-  margin-bottom: 41px;
   margin-top: 10px;
   text-align: center;
   font-size: 18px;
@@ -42,7 +43,52 @@ const EditInput = styled.input`
   ::placeholder { 
     color: gray; 
   }
+  + p {
+    color: ${(props) => {
+      
+      switch (props.type) {
+        case "type1":
+          return "white"
+          
+        case "type2":
+          return "red"
+          
+        case "type3":
+          return "green"
+      }
+    }};
 
+    
+    span {
+      color: ${(props) => { 
+
+      switch (props.type) {
+        case true:
+          return "#FEAE11"
+        
+        case false:
+          return "gray"
+
+        default:
+          break;
+      }
+      }};
+
+      padding: 0;
+      margins: 0;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .checkError {
+      font-size: 14px;
+    }
+
+    .checkSuccess {
+      font-size: 14px;
+    }
+
+  }
 `
 
 const EditBtn = styled.button`
@@ -65,7 +111,9 @@ const EditImageUpload = styled.input`
 
 const EditMyPage = () => {
 
-  const [Profileimage, setProfileImage] = useState("../images/profile.jpg");
+  const [ Profileimage, setProfileImage] = useState("../images/profile.jpg");
+  const [ myNickName, setMyNickName] = useState("요리조리1234")
+  const [ nickCheck, setNickCheck ] = useState("type1")
   const [ password, setPassword ] = useState("1234")
 
   const ClickUpload = (e) => {
@@ -81,6 +129,38 @@ const EditMyPage = () => {
     document.querySelector(".passbox").classList.toggle("passcheck")
   }
 
+  function nickNameCheck(value) {
+    let pattern_space = /\s/g;	// 공백체크
+    let pattern_num = /[0-9]/;	// 숫자 
+    let pattern_eng = /[a-zA-Z]/;	// 문자 
+    let pattern_spc = /[~!@#$%^&*()_+|<>?:{}]/; // 특수문자
+    let pattern_kor = /[ㄱ-ㅎ|ㅏ-ㅣ]/; // 한글체크
+    const data = document.querySelector("#nickNameCheckText")
+
+    if(pattern_spc.test(value)){
+      data.innerText = "특수 문자가 포함되어 있습니다."
+      setNickCheck("type2")
+
+    } else if ( value.length < 2 || value.length > 10){
+      data.innerText = "닉네임은 2~10글자로 변경 해주세요"
+      setNickCheck("type2")
+
+    } else if ( pattern_kor.test(value)) {
+      data.innerText = "사용할 수 없는 단어가 포함되어 있습니다."
+      setNickCheck("type2")
+
+    } else if ( pattern_space.test(value) ) {
+      data.innerText = "공백이 포함되어 있습니다.."
+      setNickCheck("type2")
+    }
+
+     else {
+      data.innerText = "사용 가능한 닉네임 입니다."
+      setNickCheck("type3")
+    }
+
+  }
+
   return (
       <EditMainBox>
         <NavTop />
@@ -91,14 +171,19 @@ const EditMyPage = () => {
 
               <EditImage id="imgs"  onClick={ClickUpload} src={Profileimage}/>
                 <p style={{ marginTop: "40px", fontSize: "14px", color: "gray"}}>변경할 닉네임을 입력해주세요</p>
-              <EditInput placeholder="요리조리1234"/>
+              <EditInput placeholder={myNickName} type={nickCheck} onChange={(e) => {
+                setMyNickName(e.target.value)
+                nickNameCheck(e.target.value)
+              }}/>
+              <p>{nickCheck === "type2" ? <FontAwesomeIcon icon={faCircleXmark} className="checkError"/> : <FontAwesomeIcon icon={faCircleCheck} className="checkSuccess"/> } <span id="nickNameCheckText"></span></p>
+              
               <MyPagePasswordEditBox className="passbox">
-                <span onClick={pass1}>ㆍ비밀번호 바꾸기</span>
+                <span onClick={pass1}>ㆍ비밀번호 바꾸기</span>  
                 <div className="showpass">
 
                 </div>
               </MyPagePasswordEditBox>
-              <div style={{position: "relative", top: "134px"}}>  
+              <div style={{position: "relative", top: "123px"}}>  
                 <Link to="/users/mypage">
                   <EditBtn>
                     완료

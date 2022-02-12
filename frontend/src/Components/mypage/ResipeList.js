@@ -3,6 +3,7 @@ import {MypageResipeBox} from "./ProfileStyle"
 import styled, { css } from "styled-components";
 import { Link } from "react-router-dom";
 import { StyledScroll } from '../post/commonStyle';
+import dummy from "../../posts.json";
 
 const ResipeMenus = styled.div`
   span {
@@ -14,10 +15,10 @@ const ResipeMenus = styled.div`
     color: ${(props) => { 
 
     switch (props.type) {
-      case true:
+      case "true":
         return "#FEAE11"
       
-      case false:
+      case "false":
         return "gray"
 
       default:
@@ -28,8 +29,12 @@ const ResipeMenus = styled.div`
 `
 
 const ResipeListBox = styled.div`
+  background-color: #FDFDFD;
+  border-radius: 10px;
+  box-shadow: 0px 0px 2px 5px #FAFAF7;
+  padding: 20px 0 0 0 ;
   width: 310px;
-  height: 260px;
+  height: 270px;
   left: 32px;
   display: flex;
   flex-wrap: wrap;
@@ -37,12 +42,13 @@ const ResipeListBox = styled.div`
   text-align: center;
   overflow:scroll;
   overflow-x: hidden;
+  margin-bottom: 16px;
   ${StyledScroll}
 
   img {
     position: relative;
     bottom: 15px;
-    margin: 10px 25px 5px 25px;
+    margin: 15px 25px 0 25px;
     width: 100px;
     height: 100px;
     border-radius: 15px;
@@ -55,13 +61,18 @@ const ResipeListBox = styled.div`
     font-family: sans-serif;
     position: relative;
     bottom: 15px;
-    margin: 0px;
+    margin-left: 5px;
+    margin-right: 5px;
     overflow: hidden; 
     text-overflow: ellipsis;
-    white-space: nowrap; 
+    white-space: wrap; 
     color: gray;
     font-weight: bold;
-    font-size: 14px;
+    font-size: 12px;
+    display: -webkit-box;
+    margin-bottom: 10px;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
 
 `
@@ -91,7 +102,7 @@ export default function ResipeButton(props) {
         changeResipe()
         moveButton()
       }}>
-          <ResipeMenus type={onResipe}>
+          <ResipeMenus type={String(onResipe)}>
             <span>{ resipeMenu[props.nums]}</span>
           </ResipeMenus>
             <img className={`buttont${props.nums}`} src={resipeMenuButton[props.nums]} alt=""/>
@@ -99,75 +110,19 @@ export default function ResipeButton(props) {
       </MypageResipeBox>
           {
             onResipe 
-            ?  <ResipeListBox>
-                <ResipeListItem>
+            ? 
+            <ResipeListBox>
+              { dummy.map((item, index) => {
+              return (
+                <ResipeListItem key={index}>
                   <Link to="/detail">
-                    <img src="../images/food1.jpg" alt=""/>
+                    <img src={item.thumbnail} alt=""/>
                   </Link>
-                  <p># 햄버거 레시피</p>
+                  <p> {item.recipeName}</p>
                 </ResipeListItem>
-                <ResipeListItem>
-                  <Link to="/detail">
-                    <img src="../images/food1.jpg" alt=""/>
-                  </Link>
-                  <p># 햄버거 레시피</p>
-                </ResipeListItem>
-                <ResipeListItem>
-                  <Link to="/detail">
-                    <img src="../images/food2.jpg" alt=""/>
-                  </Link>
-                  <p># 고기 레시피</p>
-                </ResipeListItem>
-                <ResipeListItem>
-                  <Link to="/detail">
-                    <img src="../images/food2.jpg" alt=""/>
-                  </Link>
-                  <p># 고기 레시피</p>
-                </ResipeListItem>
-                <ResipeListItem>
-                  <Link to="/detail">
-                    <img src="../images/food2.jpg" alt=""/>
-                  </Link>
-                  <p># 고기 레시피</p>
-                </ResipeListItem>
-                <ResipeListItem>
-                  <Link to="/detail">
-                    <img src="../images/food2.jpg" alt=""/>
-                  </Link>
-                  <p># 고기 레시피</p>
-                </ResipeListItem>
-                <ResipeListItem>
-                  <Link to="/detail">
-                    <img src="../images/food2.jpg" alt=""/>
-                  </Link>
-                  <p># 고기 레시피</p>
-                </ResipeListItem>
-                <ResipeListItem>
-                  <Link to="/detail">
-                    <img src="../images/food2.jpg" alt=""/>
-                  </Link>
-                  <p># 고기 레시피</p>
-                </ResipeListItem>
-                <ResipeListItem>
-                  <Link to="/detail">
-                    <img src="../images/food2.jpg" alt=""/>
-                  </Link>
-                  <p># 고기 레시피</p>
-                </ResipeListItem>
-                <ResipeListItem>
-                  <Link to="/detail">
-                    <img src="../images/food2.jpg" alt=""/>
-                  </Link>
-                  <p># 고기 레시피</p>
-                </ResipeListItem>
-                <ResipeListItem>
-                  <Link to="/detail">
-                    <img src="../images/food2.jpg" alt=""/>
-                  </Link>
-                  <p># 고기 레시피</p>
-                </ResipeListItem>
-       
-              </ResipeListBox> 
+                )
+              })}
+            </ResipeListBox> 
             : ""
           }
     </>
