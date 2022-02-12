@@ -7,9 +7,8 @@ import "slick-carousel/slick/slick-theme.css";
 import {
   datailedPostAtom,
   famousPostsSelector,
-  famousPostLikeUserSelector,
-  famousPostCommentUserSelector,
-  detailedPostsLikeUserAtom,
+  famousUsersSelector,
+  famousUsersPostsSelector,
 } from "../../states/homeAtom";
 import axios from "axios";
 import {
@@ -39,10 +38,13 @@ import {
 
 const FamoustViewRapper = styled.div``;
 
-const FamousPost = () => {
+//아직 작성중입니다....
+
+const FamousUserPost = () => {
   const navigate = useNavigate();
   const setFamousPost = useSetRecoilState(datailedPostAtom);
   const famousListsLoadable = useRecoilValueLoadable(famousPostsSelector);
+  const famousUsersPostsLoadable = useRecoilValueLoadable(famousUsersPostsSelector);
 
   const clickFamousPostHandler = (item, idx) => {
     const postId = item._id;
@@ -97,7 +99,7 @@ const FamousPost = () => {
                   <Heart
                     className="sprite heart"
                     clicked={false}
-                    onClick={() => alert("하트구현해보자구!")}
+                    onClick={() => console.log(famousUsersPostsLoadable)}
                   />{" "}
                   <HeartCommentCount>{item.numLikes}</HeartCommentCount>
                   <span className="sprite comment" />{" "}
@@ -126,4 +128,4 @@ const StyledSlider = styled(Slider)`
   }
 `;
 
-export default FamousPost;
+export default FamousUserPost;

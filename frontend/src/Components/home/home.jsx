@@ -5,15 +5,18 @@ import { useUserActions } from "../../actions";
 import BottomNav from "../../Components/nav/BottomNav";
 import TopNav_main from "../../Components/nav/TopNav_main";
 import FileUpload from "@mimoid-prog/react-file-upload";
-import { useSetRecoilState, useRecoilValue, atom, selector } from "recoil";
+import { useRecoilStateLoadable, useSetRecoilState, useRecoilValue, atom, selector } from "recoil";
 import { authAtom } from "../../states";
 import { pageStateAtom } from "../../states";
 import Slogan from "./slogan";
 import RandomView from "./randomView";
-import FamousView from "./discardedTemplate/famousView";
-import FamousViewWithSlider from "./discardedTemplate/famousViewWithSlider";
-import FamousViewWithOneSlider from "./discardedTemplate/famousViewWithOneSlide";
+// import FamousView from "./discardedTemplate/famousView";
+// import FamousViewWithSlider from "./discardedTemplate/famousViewWithSlider";
+// import FamousViewWithOneSlider from "./discardedTemplate/famousViewWithOneSlide";
+import { userIdAtom } from "../../states/auth";
+import { loginUserSelector } from "../../states/homeAtom";
 import FamousPost from "./famousPost";
+import FamousUserPost from "./famousUserPost";
 import SloganBottom from "./sloganBottom";
 
 const HomeBlock = styled.div`
@@ -26,14 +29,19 @@ const HomeBlock = styled.div`
   position: relative;
 `;
 const Home = () => {
+  const [loginUserLoadable, setloginUserLoadable] = useRecoilStateLoadable(loginUserSelector);
+
+  useEffect(() => {
+    setloginUserLoadable(loginUserLoadable);
+  }, []);
+
   return (
     <HomeBlock>
       <TopNav_main />
       <Slogan></Slogan>
       <FamousPost></FamousPost>
+      <FamousUserPost></FamousUserPost>
       <FamousPost></FamousPost>
-      <FamousPost></FamousPost>
-
       <SloganBottom></SloganBottom>
       <BottomNav></BottomNav>
     </HomeBlock>
