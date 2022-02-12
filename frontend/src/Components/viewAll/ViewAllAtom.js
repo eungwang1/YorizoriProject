@@ -1,7 +1,7 @@
 import { atom } from "recoil";
 
-export const buttonState = atom({
-  key: "buttonState",
+export const randomButtonState = atom({
+  key: "randomButtonState",
   default: false,
 });
 

@@ -1,9 +1,60 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { buttonState, randomPostState } from "./ViewAllAtom";
+import { randomButtonState, randomPostState } from "./ViewAllAtom";
 import { Link } from "react-router-dom";
 import dummy from "../../posts.json";
+
+const Modal = () => {
+  const randomButton = useRecoilValue(randomButtonState);
+  const setRandomButton = useSetRecoilState(randomButtonState);
+  const randomPost = useRecoilValue(randomPostState);
+  const setRandomPost = useSetRecoilState(randomPostState);
+  let recipeNameValue = randomPost.recipeName;
+  let author = randomPost.diffic;
+  const closeModal = () => {
+    setRandomButton(false);
+    console.log(randomButton);
+  };
+
+  console.log(randomPost._id);
+
+  const getRandomIndex = async () => {
+    if (randomButton) {
+      let random = parseInt(Math.random() * dummy.length);
+      setRandomPost(dummy[random]);
+    }
+  };
+  return (
+    <ModalWrapping RandomButtonPush={randomButton}>
+      <ModalBackground onClick={closeModal} />
+      <ModalBox>
+        <div>
+          <CloseButton onClick={closeModal} />
+          <Recommendtext>랜덤으로 메뉴를 추천해드려요</Recommendtext>
+          <Link to={`/detail/${randomPost._id}`}>
+            <Img src={randomPost.thumbnail} />
+          </Link>
+          <TextBox>
+            <Title>{recipeNameValue}</Title>
+            <Author>{author}</Author>
+            <WrapperHeartComment>
+              <span className="sprite heart" /> <HeartCommentCount>31</HeartCommentCount>
+              <span className="sprite comment" /> <HeartCommentCount>7</HeartCommentCount>
+            </WrapperHeartComment>
+          </TextBox>
+          <ButtonWrapper>
+            <button onClick={getRandomIndex}>다른 추천도 준비했어요!</button>
+            <button>
+              <div className="sprite2 share" />
+            </button>
+          </ButtonWrapper>
+        </div>
+      </ModalBox>
+    </ModalWrapping>
+  );
+};
+export default Modal;
 
 const ModalWrapping = styled.div`
   display: ${(props) => (props.RandomButtonPush === true ? "flex" : "none")};
@@ -132,51 +183,3 @@ const ButtonWrapper = styled.div`
     width: 58px;
   }
 `;
-
-const Modal = () => {
-  const randomButton = useRecoilValue(buttonState);
-  const setRandomButton = useSetRecoilState(buttonState);
-  const randomPost = useRecoilValue(randomPostState);
-  const setRandomPost = useSetRecoilState(randomPostState);
-  let recipeNameValue = randomPost.recipeName;
-  let author = randomPost.diffic;
-  const closeModal = () => {
-    setRandomButton(false);
-    console.log(randomButton);
-  };
-  const getRandomIndex = () => {
-    if (randomButton) {
-      let random = parseInt(Math.random() * dummy.length);
-      setRandomPost(dummy[random]);
-    }
-  };
-  return (
-    <ModalWrapping RandomButtonPush={randomButton}>
-      <ModalBackground onClick={closeModal} />
-      <ModalBox>
-        <div>
-          <CloseButton onClick={closeModal} />
-          <Recommendtext>랜덤으로 메뉴를 추천해드려요</Recommendtext>
-          <Link to="/detail/">
-            <Img src={randomPost.thumbnail} />
-          </Link>
-          <TextBox>
-            <Title>{recipeNameValue}</Title>
-            <Author>{author}</Author>
-            <WrapperHeartComment>
-              <span className="sprite heart" /> <HeartCommentCount>31</HeartCommentCount>
-              <span className="sprite comment" /> <HeartCommentCount>7</HeartCommentCount>
-            </WrapperHeartComment>
-          </TextBox>
-          <ButtonWrapper>
-            <button onClick={getRandomIndex}>다른 추천도 준비했어요!</button>
-            <button>
-              <div className="sprite2 share" />
-            </button>
-          </ButtonWrapper>
-        </div>
-      </ModalBox>
-    </ModalWrapping>
-  );
-};
-export default Modal;

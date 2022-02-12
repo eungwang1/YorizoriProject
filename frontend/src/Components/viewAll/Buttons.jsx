@@ -2,98 +2,11 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Dropdown } from "react-dropdown-now";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { buttonState, randomPostState, dropDownOptionsState } from "./ViewAllAtom";
+import { randomButtonState, randomPostState, dropDownOptionsState } from "./ViewAllAtom";
 import dummy from "../../posts.json";
 
-const Wrapper = styled.div`
-  text-align: center;
-`;
-
-const ButtonWrapper = styled.div`
-  margin: 12px 0px;
-  & > button {
-    width: 95px;
-    height: 45px;
-    background-color: #feae11;
-    color: white;
-    border: none;
-    border-radius: 50px;
-    line-height: 36px;
-    font-size: 16px;
-    font-weight: 900;
-
-    &:first-child {
-      margin-right: 16px;
-    }
-  }
-`;
-
-const RandomButtonWapper = styled.div`
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  right: 15px;
-  top: 89px;
-  & > div {
-    background-color: transparent;
-    background-image: url("./images/randomButton.png");
-    background-size: cover;
-    border: none;
-    width: 27px;
-    height: 38px;
-  }
-  & > p {
-    width: 44px;
-    color: #feae11;
-    font-size: 11px;
-    font-weight: 900;
-    margin: 0;
-  }
-`;
-
-const Line = styled.div`
-  width: 360px;
-  height: 1px;
-  background-color: rgba(0, 0, 0, 0.14);
-`;
-const DropdownWrapper = styled.div`
-  display: flex;
-  margin: 14px 0;
-  justify-content: center;
-  & > div {
-    width: 76px;
-    height: 36px;
-    border: 2px solid #feae11;
-    border-radius: 50px;
-    line-height: 36px;
-    font-size: 13px;
-    font-weight: 900;
-    color: #feae11;
-
-    &:not(:last-child) {
-      margin-right: 8px;
-    }
-    & > div:not(:first-child) {
-      background-color: white;
-      width: 120px;
-      z-index: 100;
-      color: #feae11;
-      transform: translateY(-5px) translateX(10px);
-      border-radius: 10px;
-      border: 2px solid #feae11;
-    }
-    .last:not(:first-child) {
-      transform: translateY(-5px) translateX(-60px);
-    }
-    .situation:nth-child(2) > :nth-child(3) {
-      font-size: 13px;
-    }
-  }
-`;
-
 const Buttons = () => {
-  const setRandomButton = useSetRecoilState(buttonState);
+  const setRandomButton = useSetRecoilState(randomButtonState);
   const setRandomPost = useSetRecoilState(randomPostState);
   const dropDownOptions = useRecoilValue(dropDownOptionsState);
   const setDropDownOptions = useSetRecoilState(dropDownOptionsState);
@@ -221,3 +134,90 @@ const Buttons = () => {
   );
 };
 export default Buttons;
+
+const Wrapper = styled.div`
+  text-align: center;
+`;
+
+const ButtonWrapper = styled.div`
+  margin: 12px 0px;
+  & > button {
+    width: 95px;
+    height: 45px;
+    background-color: #feae11;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    line-height: 36px;
+    font-size: 16px;
+    font-weight: 900;
+
+    &:first-child {
+      margin-right: 16px;
+    }
+  }
+`;
+
+const RandomButtonWapper = styled.div`
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  right: 15px;
+  top: 89px;
+  & > div {
+    background-color: transparent;
+    background-image: url(${process.env.PUBLIC_URL + "./images/randomButton.png"});
+    background-size: cover;
+    border: none;
+    width: 27px;
+    height: 38px;
+  }
+  & > p {
+    width: 44px;
+    color: #feae11;
+    font-size: 11px;
+    font-weight: 900;
+    margin: 0;
+  }
+`;
+
+const Line = styled.div`
+  width: 360px;
+  height: 1px;
+  background-color: rgba(0, 0, 0, 0.14);
+`;
+const DropdownWrapper = styled.div`
+  display: flex;
+  margin: 14px 0;
+  justify-content: center;
+  & > div {
+    width: 76px;
+    height: 36px;
+    border: 2px solid #feae11;
+    border-radius: 50px;
+    line-height: 36px;
+    font-size: 13px;
+    font-weight: 900;
+    color: #feae11;
+
+    &:not(:last-child) {
+      margin-right: 8px;
+    }
+    & > div:not(:first-child) {
+      background-color: white;
+      width: 120px;
+      z-index: 100;
+      color: #feae11;
+      transform: translateY(-5px) translateX(10px);
+      border-radius: 10px;
+      border: 2px solid #feae11;
+    }
+    .last:not(:first-child) {
+      transform: translateY(-5px) translateX(-60px);
+    }
+    .situation:nth-child(2) > :nth-child(3) {
+      font-size: 13px;
+    }
+  }
+`;
