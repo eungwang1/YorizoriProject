@@ -123,6 +123,10 @@ export const DropdownWrapper = styled.div`
     right: 6px;
   }
 
+  .rdn-drop-menu-option {
+    padding: 8px 0;
+  }
+
   & > div {
     width: 132px;
     height: 55px;

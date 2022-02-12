@@ -15,17 +15,16 @@ import MoreComments from "./Components/postDetail/MoreComments";
 import KakaoAuth from "./pages/KakaoAuth";
 
 function App() {
-
   return (
     <RecoilRoot>
       <Routes>
         <Route element={<Home />} path="/" />
         <Route element={<LoginPage />} path="/login" />
-        <Route element={<KakaoAuth/>} path="/oauth/kakao/callback" />
+        <Route element={<KakaoAuth />} path="/oauth/kakao/callback" />
         <Route element={<RegisterPage />} path="/register" />
         {/* <Route element={<OldPostPage />} path="/oldpost" /> */}
         <Route element={<ViewAllPage />} path="/view_all" />
-        {/* <Route path="detail" element={<PostDetailPage />} >
+        {/* <Route path="detail" element={<PostDetailPage />}>
           <Route path="comments" element={<MoreComments />} />
         </Route> */}
         <Route path="detail/:postId" element={<PostDetailPage />} />
