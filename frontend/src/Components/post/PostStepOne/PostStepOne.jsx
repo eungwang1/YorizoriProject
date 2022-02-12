@@ -25,12 +25,7 @@ const PostStepOne = () => {
 
   const mainImage = useRecoilValue(MainImageStateAtom);
   const setMainImage = useSetRecoilState(MainImageStateAtom);
-
   const [modalState, setModalState] = useState(false);
-  const [stepOne, setStepOne] = useState({
-    recipeName: "",
-    desc: "",
-  });
 
   useEffect(() => {
     PreviewRef.current.src = mainImage.preview;

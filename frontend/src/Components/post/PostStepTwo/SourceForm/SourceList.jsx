@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useRecoilState } from "recoil";
 import { SourceListAtom } from "../../PostAtom/PostAtom";
 import { ResetTextarea } from "../../commonStyle";
-import { useForm, useFormContext } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 
 const SourceList = () => {
   const [SourceList, setSourceList] = useRecoilState(SourceListAtom);

@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
-import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import {
   StyledButton,
@@ -14,7 +13,6 @@ import {
 import { useUserActions } from "../../actions";
 import { useRecoilValue } from "recoil";
 import { authAtom } from "../../states";
-import swal from "sweetalert";
 
 const { Kakao } = window;
 
@@ -35,7 +33,7 @@ const LoginForm = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  
+
   // 로그인 상태 가져오기.
   const auth = useRecoilValue(authAtom);
   const userActions = useUserActions();
@@ -49,7 +47,7 @@ const LoginForm = () => {
   console.log("랜더링");
   console.log(errors);
   const REST_API_KEY = process.env.REACT_APP_KAKAKO_KEY;
-  const REDIRECT_URI = "http://localhost:3000/oauth/kakao/callback"
+  const REDIRECT_URI = "http://localhost:3000/oauth/kakao/callback";
   const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 
   return (

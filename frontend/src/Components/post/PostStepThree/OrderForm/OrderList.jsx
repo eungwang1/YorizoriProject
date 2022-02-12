@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { ResetTextarea, Preview } from "../../commonStyle";
-import { useForm, useFormContext } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import {
   OrderListAtom,
   SubImageStateAtom,
@@ -13,9 +13,9 @@ import {
 const OrderList = () => {
   const [OrderList, setOrderList] = useRecoilState(OrderListAtom);
   const [subModalState, setSubModalState] = useRecoilState(SubModalStateAtom);
-  const [deleteIndex, setDeleteIndex] = useRecoilState(DeleteIndexAtom);
-  const subImage = useRecoilValue(SubImageStateAtom);
+  const setDeleteIndex = useSetRecoilState(DeleteIndexAtom);
   const setSubImage = useSetRecoilState(SubImageStateAtom);
+  const subImage = useRecoilValue(SubImageStateAtom);
 
   const { register, setValue } = useFormContext();
 
@@ -54,8 +54,6 @@ const OrderList = () => {
 
   const handleImage = (e, index) => {
     let cur_file = e.target.files[0];
-    const filesInArr = Array.from(e.target.files);
-    const previewArr = [window.URL.createObjectURL(cur_file)];
     if (cur_file) {
       setSubImage((oldList) => {
         const newList = {

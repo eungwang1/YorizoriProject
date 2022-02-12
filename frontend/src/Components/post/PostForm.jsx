@@ -1,7 +1,6 @@
-import React, { useRef } from "react";
+import React from "react";
 import styled from "styled-components";
-import PostTemplete from "./PostTemplete";
-import { useForm, FormProvider, useFormContext } from "react-hook-form";
+import { useForm, FormProvider } from "react-hook-form";
 import {
   postPageStateAtom,
   MainImageStateAtom,
@@ -10,7 +9,7 @@ import {
   cookInfoAtom,
   InvalidationAtom,
 } from "./PostAtom/PostAtom";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import PostStepOne from "./PostStepOne/PostStepOne";
 import PostStepTwo from "./PostStepTwo/PostStepTwo";
 import PostStepThree from "./PostStepThree/PostStepThree";
@@ -178,7 +177,7 @@ const PostForm = () => {
           swal("등록 성공", "레시피가 등록되었습니다.", "success").then(() => navigate("/"));
         })
         .catch((err) => {
-          swal("등록 실패", "알 수 없는 오류", "error");
+          swal("등록 실패", "", "error");
           console.log(err);
         });
 

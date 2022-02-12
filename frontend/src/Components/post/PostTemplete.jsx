@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styled, { css } from "styled-components";
 import PostNav from "../nav/PostNav";
 import NavBottom from "../nav/BottomNav";
@@ -49,10 +49,6 @@ const PostTemplete = ({ children, stepNum, page, request }) => {
 };
 
 export default PostTemplete;
-
-const MarginAuto = styled.div`
-  margin: 0 auto;
-`;
 
 const Pre = styled.pre`
   margin: 0;

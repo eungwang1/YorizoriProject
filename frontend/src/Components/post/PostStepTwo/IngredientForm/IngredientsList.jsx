@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { useRecoilState } from "recoil";
 import { IngredientsListAtom } from "../../PostAtom/PostAtom";
 import { ResetTextarea } from "../../commonStyle";
-import { useForm, useFormContext } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 
 const IngredientsList = () => {
   const [ingredientsList, setIngredientsList] = useRecoilState(IngredientsListAtom);
@@ -19,23 +19,6 @@ const IngredientsList = () => {
       return newList;
     });
   };
-
-  // useEffect(() => {
-  //   const subscription = watch((value) => {
-  //     console.log(value);
-
-  //   });
-  // }, [watch]);
-
-  // useEffect(() => {
-  //   if (localStorage.getItem("ingredient")) {
-  //     const getIngredients = JSON.parse(localStorage.getItem("ingredient"));
-  //     ingredientsList.forEach((el, idx) => {
-  //       setValue(`ingredient_${idx + 1}`, eval(`getIngredients.ingredient_${idx + 1}`));
-  //       setValue(`volume_${idx + 1}`, eval(`getIngredients.volume_${idx + 1}`));
-  //     });
-  //   }
-  // }, []);
 
   return (
     <>

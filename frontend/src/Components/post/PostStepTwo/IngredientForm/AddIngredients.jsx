@@ -1,8 +1,6 @@
 import React from "react";
 import { AddBtn } from "../../commonStyle";
-
 import { useSetRecoilState } from "recoil";
-
 import { IngredientsListAtom } from "../../PostAtom/PostAtom";
 
 const AddIngredients = () => {

@@ -1,6 +1,3 @@
-// import { MainImageStateAtom } from "../PostAtom/PostAtom";
-import { InvalidationAtom } from "../PostAtom/PostAtom";
-import { useRecoilState } from "recoil";
 import swal from "sweetalert";
 
 export const Invalidation = (data, setPostpostPageState, mainImage, setInvalidationState) => {
