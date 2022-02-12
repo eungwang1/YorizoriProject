@@ -1,7 +1,7 @@
 import React, { userRef, useState, useCallback, useMemo, useEffect } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
-import { datailedPostAtom, FamousPostsSelector } from "./homeAtom";
+import { datailedPostAtom, FamousPostsSelector } from "../homeAtom";
 import axios from "axios";
 import { useRecoilState, useRecoilValue, useRecoilValueLoadable } from "recoil";
 import Slider from "react-slick";
@@ -53,7 +53,7 @@ const FamousViewWithSlider = () => {
   const settings = {
     dots: true,
     infinite: true,
-    slidesToShow: 1,
+    slidesToShow: 2,
     slidesToScroll: 1,
     autoplay: true,
     speed: 3000,

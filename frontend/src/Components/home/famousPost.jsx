@@ -1,14 +1,24 @@
 import React, { userRef, useState, useCallback, useMemo, useEffect } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
-import { datailedPostAtom, FamousPostsSelector } from "./homeAtom";
-import axios from "axios";
-import { useRecoilState, useRecoilValue, useRecoilValueLoadable } from "recoil";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
-// import { getFamousList } from "./homeAction";
+import {
+  datailedPostAtom,
+  FamousPostsSelector,
+  FamousPostLikeUserSelector,
+  FamousPostCommentUserSelector,
+  detailedPostsLikeUserAtom,
+} from "./homeAtom";
+import axios from "axios";
+import {
+  useRecoilState,
+  useSetRecoilState,
+  useRecoilValue,
+  useRecoilStateLoadable,
+  useRecoilValueLoadable,
+} from "recoil";
 import {
   ArticleWrapper,
   TextMainWrapper,
@@ -25,35 +35,29 @@ import {
   HeartCommentCount,
   Heart,
   Comment,
-} from "./articleTemplateWIthSlider";
+} from "./ariticleTemplateWithOneSlide";
 
 const FamoustViewRapper = styled.div``;
 
-const FamousViewWithSlider = () => {
-  // const baseURL = "http://localhost:8080";
-  const navigatge = useNavigate();
-  // const [famousLists, setFamousLists] = useRecoilState(datailedPostAtom);
-  // const getFamousList = async (startIndex, limit) => {
-  //   await axios({
-  //     baseURL,
-  //     method: "get",
-  //     url: "/like/sortByLike",
-  //     responseType: "json",
-  //     params: {
-  //       startIndex: startIndex,
-  //       limit: limit,
-  //     },
-  //   }).then((res) => setFamousLists(res.data.limitedSortedPosts));
-  // };
+const FamousPost = () => {
+  const navigate = useNavigate();
+  const setFamousPost = useSetRecoilState(datailedPostAtom);
+  const setFamousPostLikeUser = useSetRecoilState(detailedPostsLikeUserAtom);
+  const famousListsLoadable = useRecoilValueLoadable(FamousPostsSelector);
+  const likeUserLoadble = useRecoilValueLoadable(FamousPostLikeUserSelector);
+  const commentUserCountLoadable = useRecoilValueLoadable(FamousPostCommentUserSelector);
 
-  // useEffect(() => {
-  //   getFamousList(1, 4);
-  // }, []);
-  const famousLists = useRecoilValueLoadable(FamousPostsSelector);
+  const clickFamousPostHandler = (item, idx) => {
+    const postId = item._id;
+    setFamousPost(item);
+    setFamousPostLikeUser(likeUserLoadble.contents[idx].likeUserList);
+    navigate(`/detail/${postId}`);
+  };
+
   const settings = {
     dots: true,
     infinite: true,
-    slidesToShow: 2,
+    slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
     speed: 3000,
@@ -62,10 +66,14 @@ const FamousViewWithSlider = () => {
     arrows: false,
   };
 
-  if (famousLists.state === "loading") {
-    return <div>...loading</div>;
+  if (
+    famousListsLoadable.state === "loading" ||
+    likeUserLoadble.state === "loading" ||
+    commentUserCountLoadable.state === "loading"
+  ) {
+    return <div>loading...</div>;
   }
-  console.log("famousLists", famousLists);
+  console.log("famousListsLoadable", likeUserLoadble.contents);
   return (
     <ArticleWrapper>
       <TextWrapper>
@@ -81,25 +89,36 @@ const FamousViewWithSlider = () => {
       </TextWrapper>
       {/* <ImageWarpper className="iamge"> */}
       <StyledSlider className="sliderrr" {...settings}>
-        {famousLists.contents.map((item) => {
+        {famousListsLoadable.contents.map((item, idx) => {
           return (
+            // <div key={item._id}>
             <ImageWithTag className="doosan" key={item._id}>
               <StyledImage
                 src={item.thumbnail}
                 onClick={() => {
-                  navigatge("/detail");
+                  clickFamousPostHandler(item, idx);
                 }}
               ></StyledImage>
               <TextBox>
                 <Title>{item.recipeName}</Title>
                 <Author>{item.userId.nickName}</Author>
                 <WrapperHeartComment>
-                  <Heart className="sprite heart" clicked={false} onClick={() => alert("ds")} />{" "}
-                  <HeartCommentCount>311</HeartCommentCount>
-                  <span className="sprite comment" /> <HeartCommentCount>7</HeartCommentCount>
+                  <Heart
+                    className="sprite heart"
+                    clicked={false}
+                    onClick={() => alert("하트구현해보자구!")}
+                  />{" "}
+                  <HeartCommentCount>
+                    {likeUserLoadble.contents[idx].likeUserList.length}
+                  </HeartCommentCount>
+                  <span className="sprite comment" />{" "}
+                  <HeartCommentCount>
+                    {commentUserCountLoadable.contents[idx].count}
+                  </HeartCommentCount>
                 </WrapperHeartComment>
               </TextBox>
             </ImageWithTag>
+            // </div>
           );
         })}
       </StyledSlider>
@@ -120,4 +139,4 @@ const StyledSlider = styled(Slider)`
   }
 `;
 
-export default FamousViewWithSlider;
+export default FamousPost;

@@ -7,7 +7,7 @@ import {
   FamousPostLikeUserSelector,
   FamousPostCommentUserSelector,
   detailedPostsLikeUserAtom,
-} from "./homeAtom";
+} from "../homeAtom";
 import axios from "axios";
 import {
   useRecoilState,
@@ -17,7 +17,7 @@ import {
   useRecoilValueLoadable,
 } from "recoil";
 import Slider from "react-slick";
-import { getFamousList } from "./homeAction";
+import { getFamousList } from "../homeAction";
 import {
   ArticleWrapper,
   TextMainWrapper,

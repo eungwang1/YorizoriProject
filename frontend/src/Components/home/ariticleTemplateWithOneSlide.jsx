@@ -4,7 +4,7 @@ import styled, { css } from "styled-components";
 
 const ArticleWrapper = styled.div`
   width: 100%;
-  height: 330px;
+  height: 400px;
   position: relative;
   padding: 0 15px 0 15px;
   margin-top: 25px;
@@ -40,6 +40,9 @@ const TextMain = styled.p`
   & + & {
     margin-top: 10px;
   }
+  &:first-of-type {
+    margin-left: 10px;
+  }
 `;
 
 const LinkedText = styled.p`
@@ -66,7 +69,7 @@ const ImageWarpper = styled.div`
 const ImageWithTag = styled.div`
   //   flex-shrink: 0;
   width: 100%;
-  height: 240px;
+  height: 310px;
   min-width: 160px;
   & + & {
     margin-left: 10px;
@@ -75,11 +78,12 @@ const ImageWithTag = styled.div`
 
 const StyledImage = styled.div`
   width: 100%;
-  height: 150px;
+  height: 220px;
   background-image: url(${(props) => props.src});
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+  // border-radius: 5%;
 `;
 
 const TextBox = styled.div`

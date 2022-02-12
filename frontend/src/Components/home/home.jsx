@@ -10,9 +10,10 @@ import { authAtom } from "../../states";
 import { pageStateAtom } from "../../states";
 import Slogan from "./slogan";
 import RandomView from "./randomView";
-import FamousView from "./famousView";
-import FamousViewWithSlider from "./famousViewWithSlider";
-import FamousViewWithOneSlider from "./famousViewWithOneSlide";
+import FamousView from "./discardedTemplate/famousView";
+import FamousViewWithSlider from "./discardedTemplate/famousViewWithSlider";
+import FamousViewWithOneSlider from "./discardedTemplate/famousViewWithOneSlide";
+import FamousPost from "./famousPost";
 import SloganBottom from "./sloganBottom";
 
 const HomeBlock = styled.div`
@@ -29,10 +30,9 @@ const Home = () => {
     <HomeBlock>
       <TopNav_main />
       <Slogan></Slogan>
-
-      <FamousViewWithOneSlider></FamousViewWithOneSlider>
-      <FamousViewWithSlider></FamousViewWithSlider>
-      {/* <FamousView></FamousView> */}
+      <FamousPost></FamousPost>
+      <FamousPost></FamousPost>
+      <FamousPost></FamousPost>
 
       <SloganBottom></SloganBottom>
       <BottomNav></BottomNav>
