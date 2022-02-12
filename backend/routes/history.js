@@ -27,7 +27,7 @@ router.post(
 //특정 게시물을 본 유저 목록 get
 router.get(
   "/:postId",
-  isLoggedIn,
+  // isLoggedIn,
   asyncHandler(async (req, res, next) => {
     const { postId } = req.params;
     let { startIndex, limit } = req.query;

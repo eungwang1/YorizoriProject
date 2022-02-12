@@ -33,7 +33,15 @@ const UserSchema = new Schema(
       type: String,
     },
   },
-  { timestamps: true }
+  { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
+
+UserSchema.virtual("numFollowees", {
+  ref: "Follow",
+  localField: "_id",
+  foreignField: "followerId",
+  count: true,
+  options: {},
+});
 
 module.exports = UserSchema;

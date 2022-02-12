@@ -29,7 +29,10 @@ router.get(
   asyncHandler(async (req, res, next) => {
     let { startIndex, limit } = req.query;
     //virtual populate 로 가져온 count option 으로는 sort가 안됩니다..ㅜ
-    const posts = await Post.find().populate({ path: "numLikes" }).sort({ createdAt: -1 });
+    const posts = await Post.find({ useYN: true })
+      .populate("userId")
+      .populate({ path: "numLikes" })
+      .sort({ createdAt: -1 });
     const sortedPosts = posts.sort((a, b) => b.numLikes - a.numLikes);
     if (!startIndex && !limit) {
       res.status(200).json({ sortedPosts });
@@ -51,7 +54,7 @@ router.get(
 //게시글에 눌린 좋아요를 조회하는 경우 좋아요를 누른 유저들을 배열로 보내줍니다.
 router.get(
   "/:postId",
-  isLoggedIn,
+  // isLoggedIn,
   asyncHandler(async (req, res, next) => {
     const { postId } = req.params;
     let { startIndex, limit } = req.query;
