@@ -14,6 +14,7 @@ import {
 import { useUserActions } from "../../actions";
 import { useRecoilValue } from "recoil";
 import { authAtom } from "../../states";
+import swal from "sweetalert";
 
 const LoginFormBlock = styled.form`
   display: flex;
