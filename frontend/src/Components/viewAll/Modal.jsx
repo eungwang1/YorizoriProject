@@ -32,7 +32,7 @@ const Modal = () => {
         <div>
           <CloseButton onClick={closeModal} />
           <Recommendtext>랜덤으로 메뉴를 추천해드려요</Recommendtext>
-          <Link to={`/detail/${randomPost._id}`}>
+          <Link to={`/detail/${randomPost._id.$oid}`}>
             <Img src={randomPost.thumbnail} />
           </Link>
           <TextBox>

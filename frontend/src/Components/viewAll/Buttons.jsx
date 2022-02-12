@@ -20,11 +20,11 @@ const Buttons = () => {
   };
 
   const clearDropDownOptions = () => {
-    const defaultName = document.querySelectorAll(".rdn-control-placeholder")
-    const defaultNameList = ["종류", "재료", "상황", "방법"]
+    const defaultName = document.querySelectorAll(".rdn-control-placeholder");
+    const defaultNameList = ["종류", "재료", "상황", "방법"];
     defaultName.forEach((item, index) => {
-      item.innerText = defaultNameList[index]
-    })
+      item.innerText = defaultNameList[index];
+    });
 
     setDropDownOptions(() => ({
       category: "",
@@ -35,17 +35,17 @@ const Buttons = () => {
   };
 
   useEffect(() => {
-    const defaultName = document.querySelectorAll(".rdn-control-placeholder")
-    const defaultCategory = ["category", "material", "condition", "cook"]
-    const defaultNameList = ["종류", "재료", "상황", "방법"]
-    
+    const defaultName = document.querySelectorAll(".rdn-control-placeholder");
+    const defaultCategory = ["category", "material", "condition", "cook"];
+    const defaultNameList = ["종류", "재료", "상황", "방법"];
+
     defaultName.forEach((item, index) => {
-      if(!dropDownOptions[defaultCategory[index]]) {
-        item.innerText = defaultNameList[index]
+      if (!dropDownOptions[defaultCategory[index]]) {
+        item.innerText = defaultNameList[index];
       } else {
-        item.innerText = dropDownOptions[defaultCategory[index]]
+        item.innerText = dropDownOptions[defaultCategory[index]];
       }
-    })
+    });
     console.log(dropDownOptions);
   });
 

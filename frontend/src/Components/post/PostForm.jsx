@@ -104,10 +104,10 @@ const PostForm = () => {
       }
 
       // process
-      if (key.indexOf("order_") > -1) {
+      if (key.indexOf("order_") > -1 && value.length >= 1) {
+        console.log(`process : ${value}`);
         process_el = new Object({
           explain: "",
-          processTime: "",
         });
         process_el.explain = value;
         if (subImage.file[ImageIndex]) {
@@ -120,6 +120,10 @@ const PostForm = () => {
         }
       }
       if (key.indexOf("orderTimeMin_") > -1) {
+        process_el = {
+          ...process_el,
+          processTime: "",
+        };
         time = {
           ...time,
           min: value,

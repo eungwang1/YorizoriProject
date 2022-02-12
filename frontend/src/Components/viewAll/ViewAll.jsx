@@ -7,10 +7,15 @@ import TopNav_main from "../nav/TopNav_main";
 import BottomNav from "../nav/BottomNav";
 import Modal from "./Modal";
 
+import { useRecoilValue } from "recoil";
+import { randomButtonState } from "./ViewAllAtom";
+
 const ViewAll = () => {
+  const randomButton = useRecoilValue(randomButtonState);
+
   return (
     <ViewAllBlock>
-      <Modal />
+      {randomButton && <Modal />}
       <TopNav_main />
       <Content>
         <Buttons />
