@@ -1,7 +1,7 @@
 import { atom, selector } from "recoil";
 import { getFamousPosts, getFamousPostLikeUser, getFamousPostCommentUserCount } from "./homeAction";
 
-//post shcema에 유저 populate 한 데이터 들어갑니다
+//디테일 뷰로 들어갈 때 해당 게시물의 정보를 이 아톰에 넣습니다.
 export const datailedPostAtom = atom({
   key: "datailedPostAtom",
   default: null,
@@ -13,7 +13,7 @@ export const detailedPostsLikeUserAtom = atom({
   default: null,
 });
 
-export const FamousPostsSelector = selector({
+export const famousPostsSelector = selector({
   key: "getFamousListSelector",
   get: async ({ get }) => {
     try {
@@ -25,11 +25,13 @@ export const FamousPostsSelector = selector({
   },
 });
 
-export const FamousPostLikeUserSelector = selector({
+// export const famousUserPostSelector
+
+export const famousPostLikeUserSelector = selector({
   key: "FamousPostLikeUserSelector",
   get: async ({ get }) => {
     try {
-      const famousPosts = get(FamousPostsSelector);
+      const famousPosts = get(famousPostsSelector);
       const promises = famousPosts.map(async ({ _id }) => {
         const user = await getFamousPostLikeUser(_id);
         return user;
@@ -43,11 +45,11 @@ export const FamousPostLikeUserSelector = selector({
   },
 });
 
-export const FamousPostCommentUserSelector = selector({
+export const famousPostCommentUserSelector = selector({
   key: "FamousPostCommentUserSelector",
   get: async ({ get }) => {
     try {
-      const famousPosts = get(FamousPostsSelector);
+      const famousPosts = get(famousPostsSelector);
       const promises = famousPosts.map(async ({ _id }) => {
         const userCount = await getFamousPostCommentUserCount(_id);
         return userCount;

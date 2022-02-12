@@ -9,14 +9,27 @@ const getFamousPosts = async (startIndex, limit) => {
   const { data } = await axios({
     baseURL,
     method: "get",
-    url: "/like/sortByLike",
+    url: "/post/sortByLike",
     responseType: "json",
     params: {
-      startIndex: startIndex,
-      limit: limit,
+      startIndex,
+      limit,
     },
   });
   return data.limitedSortedPosts;
+};
+
+const getFamousUserPosts = async (startIndex, limit) => {
+  const { data } = await axios({
+    baseURL,
+    method: "get",
+    url: "/user/sortByFollowees",
+    params: {
+      startIndex,
+      limit,
+    },
+  });
+  return data.limitedSortedUsers;
 };
 
 const getFamousPostLikeUser = async (postId) => {
@@ -37,4 +50,4 @@ const getFamousPostCommentUserCount = async (postId) => {
   return data;
 };
 
-export { getFamousPosts, getFamousPostLikeUser, getFamousPostCommentUserCount };
+export { getFamousPosts, getFamousPostLikeUser, getFamousPostCommentUserCount, getFamousUserPosts };

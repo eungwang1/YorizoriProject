@@ -6,9 +6,9 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import {
   datailedPostAtom,
-  FamousPostsSelector,
-  FamousPostLikeUserSelector,
-  FamousPostCommentUserSelector,
+  famousPostsSelector,
+  famousPostLikeUserSelector,
+  famousPostCommentUserSelector,
   detailedPostsLikeUserAtom,
 } from "./homeAtom";
 import axios from "axios";
@@ -43,9 +43,9 @@ const FamousPost = () => {
   const navigate = useNavigate();
   const setFamousPost = useSetRecoilState(datailedPostAtom);
   const setFamousPostLikeUser = useSetRecoilState(detailedPostsLikeUserAtom);
-  const famousListsLoadable = useRecoilValueLoadable(FamousPostsSelector);
-  const likeUserLoadble = useRecoilValueLoadable(FamousPostLikeUserSelector);
-  const commentUserCountLoadable = useRecoilValueLoadable(FamousPostCommentUserSelector);
+  const famousListsLoadable = useRecoilValueLoadable(famousPostsSelector);
+  const likeUserLoadble = useRecoilValueLoadable(famousPostLikeUserSelector);
+  const commentUserCountLoadable = useRecoilValueLoadable(famousPostCommentUserSelector);
 
   const clickFamousPostHandler = (item, idx) => {
     const postId = item._id;
@@ -73,7 +73,7 @@ const FamousPost = () => {
   ) {
     return <div>loading...</div>;
   }
-  console.log("famousListsLoadable", likeUserLoadble.contents);
+  console.log("famousListsLoadable", famousListsLoadable.contents);
   return (
     <ArticleWrapper>
       <TextWrapper>
@@ -91,7 +91,6 @@ const FamousPost = () => {
       <StyledSlider className="sliderrr" {...settings}>
         {famousListsLoadable.contents.map((item, idx) => {
           return (
-            // <div key={item._id}>
             <ImageWithTag className="doosan" key={item._id}>
               <StyledImage
                 src={item.thumbnail}
@@ -108,13 +107,9 @@ const FamousPost = () => {
                     clicked={false}
                     onClick={() => alert("하트구현해보자구!")}
                   />{" "}
-                  <HeartCommentCount>
-                    {likeUserLoadble.contents[idx].likeUserList.length}
-                  </HeartCommentCount>
+                  <HeartCommentCount>{item.numLikes}</HeartCommentCount>
                   <span className="sprite comment" />{" "}
-                  <HeartCommentCount>
-                    {commentUserCountLoadable.contents[idx].count}
-                  </HeartCommentCount>
+                  <HeartCommentCount>{item.numComments}</HeartCommentCount>
                 </WrapperHeartComment>
               </TextBox>
             </ImageWithTag>
