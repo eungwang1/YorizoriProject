@@ -12,8 +12,12 @@ export const MyPageEditInputBox = styled.div`
 export const MyPagePasswordEditBox = styled.div`
   font-size: 14px;
   color: #A7B6AA;
-  margin-right: 200px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
   span {
+    margin-top: 10px;
+    line-height: 1px;
     cursor: pointer;
   }
 `

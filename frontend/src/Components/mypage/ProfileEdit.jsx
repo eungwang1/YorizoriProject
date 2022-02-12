@@ -75,7 +75,6 @@ const EditInput = styled.input`
       }};
 
       padding: 0;
-      margins: 0;
       font-size: 12px;
       font-weight: bold;
     }
@@ -178,12 +177,13 @@ const EditMyPage = () => {
               <p>{nickCheck === "type2" ? <FontAwesomeIcon icon={faCircleXmark} className="checkError"/> : <FontAwesomeIcon icon={faCircleCheck} className="checkSuccess"/> } <span id="nickNameCheckText"></span></p>
               
               <MyPagePasswordEditBox className="passbox">
-                <span onClick={pass1}>ㆍ비밀번호 바꾸기</span>  
+                <span onClick={pass1}>비밀번호 바꾸기</span><br /><br />
+                <span onClick={pass1}>회원탈퇴</span><br /><br />
+                <span onClick={pass1}>로그아웃</span>
                 <div className="showpass">
-
                 </div>
               </MyPagePasswordEditBox>
-              <div style={{position: "relative", top: "123px"}}>  
+              <div style={{position: "relative", top: "40px"}}>  
                 <Link to="/users/mypage">
                   <EditBtn>
                     완료

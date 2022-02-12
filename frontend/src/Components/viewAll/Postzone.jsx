@@ -141,7 +141,7 @@ const Postzone = () => {
             }
             return data.cook == dropDownOptions.cook;
           })
-          .map((data) => {
+          .map((data, index) => {
             let recipeName = data.recipeName;
             let author = data.userId.$oid;
             if (recipeName.length > 20) {
@@ -152,6 +152,7 @@ const Postzone = () => {
             }
             return (
               <Link
+                key={index}
                 to="/detail/"
                 style={{ textDecoration: "none", color: "inherit" }}
                 author={data.userId.$oid}

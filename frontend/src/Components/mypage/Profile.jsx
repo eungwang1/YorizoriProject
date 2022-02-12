@@ -36,6 +36,45 @@ const MyPageMainProfileEdit = styled.button`
   margin-bottom: 30px;
 `
 
+const MyPageFollowBox = styled.div`
+  width: 150px;
+  height: 100px;
+`
+
+const MyPageMainInfoBox = styled.div`
+  display: flex;
+  justify-content: center;
+
+  .InfoProfile {
+    margin-left: 10px;
+  };
+
+  .followBox {
+    margin-left: 40px;
+    position: relative;
+    top: 30px;
+    border: solid 2px #FEAE11;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    line-height: 5px;    
+    align-items: center;
+    div {
+      a {
+        color: black;
+        text-decoration: none;
+      }
+
+      margin-left: 7px;
+      margin-right: 7px;
+      margin-bottom: 15px;
+
+      p {
+        font-size: 14px;
+      }
+    }
+  }
+`
 
 
 const MyPageTemplate = () => {
@@ -46,9 +85,28 @@ const MyPageTemplate = () => {
     <div>
       <NavTop />
         <MyPageMainBox style={{ marginTop: "80px", marginBottom: "90px" }}>
-          <MyPageMainImgBox>
-            <MyPageImage />
-              <p>{profileName}</p>
+          <MyPageMainImgBox inImgBox>
+            
+            <MyPageMainInfoBox>
+              <div className="InfoProfile">
+                <MyPageImage />
+                  <p>{profileName}</p>
+              </div>
+                <MyPageFollowBox className="followBox">
+                  <div>
+                    <Link to="/">
+                      <p>팔로워</p>
+                      <span>150</span>
+                    </Link>
+                  </div>
+                  <div>
+                    <Link to="/">
+                      <p>팔로잉</p>
+                      <span>150</span>
+                    </Link>
+                  </div>
+                </MyPageFollowBox>
+            </MyPageMainInfoBox>
             <MyPageMainBtnBox >
 
               <Link to="/users/edit">
