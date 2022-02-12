@@ -116,7 +116,7 @@ const PostForm = () => {
           ImageIndex++;
         } else {
           setPostpostPageState(3);
-          alert("서브이미지 필수임");
+          swal("", "요리순서 이미지는 필수입니다.", "info");
           return;
         }
       }
@@ -178,7 +178,7 @@ const PostForm = () => {
           swal("등록 성공", "레시피가 등록되었습니다.", "success").then(() => navigate("/"));
         })
         .catch((err) => {
-          swal("등록 실패", "누락된 부분이 있는지 확인해주세요.", "error");
+          swal("등록 실패", "알 수 없는 오류", "error");
           console.log(err);
         });
 
