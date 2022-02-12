@@ -37,7 +37,7 @@ const PostDetail = () => {
         <Line />
         <Recipe />
         <Line />
-        <Comments />
+        {/* <Comments /> */}
         <Line />
         <Recommend />
       </Content>

@@ -46,10 +46,16 @@ const Recommend = () => {
       <RecommendedPostWrapper>
         {[...Array(4)].map((n, index) => {
           return (
-            <Link to="/detail/" style={{ textDecoration: "none", color: "inherit" }}>
-              <RecommendedPost>
-                <PostImg src="../images/gam.jpg" />
-                <PostTitle>요리왕 비룡에게 전수받은 마늘 50개 들어간 알리오올리오</PostTitle>
+            <Link
+              key={`RecommendLink_${index}`}
+              to="/detail/"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <RecommendedPost key={`RecommendPost_${index}`}>
+                <PostImg key={`PostImg_${index}`} src="../images/gam.jpg" />
+                <PostTitle key={`PostTitle_${index}`}>
+                  요리왕 비룡에게 전수받은 마늘 50개 들어간 알리오올리오
+                </PostTitle>
               </RecommendedPost>
             </Link>
           );

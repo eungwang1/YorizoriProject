@@ -5,6 +5,7 @@ import Slider from "react-slick";
 import dummy from "./PostDummyData.json";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { useForm } from "react-hook-form";
 
 const padNumber = (num, length) => {
   return String(num).padStart(length, "0");
@@ -34,10 +35,7 @@ const ResultImg = styled.img`
   height: 200px;
   object-fit: cover;
 `;
-const Timer = styled.div`
-  display: flex;
-  align-items: center;
-`;
+
 const ClockImg = styled.img`
   margin-right: 10px;
 `;
@@ -52,37 +50,106 @@ const StyledSlider = styled(Slider)`
     color: #feae11;
   }
 `;
-const Recipe = () => {
-  // const [timerState, setTimerState] = useState(true);
-  // const tempMin = props.min ? parseInt(props.min) : 0;
-  // const tempSec = props.sec ? parseInt(props.sec) : 2;
-  // // 타이머를 초단위로 변환한 initialTime과 setInterval을 저장할 interval ref
-  // const initialTime = useRef(tempMin * 60 + tempSec);
-  // const interval = useRef(null);
 
-  // const [min, setMin] = useState(padNumber(tempMin, 2));
-  // const [sec, setSec] = useState(padNumber(tempSec, 2));
+const Timer = styled.div`
+  display: flex;
+  align-items: center;
+`;
 
-  // const TimerStateToggle = () => {
-  //   setTimerState(!timerState);
-  //   console.log(timerState);
-  //   if (timerState && initialTime.current > 0) {
-  //     interval.current = setInterval(() => {
-  //       initialTime.current -= 1;
-  //       setSec(padNumber(initialTime.current % 60, 2));
-  //       setMin(padNumber(parseInt(initialTime.current / 60), 2));
-  //     }, 1000);
-  //     return () => clearInterval(interval.current);
-  //   }
-  // };
+const TimeInput = styled.input`
+  border: none;
+  width: 24px;
+  /* padding-top: 3px;
+  padding-right: 2px; */
+  text-align: right;
+  font-weight: 600;
+  font-size: 1.1rem;
+  :focus {
+    outline: none;
+  }
+`;
 
-  // // 초가 변할 때만 실행되는 useEffect
-  // // initialTime을 검사해서 0이 되면 interval을 멈춘다.
-  // useEffect(() => {
-  //   if (initialTime.current <= 0) {
-  //     clearInterval(interval.current);
-  //   }
-  // }, [sec]);
+const TimerWrapper = styled.div`
+  display: flex;
+  font-weight: 700;
+  font-size: 1.1rem;
+`;
+
+const StyledP = styled.p`
+  margin: 0;
+`;
+
+const ResetBtn = styled.div`
+  background-image: url("../images/reset.png");
+  margin: 7px 0px 0px 7px;
+  width: 15px;
+  height: 15px;
+  background-size: cover;
+`;
+
+const Recipe = (props) => {
+  const { register, setValue, getValues } = useForm();
+  const interval = useRef({});
+  const [timerState, setTimerState] = useState(
+    Array.from({ length: dummy.post[0].postinfo.process.length }, () => {
+      return {
+        state: true,
+      };
+    })
+  );
+
+  const timeHandler = (index, e) => {
+    let startTime = Number(getValues(`min_${index}`)) * 60 + Number(getValues(`sec_${index}`));
+
+    if (startTime > 0) {
+      setTimerState((oldList) => {
+        const newList = [...oldList];
+        newList[index] = {
+          state: !newList[index].state,
+        };
+        return newList;
+      });
+    }
+    if (timerState[index].state && startTime > 0) {
+      interval.current[index] = setInterval(() => {
+        if (startTime <= 1) {
+          clearInterval(interval.current[index]);
+          setTimerState((oldList) => {
+            const newList = [...oldList];
+            newList[index] = {
+              state: true,
+            };
+            return newList;
+          });
+        }
+        startTime = Number(getValues(`min_${index}`)) * 60 + Number(getValues(`sec_${index}`)) - 1;
+        setValue(`sec_${index}`, padNumber(startTime % 60, 2));
+        setValue(`min_${index}`, padNumber(parseInt(startTime / 60), 2));
+      }, 1000);
+      return () => {
+        clearInterval(interval.current[index]);
+      };
+    }
+    if (!timerState[index].state) {
+      clearInterval(interval.current[index]);
+    }
+  };
+
+  const resetTime = (index, e) => {
+    const resetTimeValue = e.target.dataset.value;
+    console.log(e.target.dataset.value);
+    setValue(`sec_${index}`, padNumber(resetTimeValue % 60, 2));
+    setValue(`min_${index}`, padNumber(parseInt(resetTimeValue / 60), 2));
+    setTimerState((oldList) => {
+      const newList = [...oldList];
+      newList[index] = {
+        state: true,
+      };
+      return newList;
+    });
+    clearInterval(interval.current[index]);
+  };
+
   const settings = {
     dots: true,
     infinite: true,
@@ -93,26 +160,54 @@ const Recipe = () => {
   return (
     <RecipeWrapper>
       <div style={{ fontWeight: 900 }}>요리 순서</div>
-      {dummy.post[0].postinfo.process.map((process) => {
-        console.log(process);
+      {dummy.post[0].postinfo.process.map((process, index) => {
         return (
-          <Step>
-            <StepNumber>1</StepNumber>
+          <Step key={`step_${index}`}>
+            <StepNumber key={`StepNumber_${index}`}>1</StepNumber>
             <div>
-              <Content>{process.explain}</Content>
-              {/* <Timer onClick={TimerStateToggle}>
-                <ClockImg src="../images/clock.png" />
-                {min}:{sec}
-              </Timer> */}
+              <Content key={`Content_${index}`}>{process.explain}</Content>
+              <TimerWrapper>
+                <Timer
+                  onClick={(e) => {
+                    timeHandler(index, e);
+                  }}
+                  key={`Timer_${index}`}
+                >
+                  {timerState[index].state ? (
+                    <ClockImg key={`ClockImg_${index}`} src="../images/clockImage.svg" />
+                  ) : (
+                    <ClockImg key={`ClockImg_${index}`} src="../images/clockImageActive.svg" />
+                  )}
+                  <TimeInput
+                    {...register(`min_${index}`)}
+                    defaultValue={padNumber(parseInt(process.processTime.min), 2)}
+                    readOnly
+                  />
+                  <StyledP>:</StyledP>
+                  <TimeInput
+                    {...register(`sec_${index}`)}
+                    defaultValue={padNumber(parseInt(process.processTime.sec), 2)}
+                    readOnly
+                  />
+                </Timer>
+                <ResetBtn
+                  data-value={
+                    Number(process.processTime.min * 60) + Number(process.processTime.sec)
+                  }
+                  onClick={(e) => {
+                    resetTime(index, e);
+                  }}
+                ></ResetBtn>
+              </TimerWrapper>
             </div>
-            <Img src={process.processImage} />
+            <Img key={`Img_${index}`} src={process.processImage} />
           </Step>
         );
       })}
       <div style={{ fontWeight: 900, marginTop: 20 }}>완성 사진</div>
       <StyledSlider {...settings}>
-        {dummy.post[0].postinfo.photo.map((photo) => {
-          return <ResultImg src={photo.image} />;
+        {dummy.post[0].postinfo.photo.map((photo, index) => {
+          return <ResultImg key={`ResultImg_${index}`} src={photo.image} />;
         })}
       </StyledSlider>
     </RecipeWrapper>

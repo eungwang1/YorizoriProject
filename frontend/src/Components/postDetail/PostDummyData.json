@@ -35,7 +35,7 @@
             "processImage": "../images/gam.jpg",
             "processTime": {
               "min": 1,
-              "sec": 10
+              "sec": 30
             }
           }
         ],

@@ -16,11 +16,11 @@ const Ingredient = () => {
   return (
     <IngredientWrapper>
       <div style={{ fontWeight: 900 }}>재료</div>
-      {dummy.post[0].postinfo.ingredients.map((ingredient) => {
+      {dummy.post[0].postinfo.ingredients.map((ingredient, index) => {
         return (
-          <IngredientInfo>
-            <div>{ingredient.name}</div>
-            <div>{ingredient.amount}</div>
+          <IngredientInfo key={`IngredientInfo_${index}`}>
+            <div key={`IngredientInfo_name_${index}`}>{ingredient.name}</div>
+            <div key={`IngredientInfo_amount_${index}`}>{ingredient.amount}</div>
           </IngredientInfo>
         );
       })}
