@@ -50,7 +50,12 @@ router.get(
   // isLoggedIn,
   asyncHandler(async (req, res, next) => {
     const { userId } = req.params; //body에서 유저아이디를 받고
-    const user = await User.findOne({ _id: userId }).select("-password"); //_id가 일치하는 유저를 찾음
+    const user = await User.findOne({ _id: userId })
+      .populate({ path: "numFollowees", match: { isUnfollowed: false } })
+      .populate({ path: "numFollowers", match: { isUnfollowed: false } })
+      .populate({ path: "numPosts", match: { useYN: true } })
+      .populate({ path: "numLikes", match: { isUnliked: false } })
+      .select("-password"); //_id가 일치하는 유저를 찾음
     //password 제외한 정보를 보냄
     res.status(200).json({ user });
   })
@@ -63,21 +68,16 @@ router.get(
   asyncHandler(async (req, res, next) => {
     const { userId } = req.params;
     let { startIndex, limit } = req.query;
-    if (!startIndex && !limit) {
-      const userPosts = await Post.find({ userId, useYN: true }).sort({ createdAt: -1 });
-      res.status(200).json({ userPosts });
-      return;
-    }
-    //startIndex 와 limit  중 하나만 보내면 에러를 던짐
-    if (!startIndex || !limit) {
-      throw Error("startIndex와 limit 중 빠진 항목이 있습니다.");
-      return;
-    }
+    if (!startIndex) startIndex = 1;
+    if (!limit) limit = 0;
+
     //startIndex와 limit으로 정제된 데이터를 보내줌
     startIndex = parseInt(startIndex);
     limit = parseInt(limit);
     const userPosts = await Post.find({ userId, useYN: true })
       .sort({ createdAt: -1 })
+      .populate({ path: "numLikes", match: { isUnliked: false } })
+      .populate({ path: "numComments", match: { isDeleted: false } })
       .skip(startIndex - 1)
       .limit(limit);
     res.status(200).json({ userPosts });
@@ -91,26 +91,20 @@ router.get(
   asyncHandler(async (req, res, next) => {
     const { userId } = req.params;
     let { startIndex, limit } = req.query;
-    //qeury params 가 없으면 전체 데이터 return
-    if (!startIndex && !limit) {
-      //유저가 좋아요한 like documents 에서 postId만을 뽑아내고
-      const likePosts = await Like.find({ userId, isUnliked: false })
-        .sort({ createdAt: -1 })
-        .populate("postId");
-      res.status(200).json({ likePosts });
-      return;
-    }
-    //startIndex 와 limit  중 하나만 보내면 에러를 던짐
-    if (!startIndex || !limit) {
-      throw Error("startIndex와 limit 중 빠진 항목이 있습니다.");
-      return;
-    }
+    if (!startIndex) startIndex = 1;
+    if (!limit) limit = 0;
     //startIndex와 limit으로 정제된 데이터를 보내줌
     startIndex = parseInt(startIndex);
     limit = parseInt(limit);
     const likePosts = await Like.find({ userId, isUnliked: false })
       .sort({ createdAt: -1 })
-      .populate("postId")
+      .populate({
+        path: "postId",
+        populate: [
+          { path: "numLikes", match: { isUnliked: false } },
+          { path: "numComments", match: { isDeleted: false } },
+        ],
+      })
       .skip(startIndex - 1)
       .limit(limit);
     res.status(200).json({ likePosts });
@@ -128,18 +122,28 @@ router.get(
     const { userId } = req.params;
     let { startIndex, limit } = req.query;
     //유저가 작성한 댓글을 게시글 순으로 정렬한 후 그 안에서 최신글 순서로 정렬합니다.
+    // 예) a,b,a,b,c,a,b  => a,a,a,b,b,c
     const allCommentPosts = await Comment.find({ userId, isDeleted: false })
       .sort({ postId: 1, createdAt: -1 })
-      .populate("postId");
+      .populate({
+        path: "postId",
+        populate: [
+          { path: "numLikes", match: { isUnliked: false } },
+          { path: "numComments", match: { isDeleted: false } },
+        ],
+      });
     //겹치는 게시글들을 제거하기 위해 각 게시글마다 최신 글을 하나씩 모아 commentPosts 배열을 만듭니다.
+    //예) A,a,a,B,b,C => A,B,C
     const commentPosts = allCommentPosts
       .reduce((acc, post) => {
         if (!post.postId) {
           return acc;
         }
+        //첫 데이터는 그냥 넣어주고
         acc.length === 0
           ? acc.push(post)
-          : acc[acc.length - 1].postId._id != post.postId._id
+          : //그 이후의 데이터는 마지막 데이터와 게시글의 _id 값이 다르면 즉 새로운 게시글이면 acc에 넣어줍니다
+          acc[acc.length - 1].postId._id != post.postId._id
           ? acc.push(post)
           : acc;
         return acc;
@@ -170,24 +174,20 @@ router.get(
   asyncHandler(async (req, res, next) => {
     const { userId } = req.params;
     let { startIndex, limit } = req.query;
-    if (!startIndex && !limit) {
-      const lastViewedPosts = await History.find({ userId, isLastViewed: true })
-        .sort({ createdAt: -1 })
-        .populate("postId");
-      res.status(200).json({ lastViewedPosts });
-      return;
-    }
-    //startIndex 와 limit  중 하나만 보내면 에러를 던짐
-    if (!startIndex || !limit) {
-      throw Error("startIndex와 limit 중 빠진 항목이 있습니다.");
-      return;
-    }
+    if (!startIndex) startIndex = 1;
+    if (!limit) limit = 0;
     //startIndex와 limit으로 정제된 데이터를 보내줌
     startIndex = parseInt(startIndex);
     limit = parseInt(limit);
     const lastViewedPosts = await History.find({ userId, isLastViewed: true })
       .sort({ createdAt: -1 })
-      .populate("postId")
+      .populate({
+        path: "postId",
+        populate: [
+          { path: "numLikes", match: { isUnliked: false } },
+          { path: "numComments", match: { isDeleted: false } },
+        ],
+      })
       .skip(startIndex - 1)
       .limit(limit);
     res.status(200).json({ lastViewedPosts });
@@ -201,21 +201,8 @@ router.get(
   asyncHandler(async (req, res, next) => {
     const { userId } = req.params;
     let { startIndex, limit } = req.query;
-    if (!startIndex && !limit) {
-      const followers = await Follow.find({ followeeId: userId, isUnfollowed: false })
-        .sort({ createdAt: -1 })
-        .populate({
-          path: "followerId",
-          select: "-password",
-        });
-      res.status(200).json({ followers });
-      return;
-    }
-    //startIndex 와 limit  중 하나만 보내면 에러를 던짐
-    if (!startIndex || !limit) {
-      throw Error("startIndex와 limit 중 빠진 항목이 있습니다.");
-      return;
-    }
+    if (!startIndex) startIndex = 1;
+    if (!limit) limit = 0;
     //startIndex와 limit으로 정제된 데이터를 보내줌
     startIndex = parseInt(startIndex);
     limit = parseInt(limit);
@@ -224,6 +211,12 @@ router.get(
       .populate({
         path: "followerId",
         select: "-password",
+        populate: [
+          { path: "numFollowees", match: { isUnfollowed: false } },
+          { path: "numFollowers", match: { isUnfollowed: false } },
+          { path: "numPosts", match: { useYN: true } },
+          { path: "numLikes", match: { isUnliked: false } },
+        ],
       })
       .skip(startIndex - 1)
       .limit(limit);
@@ -238,29 +231,22 @@ router.get(
   asyncHandler(async (req, res, next) => {
     const { userId } = req.params;
     let { startIndex, limit } = req.query;
-    if (!startIndex && !limit) {
-      const followees = await Follow.find({ followerId: userId, isUnfollowed: false })
-        .sort({ createdAt: -1 })
-        .populate({
-          path: "followeeId",
-          select: "-password",
-        });
-      res.status(200).json({ followees });
-      return;
-    }
-    //startIndex 와 limit  중 하나만 보내면 에러를 던짐
-    if (!startIndex || !limit) {
-      throw Error("startIndex와 limit 중 빠진 항목이 있습니다.");
-      return;
-    }
+    if (!startIndex) startIndex = 1;
+    if (!limit) limit = 0;
     //startIndex와 limit으로 정제된 데이터를 보내줌
     startIndex = parseInt(startIndex);
     limit = parseInt(limit);
     const followees = await Follow.find({ followerId: userId, isUnfollowed: false })
       .sort({ createdAt: -1 })
       .populate({
-        path: "followeeId",
+        path: "followerId",
         select: "-password",
+        populate: [
+          { path: "numFollowees", match: { isUnfollowed: false } },
+          { path: "numFollowers", match: { isUnfollowed: false } },
+          { path: "numPosts", match: { useYN: true } },
+          { path: "numLikes", match: { isUnliked: false } },
+        ],
       })
       .skip(startIndex - 1)
       .limit(limit);
@@ -268,12 +254,20 @@ router.get(
   })
 );
 
+//유저들을 followee 순으로 내림차순 정렬한 후 데이터를 보냅니다.
+// 인기많은 순으로 데이터 보내는겁니다.
+//여기서도 numFolowees 라는 populate virtual 로 가져온 값으로 정렬하는 방법을 못 찾아서 일단 데이터를 db에서 가져온 후 따로 sort 했습니다.
 router.get(
   "/sortByFollowees",
   asyncHandler(async (req, res, next) => {
     let { startIndex, limit } = req.query;
-    const users = await User.find().populate({ path: "numFollowees" }).sort({ createdAt: -1 });
-    const sortedUsers = users.sort((a, b) => b.numLikes - a.numLikes);
+    const users = await User.find()
+      .populate({ path: "numFollowees", match: { isUnfollowed: false } })
+      .populate({ path: "numFollowers", match: { isUnfollowed: false } })
+      .populate({ path: "numPosts", match: { useYN: true } })
+      .populate({ path: "numLikes", match: { isUnliked: false } })
+      .sort({ createdAt: -1 });
+    const sortedUsers = users.sort((a, b) => b.numFollowees - a.numFollowees);
     if (!startIndex && !limit) {
       res.status(200).json({ sortedUsers });
       return;

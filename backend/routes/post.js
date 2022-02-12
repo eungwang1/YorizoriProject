@@ -130,18 +130,40 @@ router.post(
   })
 );
 
-//전체 레시피 조회
+//게시글들을 좋아요 받은 순으로 내림차순 정렬해서 값을 전달.
+// populate virtual 기능으로 가져온 count값으로 바로 정렬하는 방법을 찾지 못해서
+//일단 데이터배열을 가져온 후에 sort를 한번 더 적용했습니다.
 router.get(
-  "/",
+  "/sortByLike",
   asyncHandler(async (req, res, next) => {
-    const page = Number(req.query.page || 1);
-    const perPage = Number(req.query.perPage || 16);
-
-    const posts = await Post.find({})
-      .sort({ createdAt: -1 }) //최근 순으로 정렬
-      .skip((page - 1) * perPage) // (현재페이지-1) * 페이지당 게시글수
-      .limit(perPage);
-    res.status(200).json(posts);
+    let { startIndex, limit } = req.query;
+    //virtual populate 로 가져온 count option 으로는 sort가 안됩니다..ㅜ
+    const posts = await Post.find({ useYN: true })
+      .populate({ path: "userId", select: "-password" })
+      //게시글이 받은 좋아요 수와 댓글 수를 populate 해옴
+      .populate({
+        path: "numLikes",
+        match: { isUnliked: false },
+        // options: { sort: { numLikes: -1 } },
+      })
+      .populate({ path: "numComments", match: { isDeleted: false } })
+      //.sort({numLikes : -1})
+      .sort({ createdAt: -1 });
+    const sortedPosts = posts.sort((a, b) => b.numLikes - a.numLikes);
+    if (!startIndex && !limit) {
+      res.status(200).json({ sortedPosts });
+      return;
+    }
+    //startIndex 와 limit  중 하나만 보내면 에러를 던짐
+    if (!startIndex || !limit) {
+      throw Error("startIndex와 limit 중 빠진 항목이 있습니다.");
+      return;
+    }
+    //startIndex와 limit으로 정제된 데이터를 보내줌
+    startIndex = parseInt(startIndex);
+    limit = parseInt(limit);
+    const limitedSortedPosts = sortedPosts.slice(startIndex - 1, startIndex - 1 + limit);
+    res.status(200).json({ limitedSortedPosts });
   })
 );
 
@@ -151,7 +173,11 @@ router.get(
   asyncHandler(async (req, res, next) => {
     const { postId } = req.params;
 
-    const posts = await Post.findById(postId).findOne({ useYN: true });
+    const posts = await Post.findById(postId)
+      .findOne({ useYN: true })
+      .populate({ path: "userId", select: "-password" })
+      .populate({ path: "numLikes", match: { isUnliked: false } })
+      .populate({ path: "numComments", match: { isDeleted: false } });
     if (!posts) {
       res.status(404).send("해당하는 postId가 없습니다.");
       return;
@@ -268,6 +294,24 @@ router.patch(
     res.status(200).json({
       message: "레시피 수정이 완료되었습니다.",
     });
+  })
+);
+
+//전체 레시피 조회
+router.get(
+  "/",
+  asyncHandler(async (req, res, next) => {
+    const page = Number(req.query.page || 1);
+    const perPage = Number(req.query.perPage || 16);
+
+    const posts = await Post.find({ useYN: true })
+      .populate({ path: "userId", select: "-password" })
+      .populate({ path: "numLikes", match: { isUnliked: false } })
+      .populate({ path: "numComments", match: { isDeleted: false } })
+      .sort({ createdAt: -1 }) //최근 순으로 정렬
+      .skip((page - 1) * perPage) // (현재페이지-1) * 페이지당 게시글수
+      .limit(perPage);
+    res.status(200).json(posts);
   })
 );
 
