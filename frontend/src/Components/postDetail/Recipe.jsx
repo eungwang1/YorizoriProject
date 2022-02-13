@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import Slider from "react-slick";
@@ -6,10 +7,156 @@ import dummy from "./PostDummyData.json";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useForm } from "react-hook-form";
+import axios from "axios";
 
 const padNumber = (num, length) => {
   return String(num).padStart(length, "0");
 };
+
+const Recipe = (props) => {
+  const [processData, setProcessData] = useState([]);
+  const [timerState, setTimerState] = useState(
+    Array.from({ length: 100 }, () => {
+      return {
+        state: true,
+      };
+    })
+  );
+  const location = useLocation();
+
+  useEffect(() => {
+    const _id = location.pathname.substring(
+      location.pathname.indexOf("detail/") + "detail/".length
+    );
+    console.log(_id);
+    const getProcessData = async () => {
+      const { data } = await axios.get(`/post/${_id}`);
+      console.log(data);
+      setProcessData(data.process);
+    };
+    getProcessData();
+  }, []);
+
+  const { register, setValue, getValues } = useForm();
+  const interval = useRef({});
+
+  const timeHandler = (index, e) => {
+    let startTime = Number(getValues(`min_${index}`)) * 60 + Number(getValues(`sec_${index}`));
+
+    if (startTime > 0) {
+      setTimerState((oldList) => {
+        const newList = [...oldList];
+        newList[index] = {
+          state: !newList[index].state,
+        };
+        return newList;
+      });
+    }
+    if (timerState[index].state && startTime > 0) {
+      interval.current[index] = setInterval(() => {
+        if (startTime <= 1) {
+          clearInterval(interval.current[index]);
+          setTimerState((oldList) => {
+            const newList = [...oldList];
+            newList[index] = {
+              state: true,
+            };
+            return newList;
+          });
+        }
+        startTime = Number(getValues(`min_${index}`)) * 60 + Number(getValues(`sec_${index}`)) - 1;
+        setValue(`sec_${index}`, padNumber(startTime % 60, 2));
+        setValue(`min_${index}`, padNumber(parseInt(startTime / 60), 2));
+      }, 1000);
+      return () => {
+        clearInterval(interval.current[index]);
+      };
+    }
+    if (!timerState[index].state) {
+      clearInterval(interval.current[index]);
+    }
+  };
+
+  const resetTime = (index, e) => {
+    const resetTimeValue = e.target.dataset.value;
+    console.log(e.target.dataset.value);
+    setValue(`sec_${index}`, padNumber(resetTimeValue % 60, 2));
+    setValue(`min_${index}`, padNumber(parseInt(resetTimeValue / 60), 2));
+    setTimerState((oldList) => {
+      const newList = [...oldList];
+      newList[index] = {
+        state: true,
+      };
+      return newList;
+    });
+    clearInterval(interval.current[index]);
+  };
+
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  };
+  return (
+    <RecipeWrapper>
+      <div style={{ fontWeight: 900 }}>요리 순서</div>
+      {/* {dummy.post[0].postinfo.process.map((process, index) => { */}
+      {processData.map((process, index) => {
+        return (
+          <Step key={`step_${index}`}>
+            <StepNumber key={`StepNumber_${index}`}>{index + 1}</StepNumber>
+            <div>
+              <Content key={`Content_${index}`}>{process.explain}</Content>
+              <TimerWrapper>
+                <Timer
+                  onClick={(e) => {
+                    timeHandler(index, e);
+                  }}
+                  key={`Timer_${index}`}
+                >
+                  {timerState[index].state ? (
+                    <ClockImg key={`ClockImg_${index}`} src="../images/clockImage.svg" />
+                  ) : (
+                    <ClockImg key={`ClockImg_${index}`} src="../images/clockImageActive.svg" />
+                  )}
+                  <TimeInput
+                    {...register(`min_${index}`)}
+                    defaultValue={padNumber(parseInt(process.processTime.min), 2)}
+                    readOnly
+                  />
+                  <StyledP>:</StyledP>
+                  <TimeInput
+                    {...register(`sec_${index}`)}
+                    defaultValue={padNumber(parseInt(process.processTime.sec), 2)}
+                    readOnly
+                  />
+                </Timer>
+                <ResetBtn
+                  data-value={
+                    Number(process.processTime.min * 60) + Number(process.processTime.sec)
+                  }
+                  onClick={(e) => {
+                    resetTime(index, e);
+                  }}
+                ></ResetBtn>
+              </TimerWrapper>
+            </div>
+            <Img key={`Img_${index}`} src={process.processImage} />
+          </Step>
+        );
+      })}
+      <div style={{ fontWeight: 900, marginTop: 20 }}>완성 사진</div>
+      <StyledSlider {...settings}>
+        {dummy.post[0].postinfo.photo.map((photo, index) => {
+          return <ResultImg key={`ResultImg_${index}`} src={photo.image} />;
+        })}
+      </StyledSlider>
+    </RecipeWrapper>
+  );
+};
+export default Recipe;
 
 const RecipeWrapper = styled.div`
   margin: 20px;
@@ -86,131 +233,3 @@ const ResetBtn = styled.div`
   height: 15px;
   background-size: cover;
 `;
-
-const Recipe = (props) => {
-  const { register, setValue, getValues } = useForm();
-  const interval = useRef({});
-  const [timerState, setTimerState] = useState(
-    Array.from({ length: dummy.post[0].postinfo.process.length }, () => {
-      return {
-        state: true,
-      };
-    })
-  );
-
-  const timeHandler = (index, e) => {
-    let startTime = Number(getValues(`min_${index}`)) * 60 + Number(getValues(`sec_${index}`));
-
-    if (startTime > 0) {
-      setTimerState((oldList) => {
-        const newList = [...oldList];
-        newList[index] = {
-          state: !newList[index].state,
-        };
-        return newList;
-      });
-    }
-    if (timerState[index].state && startTime > 0) {
-      interval.current[index] = setInterval(() => {
-        if (startTime <= 1) {
-          clearInterval(interval.current[index]);
-          setTimerState((oldList) => {
-            const newList = [...oldList];
-            newList[index] = {
-              state: true,
-            };
-            return newList;
-          });
-        }
-        startTime = Number(getValues(`min_${index}`)) * 60 + Number(getValues(`sec_${index}`)) - 1;
-        setValue(`sec_${index}`, padNumber(startTime % 60, 2));
-        setValue(`min_${index}`, padNumber(parseInt(startTime / 60), 2));
-      }, 1000);
-      return () => {
-        clearInterval(interval.current[index]);
-      };
-    }
-    if (!timerState[index].state) {
-      clearInterval(interval.current[index]);
-    }
-  };
-
-  const resetTime = (index, e) => {
-    const resetTimeValue = e.target.dataset.value;
-    console.log(e.target.dataset.value);
-    setValue(`sec_${index}`, padNumber(resetTimeValue % 60, 2));
-    setValue(`min_${index}`, padNumber(parseInt(resetTimeValue / 60), 2));
-    setTimerState((oldList) => {
-      const newList = [...oldList];
-      newList[index] = {
-        state: true,
-      };
-      return newList;
-    });
-    clearInterval(interval.current[index]);
-  };
-
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  };
-  return (
-    <RecipeWrapper>
-      <div style={{ fontWeight: 900 }}>요리 순서</div>
-      {dummy.post[0].postinfo.process.map((process, index) => {
-        return (
-          <Step key={`step_${index}`}>
-            <StepNumber key={`StepNumber_${index}`}>1</StepNumber>
-            <div>
-              <Content key={`Content_${index}`}>{process.explain}</Content>
-              <TimerWrapper>
-                <Timer
-                  onClick={(e) => {
-                    timeHandler(index, e);
-                  }}
-                  key={`Timer_${index}`}
-                >
-                  {timerState[index].state ? (
-                    <ClockImg key={`ClockImg_${index}`} src="../images/clockImage.svg" />
-                  ) : (
-                    <ClockImg key={`ClockImg_${index}`} src="../images/clockImageActive.svg" />
-                  )}
-                  <TimeInput
-                    {...register(`min_${index}`)}
-                    defaultValue={padNumber(parseInt(process.processTime.min), 2)}
-                    readOnly
-                  />
-                  <StyledP>:</StyledP>
-                  <TimeInput
-                    {...register(`sec_${index}`)}
-                    defaultValue={padNumber(parseInt(process.processTime.sec), 2)}
-                    readOnly
-                  />
-                </Timer>
-                <ResetBtn
-                  data-value={
-                    Number(process.processTime.min * 60) + Number(process.processTime.sec)
-                  }
-                  onClick={(e) => {
-                    resetTime(index, e);
-                  }}
-                ></ResetBtn>
-              </TimerWrapper>
-            </div>
-            <Img key={`Img_${index}`} src={process.processImage} />
-          </Step>
-        );
-      })}
-      <div style={{ fontWeight: 900, marginTop: 20 }}>완성 사진</div>
-      <StyledSlider {...settings}>
-        {dummy.post[0].postinfo.photo.map((photo, index) => {
-          return <ResultImg key={`ResultImg_${index}`} src={photo.image} />;
-        })}
-      </StyledSlider>
-    </RecipeWrapper>
-  );
-};
-export default Recipe;

@@ -78,27 +78,33 @@ const PostForm = () => {
     let ImageIndex = 1;
     for (let [key, value] of Object.entries(data)) {
       // ingredient
-      if (key.indexOf("ingredient_") > -1) {
+      if (key.indexOf("ingredient_") > -1 && value.length >= 1) {
         ingre_el = new Object({
           ingreName: "",
-          ingreCount: "",
         });
         ingre_el.ingreName = value;
       }
-      if (key.indexOf("ingredientVolume_") > -1) {
+      if (key.indexOf("ingredientVolume_") > -1 && value.length) {
+        ingre_el = {
+          ...ingre_el,
+          ingreCount: "",
+        };
         ingre_el.ingreCount = value;
         ingredient.push(ingre_el);
       }
 
       // seasoning
-      if (key.indexOf("source_") > -1) {
+      if (key.indexOf("source_") > -1 && value.length) {
         seasoning_el = new Object({
           ingreName: "",
-          ingreCount: "",
         });
         seasoning_el.ingreName = value;
       }
-      if (key.indexOf("sourceVolume_") > -1) {
+      if (key.indexOf("sourceVolume_") > -1 && value.length) {
+        seasoning_el = {
+          ...seasoning_el,
+          ingreCount: "",
+        };
         seasoning_el.ingreCount = value;
         seasoning.push(seasoning_el);
       }
