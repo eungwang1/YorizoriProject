@@ -9,6 +9,7 @@ import {
   famousPostsSelector,
   famousUsersSelector,
   famousUsersPostsSelector,
+  loginUserAtom,
 } from "../../states/homeAtom";
 import axios from "axios";
 import {
@@ -45,6 +46,7 @@ const FamousUserPost = () => {
   const setFamousPost = useSetRecoilState(datailedPostAtom);
   const famousListsLoadable = useRecoilValueLoadable(famousPostsSelector);
   const famousUsersPostsLoadable = useRecoilValueLoadable(famousUsersPostsSelector);
+  const loginUser = useRecoilValue(loginUserAtom);
 
   const [changePosts, setChangePosts] = useState(0);
 
@@ -59,6 +61,7 @@ const FamousUserPost = () => {
   };
 
   const clickChangePostHandler = () => {
+    console.log(loginUser);
     setChangePosts((prev) => {
       console.log("prev", prev);
       if (prev === famousUsersPostsLoadable.contents.length - 1) return 0;
@@ -79,8 +82,8 @@ const FamousUserPost = () => {
     arrows: false,
   };
 
-  console.log("famousUsersPostsLoadable", famousUsersPostsLoadable.contents[0]);
-  //   console.log("222", famousUsersPostsLoadable.contents);
+  //   console.log("famousUsersPostsLoadable", famousUsersPostsLoadable.contents[0]);
+  console.log("222", famousUsersPostsLoadable.contents);
   return (
     <ArticleWrapper>
       <TextWrapper>
@@ -96,33 +99,37 @@ const FamousUserPost = () => {
       </TextWrapper>
       {/* <ImageWarpper className="iamge"> */}
       <StyledSlider className="sliderrr" {...settings}>
-        {famousUsersPostsLoadable.contents[changePosts].map((item, idx) => {
-          return (
-            <ImageWithTag className="doosan" key={item._id}>
-              <StyledImage
-                src={item.thumbnail}
-                onClick={() => {
-                  clickFamousPostHandler(item, idx);
-                }}
-              ></StyledImage>
-              <TextBox>
-                <Title>{item.recipeName}</Title>
-                <Author>{item.userId.nickName}</Author>
-                <WrapperHeartComment>
-                  <Heart
-                    className="sprite heart"
-                    clicked={false}
-                    onClick={() => alert("이제 하트해보자구")}
-                  />{" "}
-                  <HeartCommentCount>{item.numLikes}</HeartCommentCount>
-                  <span className="sprite comment" />{" "}
-                  <HeartCommentCount>{item.numComments}</HeartCommentCount>
-                </WrapperHeartComment>
-              </TextBox>
-            </ImageWithTag>
-            // </div>
-          );
-        })}
+        {famousUsersPostsLoadable.contents[changePosts].length === 0 ? (
+          <div>팔로우 많이 받은 유저의 게시물이 없으면 이렇게 빈 화면이 나옵니당..ㅜ</div>
+        ) : (
+          famousUsersPostsLoadable.contents[changePosts].map((item, idx) => {
+            return (
+              <ImageWithTag className="doosan" key={item._id}>
+                <StyledImage
+                  src={item.thumbnail}
+                  onClick={() => {
+                    clickFamousPostHandler(item, idx);
+                  }}
+                ></StyledImage>
+                <TextBox>
+                  <Title>{item.recipeName}</Title>
+                  <Author>{item.userId.nickName}</Author>
+                  <WrapperHeartComment>
+                    <Heart
+                      className="sprite heart"
+                      clicked={false}
+                      onClick={() => alert("이제 하트해보자구")}
+                    />{" "}
+                    <HeartCommentCount>{item.numLikes}</HeartCommentCount>
+                    <span className="sprite comment" />{" "}
+                    <HeartCommentCount>{item.numComments}</HeartCommentCount>
+                  </WrapperHeartComment>
+                </TextBox>
+              </ImageWithTag>
+              // </div>
+            );
+          })
+        )}
       </StyledSlider>
       {/* </ImageWarpper> */}
     </ArticleWrapper>

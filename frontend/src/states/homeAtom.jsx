@@ -18,7 +18,7 @@ export const datailedPostAtom = atom({
 //로그인한 유저 정보를 받습니다.
 export const loginUserAtom = atom({
   key: "loginUserAtom",
-  default: {},
+  default: null,
 });
 
 //해당 포스트를 좋아요한 유저들 데이터가 들어가요
@@ -40,7 +40,9 @@ export const loginUserSelector = selector({
       throw err;
     }
   },
-  set: ({ set }, newValue) => {
+  set: ({ set, get }, newValue) => {
+    const loginUser = get(loginUserAtom);
+    if (loginUser) return;
     set(loginUserAtom, newValue);
   },
 });
@@ -81,7 +83,7 @@ export const famousUsersPostsSelector = selector({
       // const famousUsers = get(famousUsersSelector);
       const famousUserList = await getFamousUsers(1, 4);
       const promises = famousUserList.map(async ({ _id }) => {
-        const posts = await getUserPosts(_id, 1, 4);
+        const posts = await getUserPosts(_id, 1, 6);
         return posts;
       });
       const famousUserPosts = await Promise.all(promises);
