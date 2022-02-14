@@ -13,7 +13,7 @@ const SloganWrapper = styled.div`
 const SloganBackground = styled.div`
   position: relative;
   border-radius: 10px 0 0 10px;
-  height: 220px;
+  height: 200px;
   background-color: #fffcf4;
   display: flex;
   flex-direction: column;

@@ -7,16 +7,17 @@ import styled, { css } from "styled-components";
 
 const SloganWrapper = styled.div`
   width: 100%;
-  height: 160px;
+  height: 200px;
   position: relative;
+  margin-top: 10px;
   margin-bottom: 80px;
 `;
 
 const SloganBackground = styled.div`
   position: relative;
   border-radius: 10px 0 0 10px;
-  height: 160px;
-  background-color: #fffcf4;
+  height: 200px;
+  background: linear-gradient(180deg, #ffffff, #fffcf4 99%);
   display: flex;
   flex-direction: column;
   justify-content: center;

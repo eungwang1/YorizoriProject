@@ -1,6 +1,7 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import { Link } from "react-router-dom";
+import SearchBar from "../nav/SearchBar";
 
 const TopNavMainBox = styled.div`
   height: 80px;
@@ -43,14 +44,14 @@ const SearchButton = styled.button`
   right: 20px;
   top: 25px;
 `;
+
 const TopNavMain = () => {
   return (
     <TopNavMainBox>
       <Link to="/">
         <TopNavMainLogo src="../images/onlylogo.png" alt="arrow.png" />
       </Link>
-      <TopNavMainInput placeholder="검색어" />
-      <SearchButton />
+      <SearchBar placeholder="검색어"></SearchBar>
     </TopNavMainBox>
   );
 };

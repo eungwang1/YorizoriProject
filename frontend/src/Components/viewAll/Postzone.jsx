@@ -2,11 +2,16 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import ReactLoading from "react-loading";
-import dummy from "../../posts.json";
 import { dropDownOptionsState } from "./ViewAllAtom";
 import { useRecoilValue } from "recoil";
+import { searchAtom } from "../nav/NavAtom";
+
+const baseURL = "http://localhost:8080";
 
 const Postzone = () => {
+  const filteredData = useRecoilValue(searchAtom);
+  const [recipes, setRecipes] = useState([]);
+
   const [target, setTarget] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [countPost, setCountPost] = useState(4);
@@ -27,21 +32,43 @@ const Postzone = () => {
       observer.observe(entry.target);
     }
   };
+  //   // let observer;
+  //   // if (target) {
+  //   //   observer = new IntersectionObserver(onIntersect, {
+  //   //     threshold: 0.4,
+  //   //   });
+  //   //   observer.observe(target);
+  //   // }
+  //   // return () => observer && observer.disconnect();
+  // });
   useEffect(() => {
-    let observer;
-    if (target) {
-      observer = new IntersectionObserver(onIntersect, {
-        threshold: 0.4,
+    const query = filteredData;
+    const urlAll = "http://localhost:8080/post";
+    const urlSearch = `http://localhost:8080/post/search?recipeName=${query}`;
+    let url;
+    url = filteredData === "" ? urlAll : urlSearch;
+
+    fetch(url)
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        setRecipes(data);
       });
-      observer.observe(target);
-    }
-    return () => observer && observer.disconnect();
+    // let observer;
+    // if (target) {
+    //   observer = new IntersectionObserver(onIntersect, {
+    //     threshold: 0.4,
+    //   });
+    //   observer.observe(target);
+    // }
+    // return () => observer && observer.disconnect();
   });
 
   return (
     <Wrapper>
       <WrapperPost>
-        {dummy
+        {recipes
           .filter((data) => {
             if (dropDownOptions.category === "") {
               return data.category;
@@ -68,25 +95,23 @@ const Postzone = () => {
           })
           .map((data) => {
             let recipeName = data.recipeName;
-            let author = data.userId.$oid;
+            let nickname = data.userId.nickName;
             if (recipeName.length > 20) {
               recipeName = recipeName.substring(0, 19) + "…";
             }
-            if (data.userId.$oid.length > 12) {
-              author = author.substring(0, 11) + "…";
-            }
+
             return (
               <Link
-                to={`/detail/${data._id.$oid}`}
+                to={`/detail/${data._id}`}
                 style={{ textDecoration: "none", color: "inherit" }}
-                author={data.userId.$oid}
+                nickname={data.userId.nickName}
                 title={data.recipeName}
               >
                 <div>
                   <Img src={data.thumbnail} />
                   <TextBox>
                     <Title>{recipeName}</Title>
-                    <Author>{author}</Author>
+                    <Author>{nickname}</Author>
                     <WrapperHeartComment>
                       <span className="sprite heart" /> <HeartCommentCount>42</HeartCommentCount>
                       <span className="sprite comment" /> <HeartCommentCount>99</HeartCommentCount>

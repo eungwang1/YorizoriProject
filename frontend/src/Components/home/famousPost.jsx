@@ -109,9 +109,8 @@ const FamousPost = () => {
     </ArticleWrapper>
   );
 };
-
 const StyledSlider = styled(Slider)`
-  //   margin: 0 15px 0 15px;
+  margin-top: 5px;
   .slick-prev:before,
   .slick-next:before {
     color: #feae11;

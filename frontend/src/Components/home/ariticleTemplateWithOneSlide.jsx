@@ -7,7 +7,7 @@ export const ArticleWrapper = styled.div`
   height: 400px;
   position: relative;
   padding: 0 15px 0 15px;
-  margin-top: 25px;
+  margin-top: 20px;
   //   margin-bottom: 100px;
   //   display: flex;
   //   flex-direction: column;
@@ -20,11 +20,10 @@ export const TextWrapper = styled.div`
   height: 60px;
   display: flex;
   justify-content: space-between;
-  //   margin-top: 15px;
 `;
 
 export const TextMainWrapper = styled.div`
-  width: 175px;
+  width: 235px;
   height: 60px;
 `;
 
@@ -38,22 +37,30 @@ export const TextMain = styled.p`
     font-weight: 700;
   }
   & + & {
-    margin-top: 10px;
+    margin-top: 5px;
   }
   &:first-of-type {
-    margin-left: 10px;
+    margin-left: 3px;
   }
 `;
 
-export const LinkedText = styled.p`
+export const LinkedText = styled.button`
   color: #d45500;
+  background: rgba(0, 0, 0, 0);
+  border: 1px solid #d45500;
+  border-radius: 10px;
   text-align: center;
   font-size: 14px;
   justify-self: end;
   width: 100px;
+  height: 35px;
   line-height: 30px;
-  margin-top: 30px;
+  margin-top: 14px;
   margin-bottom: 0px;
+  &:hover {
+    background: #d45500;
+    color: #ffffff;
+  }
 `;
 
 export const ImageWarpper = styled.div`
@@ -92,6 +99,7 @@ export const TextBox = styled.div`
   margin-top: 8px;
   font-weight: 900;
   text-align: left;
+  margin-bottom: 20px;
 `;
 export const Title = styled.p`
   width: 100%;
@@ -104,7 +112,7 @@ export const Title = styled.p`
 `;
 export const Author = styled.p`
   font-size: 13px;
-  margin: 5px 0 10px 0;
+  margin: 5px 0 5px 0;
 `;
 export const WrapperHeartComment = styled.div`
   line-height: 15px;
