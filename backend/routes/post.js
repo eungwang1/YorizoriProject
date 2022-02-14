@@ -130,6 +130,25 @@ router.post(
   })
 );
 
+//레시피명 검색
+router.get(
+  "/search",
+  asyncHandler(async (req, res, next) => {
+    const page = Number(req.query.page || 1);
+    const perPage = Number(req.query.perPage || 16);
+    const recipeName = req.query.recipeName;
+
+    const posts = await Post.find({ useYN: true, recipeName: { $regex: recipeName } })
+      .populate({ path: "userId", select: "-password" })
+      .populate({ path: "numLikes", match: { isUnliked: false } })
+      .populate({ path: "numComments", match: { isDeleted: false } })
+      .sort({ createdAt: -1 }) //최근 순으로 정렬
+      .skip((page - 1) * perPage) // (현재페이지-1) * 페이지당 게시글수
+      .limit(perPage);
+    res.status(200).json(posts);
+  })
+);
+
 //게시글들을 좋아요 받은 순으로 내림차순 정렬해서 값을 전달.
 // populate virtual 기능으로 가져온 count값으로 바로 정렬하는 방법을 찾지 못해서
 //일단 데이터배열을 가져온 후에 sort를 한번 더 적용했습니다.
@@ -188,6 +207,7 @@ router.get(
     res.status(200).json(posts);
   })
 );
+
 //레시피 수정
 router.patch(
   "/:postId",
@@ -306,8 +326,11 @@ router.get(
   asyncHandler(async (req, res, next) => {
     const page = Number(req.query.page || 1);
     const perPage = Number(req.query.perPage || 16);
+    console.log(req.query);
 
-    const posts = await Post.find({ useYN: true })
+    const posts = await Post.find({
+      useYN: true,
+    })
       .populate({ path: "userId", select: "-password" })
       .populate({ path: "numLikes", match: { isUnliked: false } })
       .populate({ path: "numComments", match: { isDeleted: false } })

@@ -120,4 +120,6 @@ PostSchema.virtual("numComments", {
   count: true,
 });
 
+PostSchema.index({ recipeName: "text" }); // text index 등록
+
 module.exports = PostSchema;
