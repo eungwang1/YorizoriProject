@@ -5,7 +5,14 @@ import { useUserActions } from "../../actions";
 import BottomNav from "../../Components/nav/BottomNav";
 import TopNav_main from "../../Components/nav/TopNav_main";
 import FileUpload from "@mimoid-prog/react-file-upload";
-import { useRecoilStateLoadable, useSetRecoilState, useRecoilValue, atom, selector } from "recoil";
+import {
+  useRecoilStateLoadable,
+  useSetRecoilState,
+  useRecoilState,
+  useRecoilValue,
+  atom,
+  selector,
+} from "recoil";
 import { authAtom } from "../../states";
 import { pageStateAtom } from "../../states";
 import Slogan from "./slogan";
@@ -14,7 +21,7 @@ import RandomView from "./randomView";
 // import FamousViewWithSlider from "./discardedTemplate/famousViewWithSlider";
 // import FamousViewWithOneSlider from "./discardedTemplate/famousViewWithOneSlide";
 import { userIdAtom } from "../../states/auth";
-import { loginUserSelector } from "../../states/homeAtom";
+import { loginUserSelector, loginUserAtom } from "../../states/homeAtom";
 import FamousPost from "./famousPost";
 import FamousUserPost from "./famousUserPost";
 import SloganBottom from "./sloganBottom";
@@ -30,18 +37,24 @@ const HomeBlock = styled.div`
 `;
 const Home = () => {
   const [loginUserLoadable, setloginUserLoadable] = useRecoilStateLoadable(loginUserSelector);
+  const loginUser = useRecoilValue(loginUserAtom);
 
   useEffect(() => {
-    setloginUserLoadable(loginUserLoadable);
-  }, []);
+    if (loginUser) return;
+    if (loginUserLoadable.state === "hasValue") setloginUserLoadable(loginUserLoadable.contents);
 
+    console.log("홈 useEffect 실행여부");
+  }, [loginUserLoadable]);
+
+  if (loginUserLoadable.state === "loading") return <div>loading...</div>;
+  console.log("홈 렌더링");
   return (
     <HomeBlock>
       <TopNav_main />
       <Slogan></Slogan>
       <FamousPost></FamousPost>
+      {/* 팔로워 순으로 상위 4명의 유저를 뽑아서 유저의 게시글을 6개씩 보여줌 */}
       <FamousUserPost></FamousUserPost>
-      <FamousPost></FamousPost>
       <SloganBottom></SloganBottom>
       <BottomNav></BottomNav>
     </HomeBlock>

@@ -4,20 +4,13 @@ import styled, { css } from "styled-components";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { detailedPostAtom, famousPostsSelector } from "../../states/homeAtom";
 import {
-  datailedPostAtom,
-  famousPostsSelector,
-  famousPostLikeUserSelector,
-  famousPostCommentUserSelector,
-  detailedPostsLikeUserAtom,
-} from "../../states/homeAtom";
-import axios from "axios";
-import {
-  useRecoilState,
   useSetRecoilState,
-  useRecoilValue,
-  useRecoilStateLoadable,
   useRecoilValueLoadable,
+  useRecoilState,
+  useRecoilValue,
+  selectorFamily,
 } from "recoil";
 import {
   ArticleWrapper,
@@ -37,11 +30,12 @@ import {
   Comment,
 } from "./ariticleTemplateWithOneSlide";
 
-const FamoustViewRapper = styled.div``;
+// const FamoustViewRapper = styled.div``;
 
 const FamousPost = () => {
   const navigate = useNavigate();
-  const setFamousPost = useSetRecoilState(datailedPostAtom);
+  const setFamousPost = useSetRecoilState(detailedPostAtom);
+  // const famousPost = useRecoilValue(datailedPostAtom);
   const famousListsLoadable = useRecoilValueLoadable(famousPostsSelector);
 
   const clickFamousPostHandler = (item, idx) => {
@@ -63,7 +57,9 @@ const FamousPost = () => {
   };
 
   if (famousListsLoadable.state === "loading") {
-    return <div>loading...</div>;
+    return (
+      <div style={{ height: "300px", marginTop: "150px", fontSize: "50px" }}>로딩중입니다</div>
+    );
   }
   console.log("famousListsLoadable", famousListsLoadable.contents);
   return (
@@ -80,10 +76,10 @@ const FamousPost = () => {
         </Link>
       </TextWrapper>
       {/* <ImageWarpper className="iamge"> */}
-      <StyledSlider className="sliderrr" {...settings}>
+      <StyledSlider {...settings}>
         {famousListsLoadable.contents.map((item, idx) => {
           return (
-            <ImageWithTag className="doosan" key={item._id}>
+            <ImageWithTag key={item._id}>
               <StyledImage
                 src={item.thumbnail}
                 onClick={() => {
@@ -97,10 +93,10 @@ const FamousPost = () => {
                   <Heart
                     className="sprite heart"
                     clicked={false}
-                    onClick={() => alert("하트구현해보자구!")}
-                  />{" "}
+                    onClick={() => console.log("famousPost")}
+                  />
                   <HeartCommentCount>{item.numLikes}</HeartCommentCount>
-                  <span className="sprite comment" />{" "}
+                  <span className="sprite comment" />
                   <HeartCommentCount>{item.numComments}</HeartCommentCount>
                 </WrapperHeartComment>
               </TextBox>

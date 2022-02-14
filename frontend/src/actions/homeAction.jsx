@@ -37,6 +37,7 @@ const getFamousUsers = async (startIndex, limit) => {
     params: {
       startIndex,
       limit,
+      hasPost: true,
     },
   });
   return data.limitedSortedUsers;

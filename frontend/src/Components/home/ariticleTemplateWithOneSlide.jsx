@@ -2,7 +2,7 @@ import React, { userRef, useState, useCallback, useMemo, useEffect } from "react
 import { Link, useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
 
-const ArticleWrapper = styled.div`
+export const ArticleWrapper = styled.div`
   width: 100%;
   height: 400px;
   position: relative;
@@ -14,7 +14,7 @@ const ArticleWrapper = styled.div`
   //   justify-content: center;
 `;
 
-const TextWrapper = styled.div`
+export const TextWrapper = styled.div`
   position: relative;
   font-size: 16px;
   height: 60px;
@@ -23,12 +23,12 @@ const TextWrapper = styled.div`
   //   margin-top: 15px;
 `;
 
-const TextMainWrapper = styled.div`
+export const TextMainWrapper = styled.div`
   width: 175px;
   height: 60px;
 `;
 
-const TextMain = styled.p`
+export const TextMain = styled.p`
   position: relative;
   text-align: left;
   margin: 0;
@@ -45,7 +45,7 @@ const TextMain = styled.p`
   }
 `;
 
-const LinkedText = styled.p`
+export const LinkedText = styled.p`
   color: #d45500;
   text-align: center;
   font-size: 14px;
@@ -56,7 +56,7 @@ const LinkedText = styled.p`
   margin-bottom: 0px;
 `;
 
-const ImageWarpper = styled.div`
+export const ImageWarpper = styled.div`
   display: flex;
   justify-content: space-between;
   flex-wrap: nowrap;
@@ -66,7 +66,7 @@ const ImageWarpper = styled.div`
   width: 100%;
 `;
 
-const ImageWithTag = styled.div`
+export const ImageWithTag = styled.div`
   //   flex-shrink: 0;
   width: 100%;
   height: 310px;
@@ -76,7 +76,7 @@ const ImageWithTag = styled.div`
   }
 `;
 
-const StyledImage = styled.div`
+export const StyledImage = styled.div`
   width: 100%;
   height: 220px;
   background-image: url(${(props) => props.src});
@@ -86,14 +86,14 @@ const StyledImage = styled.div`
   // border-radius: 5%;
 `;
 
-const TextBox = styled.div`
-  width: 150px;
-  height: 100px;
+export const TextBox = styled.div`
+  width: 100%;
+  height: 60px;
   margin-top: 8px;
   font-weight: 900;
   text-align: left;
 `;
-const Title = styled.p`
+export const Title = styled.p`
   width: 100%;
   height: 40px;
   font-size: 16px;
@@ -102,16 +102,16 @@ const Title = styled.p`
   //   text-overflow: ellipsis;
   //   white-space: nowrap;
 `;
-const Author = styled.p`
+export const Author = styled.p`
   font-size: 13px;
   margin: 5px 0 10px 0;
 `;
-const WrapperHeartComment = styled.div`
+export const WrapperHeartComment = styled.div`
   line-height: 15px;
   .sprite {
     display: inline-block;
     flex-shrink: 0;
-    background-image: url("./images/icons.png");
+    background-image: url("${process.env.PUBLIC_URL}/images/icons.png");
     background-repeat: no-repeat;
     background-size: 66.34px 30px;
   }
@@ -126,30 +126,31 @@ const WrapperHeartComment = styled.div`
   }
 `;
 
-const Heart = styled.span`
-  background-position: ${({ clicked }) => (clicked ? "-33px" : "-16px")} 3.8px;
+export const Heart = styled.span`
+  background-position: ${({ heartClick }) => (heartClick ? "-33px" : "-16px")} 3.8px;
 `;
 
-const Comment = styled.span``;
-const HeartCommentCount = styled.span`
+export const Comment = styled.span``;
+export const HeartCommentCount = styled.span`
   font-size: 13px;
   margin-right: 8px;
+  margin-left: 8px;
 `;
 
-export {
-  ArticleWrapper,
-  TextMainWrapper,
-  TextWrapper,
-  TextMain,
-  LinkedText,
-  ImageWarpper,
-  ImageWithTag,
-  StyledImage,
-  TextBox,
-  Title,
-  Author,
-  WrapperHeartComment,
-  HeartCommentCount,
-  Heart,
-  Comment,
-};
+// export {
+//   ArticleWrapper,
+//   TextMainWrapper,
+//   TextWrapper,
+//   TextMain,
+//   LinkedText,
+//   ImageWarpper,
+//   ImageWithTag,
+//   StyledImage,
+//   TextBox,
+//   Title,
+//   Author,
+//   WrapperHeartComment,
+//   HeartCommentCount,
+//   Heart,
+//   Comment,
+// };
