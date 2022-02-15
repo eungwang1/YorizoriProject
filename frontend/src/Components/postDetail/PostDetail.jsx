@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import TopNav from "../nav/TopNav";
 import BottomNav from "../nav/BottomNav";
@@ -7,6 +8,9 @@ import Ingredient from "./Ingredient";
 import Recipe from "./Recipe";
 import Comments from "./Comments";
 import Recommend from "./Recommend";
+import axios from "axios";
+import { useSetRecoilState, useRecoilValue } from "recoil";
+import { detailDataAtom } from "../../states/detail";
 
 const PostDetailBlock = styled.div`
   font-size: 18px;
@@ -27,15 +31,32 @@ const Line = styled.div`
   background-color: rgba(0, 0, 0, 0.14);
 `;
 const PostDetail = () => {
+  const location = useLocation();
+  const setDetailData = useSetRecoilState(detailDataAtom);
+  const detailData = useRecoilValue(detailDataAtom);
+
+  useEffect(() => {
+    const _id = location.pathname.substring(
+      location.pathname.indexOf("detail/") + "detail/".length
+    );
+    console.log(_id);
+    const getProcessData = async () => {
+      const { data } = await axios.get(`/post/${_id}`);
+      console.log(data);
+      setDetailData(data);
+    };
+    getProcessData();
+  }, []);
+
   return (
     <PostDetailBlock>
       <TopNav />
       <Content>
-        <Summary />
+        <Summary data={detailData} />
         <Line />
-        <Ingredient />
+        <Ingredient data={detailData} />
         <Line />
-        <Recipe />
+        <Recipe data={detailData} />
         <Line />
         <Comments />
         <Line />

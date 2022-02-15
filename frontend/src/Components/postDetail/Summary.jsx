@@ -115,42 +115,47 @@ const Servings = styled.span``;
 const Time = styled.span``;
 const Diffic = styled.span``;
 
-const Summary = () => {
+const Summary = ({ data }) => {
   const [heart, SetHeart] = useState(false);
   const HeartState = () => {
     SetHeart(!heart);
   };
+
   return (
     <SummaryWrapper heartstate={heart}>
-      <Thumbnail src={dummy.post[0].postinfo.thumbnail} />
-      <LCVS>
-        <Likes>
-          <span className="sprite heart" onClick={HeartState} />
-          <span>59명이 좋아합니다.</span>
-        </Likes>
-        <Comments>
-          <span className="sprite comment" />
-          <span>2</span>
-        </Comments>
-        <Views>
-          <span className="sprite view" />
-          <span>200</span>
-        </Views>
-        <Share className="sprite share" />
-      </LCVS>
-      <div>
-        <Title>{dummy.post[0].postinfo.recipeName}</Title>
-        <Content>{dummy.post[0].postinfo.desc}</Content>
-      </div>
-      <Author>
-        <ProfileImg src="../images/gam.jpg" />
-        <Nickname>스누피</Nickname>
-      </Author>
-      <SummaryInfo>
-        <Servings>{dummy.post[0].postinfo.servings}</Servings>
-        <Time>{dummy.post[0].postinfo.time}</Time>
-        <Diffic>{dummy.post[0].postinfo.diffic}</Diffic>
-      </SummaryInfo>
+      {data && (
+        <>
+          <Thumbnail src={data.thumbnail} />
+          <LCVS>
+            <Likes>
+              <span className="sprite heart" onClick={HeartState} />
+              <span>{data.numLikes}명이 좋아합니다.</span>
+            </Likes>
+            <Comments>
+              <span className="sprite comment" />
+              <span>{data.numComments}</span>
+            </Comments>
+            <Views>
+              <span className="sprite view" />
+              <span>200</span>
+            </Views>
+            <Share className="sprite share" />
+          </LCVS>
+          <div>
+            <Title>{data.recipeName}</Title>
+            <Content>{data.desc}</Content>
+          </div>
+          <Author>
+            <ProfileImg src="../images/gam.jpg" />
+            <Nickname>스누피</Nickname>
+          </Author>
+          <SummaryInfo>
+            <Servings>{data.servings}</Servings>
+            <Time>{data.time}</Time>
+            <Diffic>{data.diffic}</Diffic>
+          </SummaryInfo>
+        </>
+      )}
     </SummaryWrapper>
   );
 };

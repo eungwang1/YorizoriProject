@@ -12,18 +12,20 @@ const IngredientInfo = styled.div`
   font-size: 13px;
   margin: 11px 20px 11px 11px;
 `;
-const Ingredient = () => {
+const Ingredient = ({ data }) => {
+  console.log(data);
   return (
     <IngredientWrapper>
       <div style={{ fontWeight: 900 }}>재료</div>
-      {dummy.post[0].postinfo.ingredients.map((ingredient, index) => {
-        return (
-          <IngredientInfo key={`IngredientInfo_${index}`}>
-            <div key={`IngredientInfo_name_${index}`}>{ingredient.name}</div>
-            <div key={`IngredientInfo_amount_${index}`}>{ingredient.amount}</div>
-          </IngredientInfo>
-        );
-      })}
+      {data &&
+        data.ingredient.map((ingredient, index) => {
+          return (
+            <IngredientInfo key={`IngredientInfo_${index}`}>
+              <div key={`IngredientInfo_name_${index}`}>{ingredient.ingreName}</div>
+              <div key={`IngredientInfo_amount_${index}`}>{ingredient.ingreCount}</div>
+            </IngredientInfo>
+          );
+        })}
     </IngredientWrapper>
   );
 };

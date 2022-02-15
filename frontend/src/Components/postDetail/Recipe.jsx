@@ -1,20 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useLocation } from "react-router-dom";
 import styled from "styled-components";
-import { useRecoilValue, useSetRecoilState } from "recoil";
 import Slider from "react-slick";
 import dummy from "./PostDummyData.json";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useForm } from "react-hook-form";
-import axios from "axios";
 
 const padNumber = (num, length) => {
   return String(num).padStart(length, "0");
 };
 
-const Recipe = (props) => {
-  const [processData, setProcessData] = useState([]);
+const Recipe = ({ data }) => {
   const [timerState, setTimerState] = useState(
     Array.from({ length: 100 }, () => {
       return {
@@ -22,20 +18,6 @@ const Recipe = (props) => {
       };
     })
   );
-  const location = useLocation();
-
-  useEffect(() => {
-    const _id = location.pathname.substring(
-      location.pathname.indexOf("detail/") + "detail/".length
-    );
-    console.log(_id);
-    const getProcessData = async () => {
-      const { data } = await axios.get(`/post/${_id}`);
-      console.log(data);
-      setProcessData(data.process);
-    };
-    getProcessData();
-  }, []);
 
   const { register, setValue, getValues } = useForm();
   const interval = useRef({});
@@ -102,51 +84,51 @@ const Recipe = (props) => {
   return (
     <RecipeWrapper>
       <div style={{ fontWeight: 900 }}>요리 순서</div>
-      {/* {dummy.post[0].postinfo.process.map((process, index) => { */}
-      {processData.map((process, index) => {
-        return (
-          <Step key={`step_${index}`}>
-            <StepNumber key={`StepNumber_${index}`}>{index + 1}</StepNumber>
-            <div>
-              <Content key={`Content_${index}`}>{process.explain}</Content>
-              <TimerWrapper>
-                <Timer
-                  onClick={(e) => {
-                    timeHandler(index, e);
-                  }}
-                  key={`Timer_${index}`}
-                >
-                  {timerState[index].state ? (
-                    <ClockImg key={`ClockImg_${index}`} src="../images/clockImage.svg" />
-                  ) : (
-                    <ClockImg key={`ClockImg_${index}`} src="../images/clockImageActive.svg" />
-                  )}
-                  <TimeInput
-                    {...register(`min_${index}`)}
-                    defaultValue={padNumber(parseInt(process.processTime.min), 2)}
-                    readOnly
-                  />
-                  <StyledP>:</StyledP>
-                  <TimeInput
-                    {...register(`sec_${index}`)}
-                    defaultValue={padNumber(parseInt(process.processTime.sec), 2)}
-                    readOnly
-                  />
-                </Timer>
-                <ResetBtn
-                  data-value={
-                    Number(process.processTime.min * 60) + Number(process.processTime.sec)
-                  }
-                  onClick={(e) => {
-                    resetTime(index, e);
-                  }}
-                ></ResetBtn>
-              </TimerWrapper>
-            </div>
-            <Img key={`Img_${index}`} src={process.processImage} />
-          </Step>
-        );
-      })}
+      {data &&
+        data.process.map((process, index) => {
+          return (
+            <Step key={`step_${index}`}>
+              <StepNumber key={`StepNumber_${index}`}>{index + 1}</StepNumber>
+              <div>
+                <Content key={`Content_${index}`}>{process.explain}</Content>
+                <TimerWrapper>
+                  <Timer
+                    onClick={(e) => {
+                      timeHandler(index, e);
+                    }}
+                    key={`Timer_${index}`}
+                  >
+                    {timerState[index].state ? (
+                      <ClockImg key={`ClockImg_${index}`} src="../images/clockImage.svg" />
+                    ) : (
+                      <ClockImg key={`ClockImg_${index}`} src="../images/clockImageActive.svg" />
+                    )}
+                    <TimeInput
+                      {...register(`min_${index}`)}
+                      defaultValue={padNumber(parseInt(process.processTime.min), 2)}
+                      readOnly
+                    />
+                    <StyledP>:</StyledP>
+                    <TimeInput
+                      {...register(`sec_${index}`)}
+                      defaultValue={padNumber(parseInt(process.processTime.sec), 2)}
+                      readOnly
+                    />
+                  </Timer>
+                  <ResetBtn
+                    data-value={
+                      Number(process.processTime.min * 60) + Number(process.processTime.sec)
+                    }
+                    onClick={(e) => {
+                      resetTime(index, e);
+                    }}
+                  ></ResetBtn>
+                </TimerWrapper>
+              </div>
+              <Img key={`Img_${index}`} src={process.processImage} />
+            </Step>
+          );
+        })}
       <div style={{ fontWeight: 900, marginTop: 20 }}>완성 사진</div>
       <StyledSlider {...settings}>
         {dummy.post[0].postinfo.photo.map((photo, index) => {
