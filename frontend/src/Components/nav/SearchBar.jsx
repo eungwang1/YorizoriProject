@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, { useState, useRef } from "react";
+import styled, { css } from "styled-components";
 import { searchAtom } from "../nav/NavAtom";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { Link } from "react-router-dom";
 
 function SearchBar({}) {
@@ -14,12 +14,18 @@ function SearchBar({}) {
   const handleSearch = (e) => {
     setFilteredData(e.target.value);
   };
+  const keyPress = (e) => {
+    if (e.key == "Enter") {
+      searchText();
+    }
+  };
 
   return (
     <>
       <SearchInputs
         placeholder="검색어"
         onChange={handleSearch}
+        onKeyPress={keyPress}
         value={filteredData}
       ></SearchInputs>
       <Link to="/view_all">
@@ -31,11 +37,11 @@ function SearchBar({}) {
 export default SearchBar;
 
 const SearchInputs = styled.input`
+  background: rgba(0, 0, 0, 0);
   position: relative;
   top: 30px;
   font-size: 16px;
-  left: 30px;
-  width: 220px;
+  width: 80%;
   height: 20px;
   outline: none;
   bottom: 10px;
@@ -48,9 +54,9 @@ const SearchButton = styled.button`
   background-image: url("./images/search.png");
   background-size: cover;
   border: none;
-  position: absolute;
+  position: relative;
   width: 25px;
   height: 25px;
-  right: 20px;
-  top: 25px;
+
+  margin: 25px 20px 20px 20px;
 `;

@@ -5,6 +5,7 @@ import ReactLoading from "react-loading";
 import { dropDownOptionsState } from "./ViewAllAtom";
 import { useRecoilValue } from "recoil";
 import { searchAtom } from "../nav/NavAtom";
+import axios from "axios";
 
 const baseURL = "http://localhost:8080";
 
@@ -48,13 +49,12 @@ const Postzone = () => {
     let url;
     url = filteredData === "" ? urlAll : urlSearch;
 
-    fetch(url)
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        setRecipes(data);
-      });
+    const fetchData = async () => {
+      const result = await axios(url);
+      setRecipes(result.data);
+    };
+    fetchData();
+
     // let observer;
     // if (target) {
     //   observer = new IntersectionObserver(onIntersect, {
@@ -63,7 +63,7 @@ const Postzone = () => {
     //   observer.observe(target);
     // }
     // return () => observer && observer.disconnect();
-  });
+  }, [filteredData]);
 
   return (
     <Wrapper>
@@ -113,8 +113,10 @@ const Postzone = () => {
                     <Title>{recipeName}</Title>
                     <Author>{nickname}</Author>
                     <WrapperHeartComment>
-                      <span className="sprite heart" /> <HeartCommentCount>42</HeartCommentCount>
-                      <span className="sprite comment" /> <HeartCommentCount>99</HeartCommentCount>
+                      <span className="sprite heart" />{" "}
+                      <HeartCommentCount>{data.numLikes}</HeartCommentCount>
+                      <span className="sprite comment" />{" "}
+                      <HeartCommentCount>{data.numComments}</HeartCommentCount>
                     </WrapperHeartComment>
                   </TextBox>
                 </div>
