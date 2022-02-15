@@ -145,20 +145,12 @@ export const HeartCommentCount = styled.span`
   margin-left: 8px;
 `;
 
-// export {
-//   ArticleWrapper,
-//   TextMainWrapper,
-//   TextWrapper,
-//   TextMain,
-//   LinkedText,
-//   ImageWarpper,
-//   ImageWithTag,
-//   StyledImage,
-//   TextBox,
-//   Title,
-//   Author,
-//   WrapperHeartComment,
-//   HeartCommentCount,
-//   Heart,
-//   Comment,
-// };
+export const Loading = styled.div`
+  height: 400px;
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;

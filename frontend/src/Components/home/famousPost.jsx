@@ -1,36 +1,13 @@
-import React, { userRef, useState, useCallback, useMemo, useEffect } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
-import styled, { css } from "styled-components";
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import { Watch } from "react-loader-spinner";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { detailedPostAtom, famousPostsSelector } from "../../states/homeAtom";
-import {
-  useSetRecoilState,
-  useRecoilValueLoadable,
-  useRecoilState,
-  useRecoilValue,
-  selectorFamily,
-} from "recoil";
-import {
-  ArticleWrapper,
-  TextMainWrapper,
-  TextWrapper,
-  TextMain,
-  LinkedText,
-  ImageWarpper,
-  ImageWithTag,
-  StyledImage,
-  TextBox,
-  Title,
-  Author,
-  WrapperHeartComment,
-  HeartCommentCount,
-  Heart,
-  Comment,
-} from "./ariticleTemplateWithOneSlide";
-
-// const FamoustViewRapper = styled.div``;
+import { useSetRecoilState, useRecoilValueLoadable } from "recoil";
+import * as S from "./ariticleTemplateWithOneSlide";
 
 const FamousPost = () => {
   const navigate = useNavigate();
@@ -38,7 +15,7 @@ const FamousPost = () => {
   // const famousPost = useRecoilValue(datailedPostAtom);
   const famousListsLoadable = useRecoilValueLoadable(famousPostsSelector);
 
-  const clickFamousPostHandler = (item, idx) => {
+  const clickFamousPostHandler = (item) => {
     const postId = item._id;
     setFamousPost(item);
     navigate(`/detail/${postId}`);
@@ -58,57 +35,58 @@ const FamousPost = () => {
 
   if (famousListsLoadable.state === "loading") {
     return (
-      <div style={{ height: "300px", marginTop: "150px", fontSize: "50px" }}>로딩중입니다</div>
+      <S.Loading>
+        <Watch ariaLabel="loading-indicator" color="#d45500" />
+      </S.Loading>
     );
   }
-  console.log("famousListsLoadable", famousListsLoadable.contents);
   return (
-    <ArticleWrapper>
-      <TextWrapper>
-        <TextMainWrapper>
-          <TextMain>지금 ,</TextMain>
-          <TextMain>
+    <S.ArticleWrapper>
+      <S.TextWrapper>
+        <S.TextMainWrapper>
+          <S.TextMain>지금 ,</S.TextMain>
+          <S.TextMain>
             <span>인기</span> 있는 음식이에요.
-          </TextMain>
-        </TextMainWrapper>
+          </S.TextMain>
+        </S.TextMainWrapper>
         <Link to="/view_all" style={{ textDecoration: "none" }}>
-          <LinkedText>구경할래요</LinkedText>
+          <S.LinkedText>구경할래요</S.LinkedText>
         </Link>
-      </TextWrapper>
-      {/* <ImageWarpper className="iamge"> */}
+      </S.TextWrapper>
       <StyledSlider {...settings}>
         {famousListsLoadable.contents.map((item, idx) => {
           return (
-            <ImageWithTag key={item._id}>
-              <StyledImage
+            <S.ImageWithTag key={item._id}>
+              <S.StyledImage
                 src={item.thumbnail}
                 onClick={() => {
-                  clickFamousPostHandler(item, idx);
+                  clickFamousPostHandler(item);
                 }}
-              ></StyledImage>
-              <TextBox>
-                <Title>{item.recipeName}</Title>
-                <Author>{item.userId.nickName}</Author>
-                <WrapperHeartComment>
-                  <Heart
+              ></S.StyledImage>
+              <S.TextBox>
+                <S.Title>{item.recipeName}</S.Title>
+                <S.Author>{item.userId.nickName}</S.Author>
+                <S.WrapperHeartComment>
+                  <S.Heart
                     className="sprite heart"
                     clicked={false}
                     onClick={() => console.log("famousPost")}
                   />
-                  <HeartCommentCount>{item.numLikes}</HeartCommentCount>
-                  <span className="sprite comment" />
-                  <HeartCommentCount>{item.numComments}</HeartCommentCount>
-                </WrapperHeartComment>
-              </TextBox>
-            </ImageWithTag>
-            // </div>
+                  <S.HeartCommentCount>{item.numLikes}</S.HeartCommentCount>
+                  <S.Comment className="sprite comment" />
+                  <S.HeartCommentCount>{item.numComments}</S.HeartCommentCount>
+                </S.WrapperHeartComment>
+              </S.TextBox>
+            </S.ImageWithTag>
           );
         })}
       </StyledSlider>
-      {/* </ImageWarpper> */}
-    </ArticleWrapper>
+    </S.ArticleWrapper>
   );
 };
+
+export default FamousPost;
+
 const StyledSlider = styled(Slider)`
   margin-top: 5px;
   .slick-prev:before,
@@ -120,5 +98,3 @@ const StyledSlider = styled(Slider)`
     color: #feae11;
   }
 `;
-
-export default FamousPost;
