@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import dummy from "./PostDummyData.json";
+import { userIdAtom } from "../../states";
 
 const SummaryWrapper = styled.div`
   width: 360px;
@@ -146,8 +147,8 @@ const Summary = ({ data }) => {
             <Content>{data.desc}</Content>
           </div>
           <Author>
-            <ProfileImg src="../images/gam.jpg" />
-            <Nickname>스누피</Nickname>
+            <ProfileImg src={data.userId.profileImage} />
+            <Nickname>{data.userId.nickName}</Nickname>
           </Author>
           <SummaryInfo>
             <Servings>{data.servings}</Servings>
