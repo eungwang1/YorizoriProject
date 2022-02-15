@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
 import TopNav from "../nav/TopNav";
 import BottomNav from "../nav/BottomNav";
@@ -9,7 +9,7 @@ import Recipe from "./Recipe";
 import Comments from "./Comments";
 import Recommend from "./Recommend";
 import axios from "axios";
-import { useSetRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { detailDataAtom } from "../../states/detail";
 
 const PostDetailBlock = styled.div`
@@ -31,18 +31,11 @@ const Line = styled.div`
   background-color: rgba(0, 0, 0, 0.14);
 `;
 const PostDetail = () => {
-  const location = useLocation();
-  const setDetailData = useSetRecoilState(detailDataAtom);
-  const detailData = useRecoilValue(detailDataAtom);
-
+  const [detailData, setDetailData] = useRecoilState(detailDataAtom);
+  const { postId } = useParams();
   useEffect(() => {
-    const _id = location.pathname.substring(
-      location.pathname.indexOf("detail/") + "detail/".length
-    );
-    console.log(_id);
     const getProcessData = async () => {
-      const { data } = await axios.get(`/post/${_id}`);
-      console.log(data);
+      const { data } = await axios.get(`/post/${postId}`);
       setDetailData(data);
     };
     getProcessData();
@@ -52,7 +45,7 @@ const PostDetail = () => {
     <PostDetailBlock>
       <TopNav />
       <Content>
-        <Summary data={detailData} />
+        <Summary data={detailData} postId={postId} />
         <Line />
         <Ingredient data={detailData} />
         <Line />

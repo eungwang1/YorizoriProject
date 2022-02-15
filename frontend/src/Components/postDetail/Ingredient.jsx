@@ -13,7 +13,6 @@ const IngredientInfo = styled.div`
   margin: 11px 20px 11px 11px;
 `;
 const Ingredient = ({ data }) => {
-  console.log(data);
   return (
     <IngredientWrapper>
       <div style={{ fontWeight: 900 }}>재료</div>

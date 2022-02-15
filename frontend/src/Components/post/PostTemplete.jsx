@@ -34,13 +34,7 @@ const PostTemplete = ({ children, stepNum, page, request }) => {
           [ 4 ]
         </PageBtn>
       </BtnWrapper>
-      <StyledBtn
-        page={page}
-        type="submit"
-        onClick={() => {
-          localStorage.clear();
-        }}
-      >
+      <StyledBtn page={page} type="submit">
         작성 완료
       </StyledBtn>
       <NavBottom />
