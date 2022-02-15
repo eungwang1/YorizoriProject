@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import ReactLoading from "react-loading";
-import { dropDownOptionsState } from "./ViewAllAtom";
-import { useRecoilValue } from "recoil";
+import dummy from "../../posts.json";
+import { dropDownOptionsState } from "../../states/ViewAllAtom";
+import { useRecoilValue, useSetRecoilState, useRecoilValueLoadable } from "recoil";
+import { famousPostsSelector2, count, sortState } from "../../states/ViewAllAtom";
 import { searchAtom } from "../nav/NavAtom";
 import axios from "axios";
 
@@ -15,14 +17,26 @@ const Postzone = () => {
 
   const [target, setTarget] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [countPost, setCountPost] = useState(4);
+
+  const countPost = useRecoilValue(count);
+  const setCountPost = useSetRecoilState(count);
+
+  const currentSortState = useRecoilValue(sortState);
 
   const dropDownOptions = useRecoilValue(dropDownOptionsState);
+  const famousListsLoadable = useRecoilValueLoadable(famousPostsSelector2);
+
+  let famousList = famousListsLoadable.contents;
+
+  useEffect(() => {
+    console.log(countPost);
+    console.log(famousListsLoadable.contents);
+  }, [countPost]);
 
   const getMoreItem = async () => {
     setIsLoaded(true);
     await new Promise((resolve) => setTimeout(resolve, 1500));
-    setCountPost((countPost) => countPost + 4);
+    setCountPost((countPost) => countPost + 16);
     setIsLoaded(false);
   };
 
@@ -33,15 +47,18 @@ const Postzone = () => {
       observer.observe(entry.target);
     }
   };
-  //   // let observer;
-  //   // if (target) {
-  //   //   observer = new IntersectionObserver(onIntersect, {
-  //   //     threshold: 0.4,
-  //   //   });
-  //   //   observer.observe(target);
-  //   // }
-  //   // return () => observer && observer.disconnect();
-  // });
+
+  useEffect(() => {
+    let observer;
+    if (target) {
+      observer = new IntersectionObserver(onIntersect, {
+        threshold: 0.4,
+      });
+      observer.observe(target);
+    }
+    return () => observer && observer.disconnect();
+  }, [target]);
+
   useEffect(() => {
     const query = filteredData;
     const urlAll = "http://localhost:8080/post";
@@ -54,21 +71,15 @@ const Postzone = () => {
       setRecipes(result.data);
     };
     fetchData();
-
-    // let observer;
-    // if (target) {
-    //   observer = new IntersectionObserver(onIntersect, {
-    //     threshold: 0.4,
-    //   });
-    //   observer.observe(target);
-    // }
-    // return () => observer && observer.disconnect();
   }, [filteredData]);
 
+  if (famousListsLoadable.state === "loading") {
+    return <div>loading...</div>;
+  }
   return (
     <Wrapper>
       <WrapperPost>
-        {recipes
+        {(currentSortState === "famous" ? famousList : recipes)
           .filter((data) => {
             if (dropDownOptions.category === "") {
               return data.category;
@@ -93,7 +104,7 @@ const Postzone = () => {
             }
             return data.cook === dropDownOptions.cook;
           })
-          .map((data) => {
+          .map((data, idx) => {
             let recipeName = data.recipeName;
             let nickname = data.userId.nickName;
             if (recipeName.length > 20) {
@@ -104,8 +115,8 @@ const Postzone = () => {
               <Link
                 to={`/detail/${data._id}`}
                 style={{ textDecoration: "none", color: "inherit" }}
-                nickname={data.userId.nickName}
-                title={data.recipeName}
+                nickname={nickname}
+                title={recipeName}
               >
                 <div>
                   <Img src={data.thumbnail} />
@@ -113,9 +124,9 @@ const Postzone = () => {
                     <Title>{recipeName}</Title>
                     <Author>{nickname}</Author>
                     <WrapperHeartComment>
-                      <span className="sprite heart" />{" "}
+                      <span className="sprite heart" />
                       <HeartCommentCount>{data.numLikes}</HeartCommentCount>
-                      <span className="sprite comment" />{" "}
+                      <span className="sprite comment" />
                       <HeartCommentCount>{data.numComments}</HeartCommentCount>
                     </WrapperHeartComment>
                   </TextBox>
@@ -142,7 +153,7 @@ const Wrapper = styled.div`
   .sprite {
     display: inline-block;
     flex-shrink: 0;
-    background-image: url(${process.env.PUBLIC_URL + "./images/icons.png"});
+    background-image: url(${process.env.PUBLIC_URL + "../images/icons.png"});
     background-repeat: no-repeat;
     background-size: 66.34px 30px;
   }

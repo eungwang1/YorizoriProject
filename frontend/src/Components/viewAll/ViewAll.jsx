@@ -8,7 +8,7 @@ import BottomNav from "../nav/BottomNav";
 import Modal from "./Modal";
 
 import { useRecoilValue } from "recoil";
-import { randomButtonState } from "./ViewAllAtom";
+import { randomButtonState } from "../../states/ViewAllAtom";
 
 const ViewAll = () => {
   const randomButton = useRecoilValue(randomButtonState);

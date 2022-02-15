@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { randomButtonState, randomPostState } from "./ViewAllAtom";
+import { randomButtonState, randomPostState } from "../../states/ViewAllAtom";
 import { Link } from "react-router-dom";
 import dummy from "../../posts.json";
 
@@ -10,8 +10,6 @@ const Modal = () => {
   const setRandomButton = useSetRecoilState(randomButtonState);
   const randomPost = useRecoilValue(randomPostState);
   const setRandomPost = useSetRecoilState(randomPostState);
-  let recipeNameValue = randomPost.recipeName;
-  let author = randomPost.diffic;
   const closeModal = () => {
     setRandomButton(false);
     console.log(randomButton);
@@ -36,8 +34,8 @@ const Modal = () => {
             <Img src={randomPost.thumbnail} />
           </Link>
           <TextBox>
-            <Title>{recipeNameValue}</Title>
-            <Author>{author}</Author>
+            <Title>{randomPost.recipeName}</Title>
+            <Author>{randomPost.userId.$oid}</Author>
             <WrapperHeartComment>
               <span className="sprite heart" /> <HeartCommentCount>31</HeartCommentCount>
               <span className="sprite comment" /> <HeartCommentCount>7</HeartCommentCount>
@@ -84,7 +82,7 @@ const ModalBox = styled.div`
   .sprite {
     display: inline-block;
     flex-shrink: 0;
-    background-image: url("./images/icons.png");
+    background-image: url("../images/icons.png");
     background-repeat: no-repeat;
     background-size: 66.34px 30px;
   }
@@ -107,7 +105,7 @@ const ModalBox = styled.div`
 
 const CloseButton = styled.div`
   position: absolute;
-  background-image: url("./images/closeButton.png");
+  background-image: url("../images/closeButton.png");
   background-size: cover;
   width: 28px;
   height: 28px;
@@ -156,7 +154,7 @@ const ButtonWrapper = styled.div`
   .sprite2 {
     display: inline-block;
     flex-shrink: 0;
-    background-image: url("./images/icons.png");
+    background-image: url("../images/icons.png");
     background-repeat: no-repeat;
     background-size: 106px 47.93px;
   }

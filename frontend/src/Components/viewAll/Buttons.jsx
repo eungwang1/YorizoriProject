@@ -2,7 +2,12 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Dropdown } from "react-dropdown-now";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { randomButtonState, randomPostState, dropDownOptionsState } from "./ViewAllAtom";
+import {
+  randomButtonState,
+  randomPostState,
+  dropDownOptionsState,
+  sortState,
+} from "../../states/ViewAllAtom";
 import dummy from "../../posts.json";
 
 const Buttons = () => {
@@ -10,6 +15,9 @@ const Buttons = () => {
   const setRandomPost = useSetRecoilState(randomPostState);
   const dropDownOptions = useRecoilValue(dropDownOptionsState);
   const setDropDownOptions = useSetRecoilState(dropDownOptionsState);
+  const currentSortState = useRecoilValue(sortState);
+  const setCurrentSortState = useSetRecoilState(sortState);
+
   const randompost = () => {
     setRandomButton(true);
   };
@@ -19,7 +27,7 @@ const Buttons = () => {
     setRandomPost(dummy[random]);
   };
 
-  const clearDropDownOptions = () => {
+  const clearDropDownOptions = (e) => {
     const defaultName = document.querySelectorAll(".rdn-control-placeholder");
     const defaultNameList = ["종류", "재료", "상황", "방법"];
     defaultName.forEach((item, index) => {
@@ -32,6 +40,11 @@ const Buttons = () => {
       condition: "",
       cook: "",
     }));
+    if (e.target.id === "famous") {
+      setCurrentSortState("famous");
+    } else {
+      setCurrentSortState("recent");
+    }
   };
 
   useEffect(() => {
@@ -52,9 +65,13 @@ const Buttons = () => {
   return (
     <>
       <Wrapper>
-        <ButtonWrapper>
-          <button onClick={clearDropDownOptions}>인기순</button>
-          <button onClick={clearDropDownOptions}>최신순</button>
+        <ButtonWrapper currentValue={currentSortState}>
+          <button id="famous" onClick={clearDropDownOptions}>
+            인기순
+          </button>
+          <button id="recent" onClick={clearDropDownOptions}>
+            최신순
+          </button>
           <RandomButtonWapper
             onClick={() => {
               randompost();
@@ -144,9 +161,8 @@ const ButtonWrapper = styled.div`
   & > button {
     width: 95px;
     height: 45px;
-    background-color: #feae11;
     color: white;
-    border: none;
+    border: 2px solid #feae11;
     border-radius: 50px;
     line-height: 36px;
     font-size: 16px;
@@ -155,6 +171,14 @@ const ButtonWrapper = styled.div`
     &:first-child {
       margin-right: 16px;
     }
+  }
+  #famous {
+    background-color: ${(props) => (props.currentValue === "famous" ? "#feae11" : "white")};
+    color: ${(props) => (props.currentValue === "famous" ? "white" : "#feae11")};
+  }
+  #recent {
+    background-color: ${(props) => (props.currentValue === "recent" ? "#feae11" : "white")};
+    color: ${(props) => (props.currentValue === "recent" ? "white" : "#feae11")};
   }
 `;
 
@@ -167,7 +191,7 @@ const RandomButtonWapper = styled.div`
   top: 89px;
   & > div {
     background-color: transparent;
-    background-image: url(${process.env.PUBLIC_URL + "./images/randomButton.png"});
+    background-image: url(${process.env.PUBLIC_URL + "../images/randomButton.png"});
     background-size: cover;
     border: none;
     width: 27px;
