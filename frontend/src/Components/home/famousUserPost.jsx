@@ -63,7 +63,7 @@ const FamousUserPost = () => {
 
   const clickDetailedUserHandler = (user) => {
     // setDetailedUser(user);
-    navigate(`/users/mypage/${user._id}`);
+    navigate(`/user/${user._id}/profile`);
   };
 
   const settings = {
