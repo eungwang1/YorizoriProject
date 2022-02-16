@@ -18,30 +18,34 @@ const EditMyPage = () => {
   const [ nickCheck, setNickCheck ] = useState("type1")
   const [ password, setPassword ] = useState("1234")
   const [ userData, setUserData] = useState([])
-  const [ Profileimage, setProfileImage] = useState(userData.Profileimage ? userData.Profileimage : "../../images/baseimage.png");
+  const [ profileImage, setProfileImage] = useState(userData.profileImage ? userData.profileImage : "../../images/baseimage.png");
+  const [ saveImage, setSaveImage ] = useState("")
   const [ savenickName, setSaveNickName ] = useState("")
   let { userId } = useParams()
-
 
   useEffect(()=>{
     fetch(`http://localhost:8080/user/${userId}/profile`)
     .then(response => response.json())
-    .then(data => setUserData(data.user))
+    .then(data => {
+      setUserData(data.user)
+      setProfileImage(data.user.profileImage)
+    })
     
     .catch(err => console.log(err))
   },[]);
 
+
   async function successChenge() {
     const formData = new FormData();
     formData.append("nickName", savenickName);
-    formData.append("profileImage", Profileimage)
+    formData.append("profileImage", saveImage)
     await axios
       .post("/user/profile", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       })
-      .then((data) => console.log("결과", data))
+      .then((data) => console.log(data))
       .catch((err) => console.log(err));
   }
   
@@ -52,6 +56,7 @@ const EditMyPage = () => {
 
   const imgChange = (e) => {
     setProfileImage(URL.createObjectURL(e.target.files[0]));
+    setSaveImage(e.target.files[0])
   }
 
   const pass1 = () => {
@@ -62,7 +67,7 @@ const EditMyPage = () => {
     let pattern_space = /\s/g;	// 공백체크
     let pattern_num = /[0-9]/;	// 숫자 
     let pattern_eng = /[a-zA-Z]/;	// 문자 
-    let pattern_spc = /[~!@#$%^&*()_+|<>?:{}]/; // 특수문자
+    let pattern_spc = /[~!@#$%.^&*()_+|<>?:{}]/; // 특수문자
     let pattern_kor = /[ㄱ-ㅎ|ㅏ-ㅣ]/; // 한글체크
     const data = document.querySelector("#nickNameCheckText")
 
@@ -107,7 +112,7 @@ const EditMyPage = () => {
             <MyPageMainImgBox>
               <input type="file" id="file-upload" accept="img/*" onChange={imgChange} required multiple  style={{display:'none'}} />
 
-              <EditImage id="imgs"  onClick={ClickUpload} src={Profileimage}/>
+              <EditImage id="imgs"  onClick={ClickUpload} src={profileImage}/>
                 <p style={{ marginTop: "40px", fontSize: "14px", color: "gray"}}>변경할 닉네임을 입력해주세요</p>
               <EditInput placeholder={userData.nickName} type={nickCheck} onChange={(e) => {
                 setMyNickName(e.target.value)

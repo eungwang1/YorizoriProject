@@ -9,14 +9,13 @@ import axios from 'axios';
 
 
 const MyPageTemplate = () => {
-  const [userData, setUserData] = useState([])
+  const [ userData, setUserData] = useState([])
   const [ myPostResipe, setMyPostResipe ] = useState([])
   const [ myLikeResipe, setMyLikeResipe ] = useState([])
   const [ myCommentResipe, setMyCommentResipe ] = useState([])
   const [ myHistoryResipe, setHistoryResipe ] = useState([])
   let { userId } = useParams()
 
-  console.log(userData)
   useEffect(()=>{
     fetch(`http://localhost:8080/user/${userId}/profile`)
       .then(response => response.json())
@@ -59,7 +58,7 @@ const MyPageTemplate = () => {
             
             <MyPageMainInfoBox>
               <div className="InfoProfile">
-                <MyPageImage src={userData.Profileimage ? userData.Profileimage : "../../images/baseimage.png"}/>
+                <MyPageImage src={userData.profileImage ? userData.profileImage : "../../images/baseimage.png"}/>
                 <p>{userData.nickName}</p>
               </div>
                 <MyPageFollowBox className="followBox">
