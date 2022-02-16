@@ -51,7 +51,7 @@ const SearchInputs = styled.input`
 `;
 const SearchButton = styled.button`
   background-color: transparent;
-  background-image: url("./images/search.png");
+  background-image: url(${process.env.PUBLIC_URL + "../images/search.png"});
   background-size: cover;
   border: none;
   position: relative;

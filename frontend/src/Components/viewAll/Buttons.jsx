@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Dropdown } from "react-dropdown-now";
 import { useRecoilValue, useSetRecoilState } from "recoil";
+import axios from "axios";
 import {
   randomButtonState,
   randomPostState,
@@ -17,14 +18,15 @@ const Buttons = () => {
   const setDropDownOptions = useSetRecoilState(dropDownOptionsState);
   const currentSortState = useRecoilValue(sortState);
   const setCurrentSortState = useSetRecoilState(sortState);
+  const [recipes, setRecipes] = useState([]);
 
   const randompost = () => {
     setRandomButton(true);
   };
 
   const getRandomIndex = () => {
-    let random = parseInt(Math.random() * dummy.length);
-    setRandomPost(dummy[random]);
+    let random = parseInt(Math.random() * recipes.length);
+    setRandomPost(recipes[random]);
   };
 
   const clearDropDownOptions = (e) => {
@@ -59,8 +61,15 @@ const Buttons = () => {
         item.innerText = dropDownOptions[defaultCategory[index]];
       }
     });
-    console.log(dropDownOptions);
-  });
+
+    const urlAll = "http://localhost:8080/post";
+
+    const fetchData = async () => {
+      const result = await axios(urlAll);
+      setRecipes(result.data);
+    };
+    fetchData();
+  }, []);
 
   return (
     <>

@@ -27,7 +27,7 @@ const TopNavMain = () => {
   return (
     <TopNavMainBox>
       <Link to="/">
-        <TopNavMainLogo src="../images/onlylogo.png" alt="arrow.png" />
+        <TopNavMainLogo src={`${process.env.PUBLIC_URL}../images/onlylogo.png`} alt="arrow.png" />
       </Link>
       <SearchBar placeholder="검색어"></SearchBar>
     </TopNavMainBox>

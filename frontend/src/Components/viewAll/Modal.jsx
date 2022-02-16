@@ -1,28 +1,67 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { randomButtonState, randomPostState } from "../../states/ViewAllAtom";
 import { Link } from "react-router-dom";
-import dummy from "../../posts.json";
+import axios from "axios";
 
 const Modal = () => {
   const randomButton = useRecoilValue(randomButtonState);
   const setRandomButton = useSetRecoilState(randomButtonState);
   const randomPost = useRecoilValue(randomPostState);
   const setRandomPost = useSetRecoilState(randomPostState);
+  const [recipes, setRecipes] = useState([]);
+  const { Kakao } = window;
+  const url = "http://localhost:3000";
+
+  const setShare = () => {
+    const shareURL = url + "/detail/" + randomPost._id;
+
+    Kakao.Link.sendDefault({
+      objectType: "feed",
+      content: {
+        title: randomPost.recipeName,
+        description: randomPost.desc,
+        imageUrl: randomPost.thumbnail,
+        link: {
+          mobileWebUrl: shareURL,
+          webUrl: shareURL,
+        },
+      },
+      buttons: [
+        {
+          title: "레시피 구경가기",
+          link: {
+            mobileWebUrl: shareURL,
+            webUrl: shareURL,
+          },
+        },
+      ],
+    });
+  };
+
   const closeModal = () => {
     setRandomButton(false);
     console.log(randomButton);
   };
 
-  console.log(randomPost._id);
-
   const getRandomIndex = async () => {
     if (randomButton) {
-      let random = parseInt(Math.random() * dummy.length);
-      setRandomPost(dummy[random]);
+      let random = parseInt(Math.random() * recipes.length);
+      setRandomPost(recipes[random]);
     }
   };
+
+  useEffect(() => {
+    const urlAll = "http://localhost:8080/post";
+
+    const fetchData = async () => {
+      const result = await axios(urlAll);
+      setRecipes(result.data);
+    };
+    fetchData();
+  }, []);
+
   return (
     <ModalWrapping RandomButtonPush={randomButton}>
       <ModalBackground onClick={closeModal} />
@@ -30,21 +69,28 @@ const Modal = () => {
         <div>
           <CloseButton onClick={closeModal} />
           <Recommendtext>랜덤으로 메뉴를 추천해드려요</Recommendtext>
-          <Link to={`/detail/${randomPost._id.$oid}`}>
+          <Link
+            to={`/detail/${randomPost._id}`}
+            style={{ textDecoration: "none", color: "inherit" }}
+            nickname={randomPost.userId.nickName}
+            title={randomPost.recipeName}
+          >
             <Img src={randomPost.thumbnail} />
           </Link>
           <TextBox>
             <Title>{randomPost.recipeName}</Title>
-            <Author>{randomPost.userId.$oid}</Author>
+            <Author>{randomPost.userId.nickName}</Author>
             <WrapperHeartComment>
-              <span className="sprite heart" /> <HeartCommentCount>31</HeartCommentCount>
-              <span className="sprite comment" /> <HeartCommentCount>7</HeartCommentCount>
+              <span className="sprite heart" />
+              <HeartCommentCount>{randomPost.numLikes}</HeartCommentCount>
+              <span className="sprite comment" />
+              <HeartCommentCount>{randomPost.numComments}</HeartCommentCount>
             </WrapperHeartComment>
           </TextBox>
           <ButtonWrapper>
             <button onClick={getRandomIndex}>다른 추천도 준비했어요!</button>
             <button>
-              <div className="sprite2 share" />
+              <div className="sprite2 share" onClick={setShare} />
             </button>
           </ButtonWrapper>
         </div>
@@ -82,7 +128,7 @@ const ModalBox = styled.div`
   .sprite {
     display: inline-block;
     flex-shrink: 0;
-    background-image: url("../images/icons.png");
+    background-image: url(${process.env.PUBLIC_URL + "../images/icons.png"});
     background-repeat: no-repeat;
     background-size: 66.34px 30px;
   }
@@ -105,7 +151,7 @@ const ModalBox = styled.div`
 
 const CloseButton = styled.div`
   position: absolute;
-  background-image: url("../images/closeButton.png");
+  background-image: url(${process.env.PUBLIC_URL + "../images/closeButton.png"});
   background-size: cover;
   width: 28px;
   height: 28px;
@@ -154,7 +200,7 @@ const ButtonWrapper = styled.div`
   .sprite2 {
     display: inline-block;
     flex-shrink: 0;
-    background-image: url("../images/icons.png");
+    background-image: url(${process.env.PUBLIC_URL + "../images/icons.png"});
     background-repeat: no-repeat;
     background-size: 106px 47.93px;
   }
