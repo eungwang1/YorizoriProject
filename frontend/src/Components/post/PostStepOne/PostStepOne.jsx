@@ -104,7 +104,7 @@ export default PostStepOne;
 const TitleInput = styled.input`
   width: 315px;
   height: 60px;
-  border-radius: 50px;
+  border-radius: 15px;
   border: 1px solid #feae11;
   font-size: 1rem;
   font-weight: bold;
@@ -137,7 +137,7 @@ const StyledTextArea = styled.textarea`
   height: 159px;
   border: 1px solid #feae11;
   box-sizing: border-box;
-  border-radius: 50px;
+  border-radius: 15px;
   padding: 50px 45px 0 45px;
   font-size: 1rem;
   font-weight: bold;

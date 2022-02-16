@@ -112,9 +112,6 @@ export const DropdownWrapper = styled.div`
   .rdn-control-arrow {
     width: 14px;
     height: 14px;
-    /* border-top: 10px solid #feae11;
-    border-left: 8px solid transparent;
-    border-right: 8px solid transparent; */
     background-image: url("../images/dropArrow.png");
     background-repeat: no-repeat;
     background-size: contain;
@@ -134,7 +131,6 @@ export const DropdownWrapper = styled.div`
     border-radius: 50px;
     box-sizing: border-box;
     font-size: 1rem;
-    font-weight: 900;
     text-align: center;
     padding-top: 14px;
     padding-right: 20px;
@@ -146,7 +142,6 @@ export const DropdownWrapper = styled.div`
       width: 120px;
       z-index: 100;
       color: #feae11;
-      /* transform: translateY(-5px) translateX(10px); */
       border-radius: 10px;
       border: 2px solid #feae11;
     }

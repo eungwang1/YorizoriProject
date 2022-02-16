@@ -30,8 +30,8 @@ function useUserActions() {
       swal("로그인 성공", "로그인되었습니다.", "success").then(() => navigate("/"));
     } catch (e) {
       console.error(e);
-      if (e.response.status === 401) {
-        alert("존재하지않는계정입니다.");
+      if (e.response.status === 400) {
+        swal("로그인 실패", e.response.data.message, "warning");
       }
     }
   }
@@ -42,11 +42,8 @@ function useUserActions() {
       swal("회원가입 성공", "환영합니다", "success").then(() => navigate("/login"));
     } catch (e) {
       console.error(e);
-      if (e.response.status === 409) {
-        alert("이메일중복");
-      }
-      if (e.response.status === 404) {
-        alert("경로오류");
+      if (e.response.status === 400) {
+        swal("회원가입 실패", e.response.data.message, "warning");
       }
     }
   }

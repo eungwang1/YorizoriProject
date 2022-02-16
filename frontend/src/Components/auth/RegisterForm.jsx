@@ -74,8 +74,8 @@ const RegisterForm = () => {
         type="text"
         id="name"
       />
-      {errors.name?.type === "required" && <ErrorText>닉네임을 입력해주세요.</ErrorText>}
-      {errors.name?.type === "minLength" && (
+      {errors.nickName?.type === "required" && <ErrorText>닉네임을 입력해주세요.</ErrorText>}
+      {errors.nickName?.type === "minLength" && (
         <ErrorText>닉네임은 최소 2글자 이상 입력해주세요.</ErrorText>
       )}
 
