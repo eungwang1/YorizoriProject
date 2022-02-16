@@ -5,6 +5,58 @@ import { Link } from "react-router-dom";
 import { StyledScroll } from '../post/commonStyle';
 import dummy from "../../posts.json";
 
+
+
+export default function ResipeButton(props) {
+  const resipeMenu = ["내가 작성한 레시피", "좋아요 누른 레시피", "최근 확인한 레시피", "댓글 남긴 레시피"]
+  const [onResipe, setOnResipe] = useState(false)
+  const resipeMenuButton = ["../../images/bottomBT.png", "../../images/bottomBT.png", "../../images/bottomBT.png", "../../images/bottomBT.png"]
+
+
+
+  const changeResipe = () => {
+    setOnResipe((onResipe) => {
+      console.log(onResipe)
+      return !onResipe
+    })
+  }
+
+  const moveButton = () => {
+    document.querySelector(`.buttont${props.nums}`).classList.toggle("buttonMoveTop")
+  }
+  return (
+    <>
+      <MypageResipeBox onClick={() => {
+        changeResipe()
+        moveButton()
+      }}>
+          <ResipeMenus type={String(onResipe)}>
+            <span>{ resipeMenu[props.nums]}</span>
+          </ResipeMenus>
+            <img className={`buttont${props.nums}`} src={resipeMenuButton[props.nums]} alt=""/>
+
+      </MypageResipeBox>
+          {
+            onResipe 
+            ? 
+            <ResipeListBox>
+              { dummy.map((item, index) => {
+              return (
+                <ResipeListItem key={index}>
+                  <Link to="/detail">
+                    <img src={item.thumbnail} alt=""/>
+                  </Link>
+                  <p> {item.recipeName}</p>
+                </ResipeListItem>
+                )
+              })}
+            </ResipeListBox> 
+            : ""
+          }
+    </>
+  )
+}
+
 const ResipeMenus = styled.div`
   span {
     font-family: 'Montserrat', sans-serif;
@@ -52,7 +104,7 @@ const ResipeListBox = styled.div`
     width: 100px;
     height: 100px;
     border-radius: 15px;
-    
+    object-fit: cover;
   }
   
   p {
@@ -78,53 +130,3 @@ const ResipeListBox = styled.div`
 `
 const ResipeListItem = styled.div`
 `
-
-export default function ResipeButton(props) {
-  const resipeMenu = ["내가 작성한 레시피", "좋아요 누른 레시피", "최근 확인한 레시피", "댓글 남긴 레시피"]
-  const [onResipe, setOnResipe] = useState(false)
-  const resipeMenuButton = ["../images/bottomBT.png", "../images/bottomBT.png", "../images/bottomBT.png", "../images/bottomBT.png"]
-
-
-
-  const changeResipe = () => {
-    setOnResipe((onResipe) => {
-      console.log(onResipe)
-      return !onResipe
-    })
-  }
-
-  const moveButton = () => {
-    document.querySelector(`.buttont${props.nums}`).classList.toggle("buttonMoveTop")
-  }
-  return (
-    <>
-      <MypageResipeBox onClick={() => {
-        changeResipe()
-        moveButton()
-      }}>
-          <ResipeMenus type={String(onResipe)}>
-            <span>{ resipeMenu[props.nums]}</span>
-          </ResipeMenus>
-            <img className={`buttont${props.nums}`} src={resipeMenuButton[props.nums]} alt=""/>
-
-      </MypageResipeBox>
-          {
-            onResipe 
-            ? 
-            <ResipeListBox>
-              { dummy.map((item, index) => {
-              return (
-                <ResipeListItem key={index}>
-                  <Link to="/detail">
-                    <img src={item.thumbnail} alt=""/>
-                  </Link>
-                  <p> {item.recipeName}</p>
-                </ResipeListItem>
-                )
-              })}
-            </ResipeListBox> 
-            : ""
-          }
-    </>
-  )
-}

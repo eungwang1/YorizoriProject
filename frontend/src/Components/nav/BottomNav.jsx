@@ -3,17 +3,24 @@ import styled, { css } from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { pageStateAtom } from "../../states";
 import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
+import { authAtom } from "../../states";
+import { userIdAtom } from "../../states";
 
 const BottomNav = ({ post }) => {
   const pageState = useRecoilValue(pageStateAtom);
-  const navigate = useNavigate();
+  const authCheck = useRecoilValue(authAtom);
+  const authId =  useRecoilValue(userIdAtom)
 
+  const navigate = useNavigate();
   return (
     <BottomNavBlock post={post}>
       <IconImg pageState={pageState} post onClick={() => navigate("/post")} />
       <IconImg pageState={pageState} home onClick={() => navigate("/")} />
       <IconImg pageState={pageState} recipe onClick={() => navigate("/view_all")} />
-      <IconImg pageState={pageState} mypage onClick={() => navigate("/users/mypage")} />
+      { authCheck
+        ? <IconImg pageState={pageState} mypage onClick={() => navigate(`/user/${authId}/profile`)}/>
+        : <IconImg pageState={pageState} mypage onClick={() => navigate('/login')} />
+      }
     </BottomNavBlock>
   );
 };
@@ -34,7 +41,7 @@ const BottomNavBlock = styled.div`
 
 const IconImg = styled.div`
   width: 90px;
-  background-image: url(../images/BottomIcon.png);
+  background-image: url(../../images/BottomIcon.png);
   background-position: ${({ post, home, recipe, mypage, pageState }) =>
     post
       ? "-30px -15px"
