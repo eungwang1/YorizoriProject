@@ -13,6 +13,16 @@ export default function ResipeButton(props) {
   const resipeMenuButton = ["../../images/bottomBT.png", "../../images/bottomBT.png", "../../images/bottomBT.png", "../../images/bottomBT.png"]
   const listResipe = [ "postResipe", "likeResipe", "commentResipe", "historyResipe" ]
   
+  let datas = ""
+
+  if(props.nums === "1" || props.nums === "2") {
+    datas = props[listResipe[props.nums]].filter((item) => item.postId)
+  } else {
+    datas = props[listResipe[props.nums]]
+  }
+
+
+  console.log(props[listResipe[props.nums]])
   const changeResipe = () => {
     setOnResipe((onResipe) => {
       console.log(onResipe)
@@ -39,7 +49,8 @@ export default function ResipeButton(props) {
             onResipe 
             ? 
             <ResipeListBox>
-              { props[listResipe[props.nums]].map((item, index) => {
+              { 
+                datas.map((item, index) => {
                 console.log(item)
               return (
                 <ResipeListItem key={index}>

@@ -122,7 +122,7 @@ const EditMyPage = () => {
                 <div className="showpass">
                 </div>
               </MyPagePasswordEditBox>
-              <div style={{position: "relative", top: "40px"}}>  
+              <div style={{position: "relative", top: "21px"}}>  
                 <Link to={`/user/${userId}/profile`}>
                   <EditBtn onClick={successChenge}>
                     완료
