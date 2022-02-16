@@ -37,6 +37,7 @@ const PostTemplete = ({ children, stepNum, page, request }) => {
       <StyledBtn page={page} type="submit">
         작성 완료
       </StyledBtn>
+
       <NavBottom />
     </PostTempleteBlock>
   );

@@ -17,7 +17,6 @@ const FamousPost = () => {
 
   const clickFamousPostHandler = (item) => {
     const postId = item._id;
-    setFamousPost(item);
     navigate(`/detail/${postId}`);
   };
 

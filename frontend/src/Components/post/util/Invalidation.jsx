@@ -47,5 +47,6 @@ export const Invalidation = (data, setPostpostPageState, mainImage, setInvalidat
     swal("", "카테고리를 모두 선택해주세요.", "info");
     return;
   }
-  setInvalidationState(true);
+  // setInvalidationState(true);
+  return true;
 };

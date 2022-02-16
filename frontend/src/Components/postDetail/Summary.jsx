@@ -1,14 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
 import { userIdAtom } from "../../states";
+import { detailDataAtom } from "../../states/detail";
 import axios from "axios";
 
 const Summary = ({ data, postId }) => {
+  const [detailData, setDetailData] = useRecoilState(detailDataAtom);
   const [heartCheck, setHeartCheck] = useState(false);
-  const [numLikes, setNumLikes] = useState(data ? data.numLikes : 0);
-  const [heart, SetHeart] = useState(false);
+  const [numLikes, setNumLikes] = useState(data ? data.numLikes : null);
   const userId = useRecoilValue(userIdAtom);
+  const [heart, setHeart] = useState(false);
 
   const heartStateCheck = async () => {
     const { data: heartArray } = await axios.get(`/like/${postId}`);
@@ -20,16 +22,15 @@ const Summary = ({ data, postId }) => {
       }
     });
   };
-
   useEffect(() => {
     heartStateCheck();
+    return () => setDetailData(null);
   }, []);
 
   useEffect(() => {
-    if (heartCheck) SetHeart(true);
-    else SetHeart(false);
+    if (heartCheck) setHeart(true);
+    else setHeart(false);
   }, [heartCheck, numLikes]);
-
   const HeartState = async () => {
     if (heartCheck) {
       try {
@@ -40,7 +41,6 @@ const Summary = ({ data, postId }) => {
         });
       } catch (e) {
         console.error(e);
-        console.log(e.response.data.message);
       }
     } else {
       try {
@@ -60,11 +60,8 @@ const Summary = ({ data, postId }) => {
           <Thumbnail src={data.thumbnail} />
           <LCVS>
             <Likes>
-              <span
-                className="sprite heart"
-                onClick={HeartState}
-                disabled={userId ? false : true}
-              />
+              {/* {heart && <HeartImage src="../images/onlylogo.png" />} */}
+              <span className="sprite heart" onClick={HeartState} />
               <span>{numLikes}명이 좋아합니다.</span>
             </Likes>
             <Comments>
@@ -117,6 +114,7 @@ const SummaryWrapper = styled.div`
   .heart {
     width: 28px;
     height: 24.5px;
+    /* background-position: -71.5px 0px; */
     background-position: ${(props) => (props.heartstate === true ? "-71.5px 0px" : "-36.5px 0px")};
   }
   .comment {
@@ -207,6 +205,13 @@ const SummaryInfo = styled.div`
       height: 10px;
     }
   }
+`;
+
+const HeartImage = styled.img`
+  display: inline-block;
+  flex-shrink: 0;
+  width: 28px;
+  height: 24.5px;
 `;
 const Servings = styled.span``;
 const Time = styled.span``;

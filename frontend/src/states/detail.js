@@ -5,3 +5,8 @@ export const detailDataAtom = atom({
   key: "detailDataAtom",
   default: null,
 });
+
+export const detailLoadingStateAtom = atom({
+  key: "detailLodingState",
+  default: false,
+});

@@ -1,15 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
-import {
-  StyledButton,
-  StyledInput,
-  ErrorText,
-  StyledDiv,
-  CenterLink,
-  StyledHr,
-  DivWrapper,
-} from "./AuthStyle";
+import * as S from "./AuthStyle";
 import { useUserActions } from "../../actions";
 import { useRecoilValue } from "recoil";
 import { authAtom } from "../../states";
@@ -52,31 +44,31 @@ const LoginForm = () => {
 
   return (
     <LoginFormBlock onSubmit={handleSubmit(onSubmit)}>
-      <StyledInput placeholder="아이디" {...register("email", { required: true })} />
+      <S.StyledInput placeholder="아이디" {...register("email", { required: true })} />
       {errors.email?.type === "required" && (
-        <ErrorText loginError>아이디를 입력해주세요.</ErrorText>
+        <S.ErrorText loginError>아이디를 입력해주세요.</S.ErrorText>
       )}
 
-      <StyledInput
+      <S.StyledInput
         type="password"
         placeholder="비밀번호"
         {...register("password", { required: true })}
       />
       {errors.password?.type === "required" && (
-        <ErrorText loginError>비밀번호를 입력해주세요.</ErrorText>
+        <S.ErrorText loginError>비밀번호를 입력해주세요.</S.ErrorText>
       )}
 
-      <StyledButton type="submit">로그인</StyledButton>
+      <S.StyledButton type="submit">로그인</S.StyledButton>
 
-      <CenterLink to="/register">
-        <StyledDiv login>회원가입</StyledDiv>
-        <StyledHr login />
-      </CenterLink>
+      <S.CenterLink to="/register">
+        <S.StyledDiv login>회원가입</S.StyledDiv>
+        <S.StyledHr login />
+      </S.CenterLink>
 
-      <DivWrapper>
-        <StyledDiv easyLogin>간편 로그인</StyledDiv>
-        <StyledHr easyLogin />
-      </DivWrapper>
+      <S.DivWrapper>
+        <S.StyledDiv easyLogin>간편 로그인</S.StyledDiv>
+        <S.StyledHr easyLogin />
+      </S.DivWrapper>
       <KakaoImg href={KAKAO_AUTH_URL}>
         <img src={`${process.env.PUBLIC_URL}/images/kakao_login_medium_narrow.png`} />
       </KakaoImg>

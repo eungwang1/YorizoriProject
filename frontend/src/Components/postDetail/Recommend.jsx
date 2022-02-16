@@ -1,39 +1,106 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-const Recommend = () => {
+const selectIndex = (totalIndex, selectingNumber) => {
+  let randomIndexArray = [];
+  for (let i = 0; i < selectingNumber; i++) {
+    let randomNum = Math.floor(Math.random() * totalIndex);
+    if (randomIndexArray.indexOf(randomNum) === -1) {
+      randomIndexArray.push(randomNum);
+    } else {
+      i--;
+    }
+  }
+  return randomIndexArray;
+};
+const Recommend = ({ data }) => {
+  const [allRecipes, setAllRecipes] = useState(null);
+  const [randomNumArray, setRandomNumArray] = useState(null);
+  const [filteredRecipe, setFilteredRecipe] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await axios.get("/post");
+        setAllRecipes(data);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (allRecipes) {
+      const FilteredData = allRecipes.data.filter((el) => {
+        if (el.category === data.category) {
+          return el;
+        }
+      });
+      console.log(FilteredData);
+      setFilteredRecipe(FilteredData);
+      const dataLength = FilteredData.length;
+      let dataCnt = 4;
+      if (dataLength <= 4) {
+        dataCnt = dataLength;
+      }
+      const randomNumArray = selectIndex(dataLength, dataCnt);
+      setRandomNumArray(randomNumArray);
+    }
+  }, [allRecipes]);
+  console.log(randomNumArray);
+  console.log(filteredRecipe);
+
   return (
     <RecommendWrapper>
-      <div style={{ fontSize: 11 }}>이런 메뉴는 어떠세요?</div>
-      <Button>한식</Button>
-      <Button>일식</Button>
-      <Button>중식</Button>
+      <StyledDiv>
+        <StyledP>'{data.category}'</StyledP>
+        <SmallP> 이런 메뉴는 어떠세요?</SmallP>
+      </StyledDiv>
       <RecommendedPostWrapper>
-        {[...Array(4)].map((n, index) => {
-          return (
-            <Link
-              key={`RecommendLink_${index}`}
-              to="/detail/"
-              style={{ textDecoration: "none", color: "inherit" }}
-            >
-              <RecommendedPost key={`RecommendPost_${index}`}>
-                <PostImg key={`PostImg_${index}`} src="../images/gam.jpg" />
-                <PostTitle key={`PostTitle_${index}`}>
-                  요리왕 비룡에게 전수받은 마늘 50개 들어간 알리오올리오
-                </PostTitle>
+        {randomNumArray &&
+          randomNumArray.map((n, index) => {
+            return (
+              <RecommendedPost
+                key={`RecommendPost_${index}`}
+                onClick={() => {
+                  navigate(`/detail/${filteredRecipe[n]._id}`);
+                  window.location.reload();
+                }}
+              >
+                <PostImg key={`PostImg_${index}`} src={filteredRecipe[n].thumbnail} />
+                <PostTitle key={`PostTitle_${index}`}>{filteredRecipe[n].recipeName}</PostTitle>
               </RecommendedPost>
-            </Link>
-          );
-        })}
+            );
+          })}
       </RecommendedPostWrapper>
     </RecommendWrapper>
   );
 };
+export default Recommend;
+
+const StyledDiv = styled.div`
+  font-size: 0.8rem;
+`;
+
+const StyledP = styled.p`
+  display: inline-block;
+  color: #feae11;
+  font-size: 1.4rem;
+  font-weight: 800;
+`;
+
+const SmallP = styled.p`
+  display: inline-block;
+  margin-left: 10px;
+  font-weight: 600;
+`;
 
 const RecommendWrapper = styled.div`
-  margin: 20px;
+  margin: 0 20px 20px 20px;
 `;
 const Button = styled.button`
   width: 60px;
@@ -66,5 +133,3 @@ const PostTitle = styled.div`
   font-size: 11px;
   width: 155px;
 `;
-
-export default Recommend;
