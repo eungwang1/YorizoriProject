@@ -1,19 +1,33 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Watch } from "react-loader-spinner";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { detailedPostAtom, famousPostsSelector } from "../../states/homeAtom";
-import { useSetRecoilState, useRecoilValueLoadable } from "recoil";
+import { detailedPostAtom, famousPostsSelector, resetTrigger } from "../../states/homeAtom";
+import {
+  useSetRecoilState,
+  useRecoilValueLoadable,
+  useResetRecoilState,
+  useRecoilRefresher_UNSTABLE,
+} from "recoil";
 import * as S from "./ariticleTemplateWithOneSlide";
 
 const FamousPost = () => {
   const navigate = useNavigate();
-  const setFamousPost = useSetRecoilState(detailedPostAtom);
+  // const setFamousPost = useSetRecoilState(detailedPostAtom);
   // const famousPost = useRecoilValue(datailedPostAtom);
   const famousListsLoadable = useRecoilValueLoadable(famousPostsSelector);
+  const reset = useRecoilRefresher_UNSTABLE(famousPostsSelector);
+  const componentMounted = useRef(true);
+
+  useEffect(() => {
+    if (componentMounted.current) reset();
+    return () => {
+      componentMounted.current = false;
+    };
+  }, [reset]);
 
   const clickFamousPostHandler = (item) => {
     const postId = item._id;

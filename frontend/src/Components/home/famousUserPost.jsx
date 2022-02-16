@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Watch } from "react-loader-spinner";
@@ -10,17 +10,31 @@ import {
   famousUsersPostsSelector,
   detailedUserAtom,
 } from "../../states/homeAtom";
-import { useRecoilState, useSetRecoilState, useRecoilValueLoadable } from "recoil";
+import {
+  useRecoilState,
+  useSetRecoilState,
+  useRecoilValueLoadable,
+  // useResetRecoilState,
+  useRecoilRefresher_UNSTABLE,
+} from "recoil";
 import * as S from "./ariticleTemplateWithOneSlide";
 
 const FamousUserPost = () => {
   const navigate = useNavigate();
-  const setFamousPost = useSetRecoilState(detailedPostAtom);
-  const [detailedUser, setDetailedUser] = useRecoilState(detailedUserAtom);
-
+  // const setFamousPost = useSetRecoilState(detailedPostAtom);
+  // const setDetailedUser = useSetRecoilState(detailedUserAtom);
   const famousUsersPostsLoadable = useRecoilValueLoadable(famousUsersPostsSelector);
+  const reset = useRecoilRefresher_UNSTABLE(famousUsersPostsSelector);
+  const componentMounted = useRef(true);
 
   const [changePosts, setChangePosts] = useState(0);
+
+  useEffect(() => {
+    if (componentMounted.current) reset();
+    return () => {
+      componentMounted.current = false;
+    };
+  }, [reset]);
 
   if (famousUsersPostsLoadable.state === "loading") {
     return (
@@ -34,7 +48,7 @@ const FamousUserPost = () => {
 
   const clickFamousPostHandler = (item) => {
     const postId = item._id;
-    setFamousPost(item);
+    // setFamousPost(item);
     navigate(`/detail/${postId}`);
   };
 
@@ -48,7 +62,7 @@ const FamousUserPost = () => {
   };
 
   const clickDetailedUserHandler = (user) => {
-    setDetailedUser(user);
+    // setDetailedUser(user);
     navigate(`/users/mypage/${user._id}`);
   };
 

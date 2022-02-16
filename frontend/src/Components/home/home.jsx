@@ -26,27 +26,18 @@ import FamousPost from "./famousPost";
 import FamousUserPost from "./famousUserPost";
 import SloganBottom from "./sloganBottom";
 
-const HomeBlock = styled.div`
-  box-sizing: border-box;
-  font-size: 18px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-`;
 const Home = () => {
-  const [loginUserLoadable, setloginUserLoadable] = useRecoilStateLoadable(loginUserSelector);
-  const loginUser = useRecoilValue(loginUserAtom);
+  // const [loginUserLoadable, setloginUserLoadable] = useRecoilStateLoadable(loginUserSelector);
+  // const loginUser = useRecoilValue(loginUserAtom);
 
-  useEffect(() => {
-    if (loginUser) return;
-    if (loginUserLoadable.state === "hasValue") setloginUserLoadable(loginUserLoadable.contents);
+  // useEffect(() => {
+  //   if (loginUser) return;
+  //   if (loginUserLoadable.state === "hasValue") setloginUserLoadable(loginUserLoadable.contents);
 
-    console.log("홈 useEffect 실행여부");
-  }, [loginUserLoadable]);
+  //   console.log("홈 useEffect 실행여부");
+  // }, [loginUserLoadable]);
 
-  if (loginUserLoadable.state === "loading") return <div>loading...</div>;
+  // if (loginUserLoadable.state === "loading") return <div>loading...</div>;
   console.log("홈 렌더링");
   return (
     <HomeBlock>
@@ -60,26 +51,15 @@ const Home = () => {
     </HomeBlock>
   );
 };
-const StyledBtn = styled.button`
-  border: none;
-  background-color: #feae11;
-  width: 120px;
-  color: white;
-  font-size: 1rem;
-  padding: 10px;
-  border-radius: 10px;
-  + button {
-    margin-top: 20px;
-  }
-`;
-
-const ButtonWrapper = styled.div`
-  margin: auto 0;
-  height: 600px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
 
 export default Home;
+
+const HomeBlock = styled.div`
+  box-sizing: border-box;
+  display: flex;
+  font-size: 18px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+`;
