@@ -1,85 +1,79 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import ReactLoading from "react-loading";
-import dummy from "../../posts.json";
 import { dropDownOptionsState } from "../../states/ViewAllAtom";
-import { useRecoilValue, useSetRecoilState, useRecoilValueLoadable } from "recoil";
-import { famousPostsSelector2, count, sortState } from "../../states/ViewAllAtom";
+import { useRecoilValue, useResetRecoilState } from "recoil";
 import { searchAtom } from "../nav/NavAtom";
 import axios from "axios";
-
-const baseURL = "http://localhost:8080";
-
 const Postzone = () => {
   const filteredData = useRecoilValue(searchAtom);
+  const [page, setPage] = useState(1);
   const [recipes, setRecipes] = useState([]);
-
-  const [target, setTarget] = useState(null);
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  const countPost = useRecoilValue(count);
-  const setCountPost = useSetRecoilState(count);
-
-  const currentSortState = useRecoilValue(sortState);
-
+  const [loading, setLoading] = useState(true);
   const dropDownOptions = useRecoilValue(dropDownOptionsState);
-  const famousListsLoadable = useRecoilValueLoadable(famousPostsSelector2);
 
-  let famousList = famousListsLoadable.contents;
+  const handleScroll = () => {
+    const scrollHeight = document.documentElement.scrollHeight;
+    const scrollTop = document.documentElement.scrollTop;
+    const clientHeight = document.documentElement.clientHeight;
 
-  useEffect(() => {
-    console.log(countPost);
-    console.log(famousListsLoadable.contents);
-  }, [countPost]);
-
-  const getMoreItem = async () => {
-    setIsLoaded(true);
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    setCountPost((countPost) => countPost + 16);
-    setIsLoaded(false);
-  };
-
-  const onIntersect = async ([entry], observer) => {
-    if (entry.isIntersecting && !isLoaded) {
-      observer.unobserve(entry.target);
-      await getMoreItem();
-      observer.observe(entry.target);
+    if (scrollTop + clientHeight >= scrollHeight) {
+      console.log("페이지 끝입니다.");
+      setPage((prev) => prev + 1);
     }
   };
 
-  useEffect(() => {
-    let observer;
-    if (target) {
-      observer = new IntersectionObserver(onIntersect, {
-        threshold: 0.4,
-      });
-      observer.observe(target);
+  const getRecipe = async () => {
+    try {
+      const query = filteredData;
+      const urlAll = `http://localhost:8080/post?page=${page}&perPage=10`;
+      const urlSearch = `http://localhost:8080/post/search?recipeName=${query}`;
+
+      let url;
+      if (filteredData === "") {
+        url = urlAll;
+        const fetchData = async () => {
+          // setLoading(true);
+          const result = await axios(url);
+          const resultrecipes = recipes.concat(result.data);
+          setRecipes(resultrecipes);
+          // setLoading(false);
+        };
+        fetchData();
+      } else {
+        url = urlSearch;
+        const fetchData = async () => {
+          // setLoading(true);
+          const result = await axios(url);
+          setRecipes(result.data);
+          // setLoading(false);
+        };
+        fetchData();
+      }
+    } catch {
+      console.error("에러");
     }
-    return () => observer && observer.disconnect();
-  }, [target]);
+  };
+  useEffect(() => {
+    if (page <= (Math.ceil(recipes.length) + 10) / 10) {
+      console.log("page?", page);
+      getRecipe();
+    }
+  }, [filteredData, page]);
 
   useEffect(() => {
-    const query = filteredData;
-    const urlAll = "http://localhost:8080/post";
-    const urlSearch = `http://localhost:8080/post/search?recipeName=${query}`;
-    let url;
-    url = filteredData === "" ? urlAll : urlSearch;
-
-    const fetchData = async () => {
-      const result = await axios(url);
-      setRecipes(result.data);
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
     };
-    fetchData();
-  }, [filteredData]);
+  }, []);
 
-  if (famousListsLoadable.state === "loading") {
-    return <div>loading...</div>;
-  }
+  console.log(recipes);
+
   return (
     <Wrapper>
-      <WrapperPost>
-        {(currentSortState === "famous" ? famousList : recipes)
+      <WrapperPost onScroll={handleScroll}>
+        {recipes
           .filter((data) => {
             if (dropDownOptions.category === "") {
               return data.category;
@@ -104,7 +98,7 @@ const Postzone = () => {
             }
             return data.cook === dropDownOptions.cook;
           })
-          .map((data, idx) => {
+          .map((data) => {
             let recipeName = data.recipeName;
             let nickname = data.userId.nickName;
             if (recipeName.length > 20) {
@@ -117,6 +111,7 @@ const Postzone = () => {
                 style={{ textDecoration: "none", color: "inherit" }}
                 nickname={nickname}
                 title={recipeName}
+                key={data._id}
               >
                 <div>
                   <Img src={data.thumbnail} />
@@ -124,9 +119,9 @@ const Postzone = () => {
                     <Title>{recipeName}</Title>
                     <Author>{nickname}</Author>
                     <WrapperHeartComment>
-                      <span className="sprite heart" />
+                      <span className="sprite heart" />{" "}
                       <HeartCommentCount>{data.numLikes}</HeartCommentCount>
-                      <span className="sprite comment" />
+                      <span className="sprite comment" />{" "}
                       <HeartCommentCount>{data.numComments}</HeartCommentCount>
                     </WrapperHeartComment>
                   </TextBox>
@@ -135,16 +130,13 @@ const Postzone = () => {
             );
           })}
       </WrapperPost>
-
-      <div ref={setTarget} className="Target-Element">
-        {isLoaded && <ReactLoading type="bubbles" color="#feae11" height="40px" />}
-      </div>
     </Wrapper>
   );
 };
 export default Postzone;
 
 const Wrapper = styled.div`
+  overflow: scroll;
   text-align: center;
   display: flex;
   justify-content: center;
@@ -153,7 +145,7 @@ const Wrapper = styled.div`
   .sprite {
     display: inline-block;
     flex-shrink: 0;
-    background-image: url(${process.env.PUBLIC_URL + "../images/icons.png"});
+    background-image: url(${process.env.PUBLIC_URL + "./images/icons.png"});
     background-repeat: no-repeat;
     background-size: 66.34px 30px;
   }
@@ -175,6 +167,7 @@ const WrapperPost = styled.div`
   justify-content: center;
   align-items: center;
   justify-items: center;
+  overflow: scroll;
 
   & > div {
     width: 160px;
