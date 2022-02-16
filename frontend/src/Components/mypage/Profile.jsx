@@ -10,17 +10,47 @@ import axios from 'axios';
 
 const MyPageTemplate = () => {
   const [userData, setUserData] = useState([])
+  const [ myPostResipe, setMyPostResipe ] = useState([])
+  const [ myLikeResipe, setMyLikeResipe ] = useState([])
+  const [ myCommentResipe, setMyCommentResipe ] = useState([])
+  const [ myHistoryResipe, setHistoryResipe ] = useState([])
   let { userId } = useParams()
 
+  console.log(userData)
   useEffect(()=>{
     fetch(`http://localhost:8080/user/${userId}/profile`)
-    .then(response => response.json())
-    .then(data => setUserData(data.user))
-    
-    .catch(err => console.log(err))
+      .then(response => response.json())
+      .then(data => setUserData(data.user))
+      
+      .catch(err => console.log(err))
   },[]);
   
-  console.log(userData)
+
+  useEffect(()=>{
+    fetch(`http://localhost:8080/user/${userId}/post`)
+      .then(response => response.json())
+      .then(data => setMyPostResipe(data.userPosts))
+    },[]);
+
+  useEffect(()=>{
+    fetch(`http://localhost:8080/user/${userId}/like`)
+      .then(response => response.json())
+      .then(data => setMyLikeResipe(data.likePosts))
+    },[]);
+
+  useEffect(()=>{
+    fetch(`http://localhost:8080/user/${userId}/comment`)
+      .then(response => response.json())
+      .then(data => setMyCommentResipe(data.commentPosts))
+    },[]);
+
+  useEffect(()=>{
+    fetch(`http://localhost:8080/user/${userId}/history`)
+      .then(response => response.json())
+      .then(data => setHistoryResipe(data.lastViewedPosts))
+    },[]);
+
+
   return (
     <div>
       <NavTop />
@@ -55,10 +85,10 @@ const MyPageTemplate = () => {
 
               <div style={{width: "100%", borderBottom : "1px solid #c5c5c5", marginBottom: "5px"}}>
               </div>
-              <ResipeButton nums="0"/>
-              <ResipeButton nums="1"/>
-              <ResipeButton nums="2"/>
-              <ResipeButton nums="3"/>
+              <ResipeButton postResipe={myPostResipe} nums="0"/>
+              <ResipeButton likeResipe={myLikeResipe} nums="1"/>
+              <ResipeButton commentResipe={myCommentResipe} nums="2"/>
+              <ResipeButton historyResipe={myHistoryResipe} nums="3"/>
               <div style={{width: "300px", height: "70px"}}></div>
               
             </MyPageMainBtnBox>

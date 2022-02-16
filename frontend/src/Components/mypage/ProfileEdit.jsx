@@ -17,9 +17,11 @@ const EditMyPage = () => {
   const [ myNickName, setMyNickName] = useState("요리조리1234")
   const [ nickCheck, setNickCheck ] = useState("type1")
   const [ password, setPassword ] = useState("1234")
-  const [userData, setUserData] = useState([])
+  const [ userData, setUserData] = useState([])
   const [ Profileimage, setProfileImage] = useState(userData.Profileimage ? userData.Profileimage : "../../images/baseimage.png");
+  const [ savenickName, setSaveNickName ] = useState("")
   let { userId } = useParams()
+
 
   useEffect(()=>{
     fetch(`http://localhost:8080/user/${userId}/profile`)
@@ -29,7 +31,19 @@ const EditMyPage = () => {
     .catch(err => console.log(err))
   },[]);
 
-  console.log(userData)
+  async function successChenge() {
+    const formData = new FormData();
+    formData.append("nickName", savenickName);
+    formData.append("profileImage", Profileimage)
+    await axios
+      .post("/user/profile", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((data) => console.log("결과", data))
+      .catch((err) => console.log(err));
+  }
   
   const ClickUpload = (e) => {
     const imgBtn = document.querySelector("#file-upload")
@@ -44,23 +58,6 @@ const EditMyPage = () => {
     document.querySelector(".passbox").classList.toggle("passcheck")
   }
 
-  function successChenge() {
-    fetch(`http://localhost:8080/user/profile`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-      profileImage: "Test",
-      profileName: "테스트임",
-    }),
-      })
-    .then(response => response.json())
-    .then(data => console.log(data))
-    
-    .catch(err => console.log(err))
-  }
-
   function nickNameCheck(value) {
     let pattern_space = /\s/g;	// 공백체크
     let pattern_num = /[0-9]/;	// 숫자 
@@ -72,23 +69,32 @@ const EditMyPage = () => {
     if(pattern_spc.test(value)){
       data.innerText = "특수 문자가 포함되어 있습니다."
       setNickCheck("type2")
+      setSaveNickName(userData.nickName)
+
 
     } else if ( value.length < 2 || value.length > 10){
       data.innerText = "닉네임은 2~10글자로 변경 해주세요"
       setNickCheck("type2")
+      setSaveNickName(userData.nickName)
+
 
     } else if ( pattern_kor.test(value)) {
       data.innerText = "사용할 수 없는 단어가 포함되어 있습니다."
       setNickCheck("type2")
+      setSaveNickName(userData.nickName)
+
 
     } else if ( pattern_space.test(value) ) {
       data.innerText = "공백이 포함되어 있습니다.."
       setNickCheck("type2")
+      setSaveNickName(userData.nickName)
+
     }
 
      else {
       data.innerText = "사용 가능한 닉네임 입니다."
       setNickCheck("type3")
+      setSaveNickName(value)
     }
 
   }

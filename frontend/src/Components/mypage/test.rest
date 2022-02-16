@@ -2,6 +2,6 @@ POST http://localhost:8080/user/profile
 Content-Type: application/json
 
 {
-  "profileImage" : "doosan.jpeg",
-  "profileName" : "Sadtring"
+  "profileImage" : "1234.jpg",
+  "nickName" : "하이"
 }
