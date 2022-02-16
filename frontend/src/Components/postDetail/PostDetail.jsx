@@ -9,13 +9,14 @@ import Recipe from "./Recipe";
 import Comments from "./Comments";
 import Recommend from "./Recommend";
 import axios from "axios";
-import { useRecoilState } from "recoil";
-import { detailDataAtom } from "../../states/detail";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { detailDataAtom, delAndAmendBtnStateAtom } from "../../states/detail";
 import { Watch } from "react-loader-spinner";
 import { Loading } from "../home/ariticleTemplateWithOneSlide";
 
 const PostDetail = () => {
   const [detailData, setDetailData] = useRecoilState(detailDataAtom);
+  const [delAndAmendBtnState, setDelAndAmendBtnState] = useRecoilState(delAndAmendBtnStateAtom);
   const { postId } = useParams();
   useEffect(() => {
     const getProcessData = async () => {
@@ -39,6 +40,13 @@ const PostDetail = () => {
 
   return (
     <PostDetailBlock>
+      {delAndAmendBtnState && (
+        <Dimmed
+          onClick={() => {
+            setDelAndAmendBtnState(false);
+          }}
+        />
+      )}
       <TopNav />
       <Content>
         <Summary data={detailData} postId={postId} />
@@ -57,6 +65,12 @@ const PostDetail = () => {
 };
 
 export default PostDetail;
+
+const Dimmed = styled.div`
+  width: 100vw;
+  height: 3000px;
+  position: absolute;
+`;
 
 const PostDetailBlock = styled.div`
   font-size: 18px;

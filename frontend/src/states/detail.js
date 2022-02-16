@@ -10,3 +10,8 @@ export const detailLoadingStateAtom = atom({
   key: "detailLodingState",
   default: false,
 });
+
+export const delAndAmendBtnStateAtom = atom({
+  key: "delAndAmendBtnStateAtom",
+  default: false,
+});

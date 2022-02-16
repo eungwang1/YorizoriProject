@@ -31,7 +31,7 @@ const TopNav = ({ title }) => {
   return (
     <TopNavBox>
       <TopBackBox
-        src={process.env.PUBLIC_URL + "/images/arrow.png"}
+        src={process.env.PUBLIC_URL + "../../images/arrow.png"}
         alt="arrow.png"
         onClick={() => navigate(-1)}
       ></TopBackBox>
