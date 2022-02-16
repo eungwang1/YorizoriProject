@@ -15,6 +15,34 @@ const Summary = ({ data, postId }) => {
   const [numLikes, setNumLikes] = useState(data ? data.numLikes : null);
   const userId = useRecoilValue(userIdAtom);
   const [heart, setHeart] = useState(false);
+  const { Kakao } = window;
+  const url = "http://localhost:3000";
+
+  const setShare = () => {
+    const shareURL = url + "/detail/" + data._id;
+
+    Kakao.Link.sendDefault({
+      objectType: "feed",
+      content: {
+        title: data.recipeName,
+        description: data.desc,
+        imageUrl: data.thumbnail,
+        link: {
+          mobileWebUrl: shareURL,
+          webUrl: shareURL,
+        },
+      },
+      buttons: [
+        {
+          title: "레시피 구경가기",
+          link: {
+            mobileWebUrl: shareURL,
+            webUrl: shareURL,
+          },
+        },
+      ],
+    });
+  };
 
   const deleteHandler = (postId) => {
     try {
@@ -102,7 +130,7 @@ const Summary = ({ data, postId }) => {
               <span className="sprite view" />
               <span>{data.numViews}</span>
             </Views>
-            <Share className="sprite share" />
+            <Share className="sprite share" onClick={setShare} />
           </LCVS>
           <div>
             <Title>{data.recipeName}</Title>
@@ -155,7 +183,6 @@ const StyledDiv = styled.div`
   + div {
     margin-top: 8px;
   }
-  width: 54px;
 `;
 const DropDownContainer = styled.div`
   position: relative;
@@ -173,12 +200,18 @@ const DropDownBtn = styled.div`
 const DropDownWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 125px;
+  height: 100px;
   background-color: #feae11;
   color: white;
   border-radius: 3px;
   padding: 5px 10px;
   position: absolute;
-  left: -65px;
+  right: 0px;
+  font-size: 15px;
+  font-weight: 900;
 `;
 
 const SummaryWrapper = styled.div`
@@ -252,11 +285,11 @@ const Share = styled.div`
 const Title = styled.div`
   font-size: 18px;
   font-weight: 900;
-  margin: 8px 0px 6px 20px;
+  margin: 8px 20px 6px 20px;
 `;
 const Content = styled.div`
   font-size: 13px;
-  margin: 0 0 10px 20px;
+  margin: 0 20px 10px 20px;
 `;
 const Author = styled.div`
   display: flex;

@@ -83,7 +83,7 @@ const Recipe = ({ data }) => {
   };
   return (
     <RecipeWrapper>
-      <div style={{ fontWeight: 900 }}>요리 순서</div>
+      <div style={{ fontWeight: 900, marginBottom: "10px" }}>요리 순서</div>
       {data &&
         data.process.map((process, index) => {
           return (
@@ -149,9 +149,11 @@ const Step = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 10px;
+  margin-bottom: 30px;
 `;
-const StepNumber = styled.div``;
+const StepNumber = styled.div`
+  font-weight: 900;
+`;
 const Content = styled.div`
   font-size: 14px;
   width: 150px;
