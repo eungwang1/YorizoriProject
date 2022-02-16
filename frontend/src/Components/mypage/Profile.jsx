@@ -62,6 +62,10 @@ const MyPageTemplate = () => {
                 <p>{userData.nickName}</p>
               </div>
                 <MyPageFollowBox className="followBox">
+                   <div>
+                      <p>게시글</p>
+                      <span>{myPostResipe.length}</span>
+                  </div>
                   <div>
                     <Link to="/">
                       <p>팔로워</p>
@@ -139,29 +143,42 @@ const MyPageMainInfoBox = styled.div`
 
   .InfoProfile {
     margin-left: 10px;
+    width: 160px;
+
+    p {
+      font-size: 16px;
+      margin: 8px 0 20px 0;
+    }
   };
 
   .followBox {
-    margin-left: 40px;
     position: relative;
-    top: 30px;
-    border: solid 2px #FEAE11;
     border-radius: 10px;
+    top: 10px;
     display: flex;
     justify-content: center;
     line-height: 5px;    
     align-items: center;
+    width: 220px;
+    color: gray;
+    margin-right: 10px;
     div {
       a {
-        color: black;
+        color: gray;
         text-decoration: none;
       }
 
-      margin-left: 7px;
-      margin-right: 7px;
+      margin-left: 10px;
+      margin-right: 10px;
       margin-bottom: 15px;
 
       p {
+        font-size: 14px;
+      }
+
+      span {
+        color: black;
+        font-weight: bold;
         font-size: 14px;
       }
     }
