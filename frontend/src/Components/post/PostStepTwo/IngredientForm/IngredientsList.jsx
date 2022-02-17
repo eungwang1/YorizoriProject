@@ -74,8 +74,8 @@ const Ingredient = styled.textarea`
   height: 59px;
   border: 1px solid #feae11;
   box-sizing: border-box;
-  border-radius: 50px;
-  padding: 19px 0px 0px 25px;
+  border-radius: 10px;
+  padding: 16px 0px 0px 25px;
   font-size: 1rem;
   font-weight: bold;
   ${ResetTextarea};
@@ -86,8 +86,8 @@ const Volume = styled.textarea`
   height: 59px;
   border: 1px solid #feae11;
   box-sizing: border-box;
-  border-radius: 50px;
-  padding: 19px 0px 0px 25px;
+  border-radius: 10px;
+  padding: 16px 0px 0px 25px;
   font-size: 1rem;
   font-weight: bold;
   ${ResetTextarea}

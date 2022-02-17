@@ -1,3 +1,4 @@
+import { waitForNone } from "recoil";
 import styled, { css } from "styled-components";
 
 export const StyledP = styled.p`
@@ -10,12 +11,13 @@ export const StyledP = styled.p`
   ${(props) =>
     props.stepOne &&
     css`
-      padding-top: 20px;
+      padding-top: 10px;
     `}
   ${(props) =>
     props.stepFour &&
     css`
       padding-left: 3px;
+      padding-bottom: 20px;
       height: 11px;
     `}
     ${(props) =>
@@ -73,25 +75,37 @@ export const ContainerDiv = styled.div`
     css`
       padding: 7px 15px 0px 15px;
     `}
+  ${(props) =>
+    props.stepTwo &&
+    css`
+      border: none;
+    `}
+    ${(props) =>
+    props.big &&
+    css`
+      border: none;
+    `}
 `;
 
 export const AddBtn = styled.div`
   text-align: center;
   padding: 12px 0;
-  font-weight: 600;
+  font-weight: 900;
+
   ::before {
     content: "+";
     color: white;
-    margin-right: 5px;
-    padding: 0px 5px;
+    margin-right: 8px;
+    padding: 0px 6px;
     background-color: #feae11;
     border-radius: 100px;
+    font-size: 13px;
   }
 `;
 
 export const DropdownWrapper = styled.div`
   display: flex;
-  margin: 5px 0;
+  margin: 7px 0;
   justify-content: center;
 
   .rdn {
@@ -112,7 +126,7 @@ export const DropdownWrapper = styled.div`
   .rdn-control-arrow {
     width: 14px;
     height: 14px;
-    background-image: url("../images/dropArrow.png");
+    background-image: url("../../images/dropArrow.png");
     background-repeat: no-repeat;
     background-size: contain;
     position: absolute;
@@ -125,7 +139,7 @@ export const DropdownWrapper = styled.div`
   }
 
   & > div {
-    width: 132px;
+    width: 140px;
     height: 55px;
     border: 2px solid #feae11;
     border-radius: 50px;
@@ -135,7 +149,12 @@ export const DropdownWrapper = styled.div`
     padding-top: 14px;
     padding-right: 20px;
     &:not(:last-child) {
-      margin-right: 11px;
+      margin-right: 9px;
+      ${(props) =>
+        props.small &&
+        css`
+          margin-right: 5px;
+        `}
     }
     & > div:not(:first-child) {
       background-color: white;

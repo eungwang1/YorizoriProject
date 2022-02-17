@@ -185,7 +185,7 @@ const Ingredient = styled.textarea`
   height: 54px;
   border: 1px solid #feae11;
   box-sizing: border-box;
-  border-radius: 50px;
+  border-radius: 10px;
   padding: 15px 55px 0px 25px;
   font-size: 1rem;
   font-weight: bold;

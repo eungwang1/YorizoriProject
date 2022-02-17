@@ -9,7 +9,7 @@ const CategoryDropdown = () => {
 
   return (
     <>
-      <DropdownWrapper>
+      <DropdownWrapper category>
         <Dropdown
           placeholder={category.category ? category.category : "종류별"}
           options={["한식", "중식", "일식", "아시안", "양식", "기타"]}
@@ -31,7 +31,7 @@ const CategoryDropdown = () => {
           }}
         />
       </DropdownWrapper>
-      <DropdownWrapper>
+      <DropdownWrapper category>
         <Dropdown
           placeholder={category.condition ? category.condition : "상황별"}
           options={[

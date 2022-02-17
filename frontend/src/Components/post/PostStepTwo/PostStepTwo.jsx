@@ -9,12 +9,12 @@ import SourceList from "./SourceForm/SourceList";
 const PostStepTwo = () => {
   return (
     <PostTemplete stepNum={2} page={2} request={"재료를 추가해 주세요.(1개 이상 필수)"}>
-      <ContainerDiv>
+      <ContainerDiv stepTwo>
         <IngredientsList></IngredientsList>
         <AddIngredients></AddIngredients>
       </ContainerDiv>
       <StyledP>양념을 추가해 주세요.(필수)</StyledP>
-      <ContainerDiv>
+      <ContainerDiv stepTwo>
         <SourceList></SourceList>
         <AddSource></AddSource>
       </ContainerDiv>

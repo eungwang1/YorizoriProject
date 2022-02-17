@@ -53,7 +53,7 @@ const StyledBtn = styled.button`
   width: 315px;
   height: 58px;
   background: #fcad2c;
-  border-radius: 50px;
+  border-radius: 10px;
   color: white;
   font-size: 1.1rem;
   font-weight: 550;
