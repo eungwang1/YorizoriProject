@@ -5,12 +5,15 @@ import dummy from "./PostDummyData.json";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useForm } from "react-hook-form";
+import { ModalBox, ModalBackground, ModalClose, ImgBox } from "../post/commonStyle";
 
 const padNumber = (num, length) => {
   return String(num).padStart(length, "0");
 };
 
 const Recipe = ({ data }) => {
+  const previewRef = useRef(null);
+  const [modalState, setModalState] = useState(false);
   const [timerState, setTimerState] = useState(
     Array.from({ length: 100 }, () => {
       return {
@@ -81,6 +84,19 @@ const Recipe = ({ data }) => {
     slidesToShow: 1,
     slidesToScroll: 1,
   };
+
+  const openModal = (e) => {
+    setModalState(true);
+    console.log(e.target.src);
+    previewRef.current.src = e.target.src;
+    document.body.style.overflow = "hidden";
+  };
+
+  const closeModal = (e) => {
+    setModalState(false);
+    document.body.style.overflow = "unset";
+  };
+
   return (
     <RecipeWrapper>
       <div style={{ fontWeight: 900, marginBottom: "10px" }}>요리 순서</div>
@@ -125,7 +141,7 @@ const Recipe = ({ data }) => {
                   ></ResetBtn>
                 </TimerWrapper>
               </div>
-              <Img key={`Img_${index}`} src={process.processImage} />
+              <Img key={`Img_${index}`} src={process.processImage} onClick={openModal} />
             </Step>
           );
         })}
@@ -137,10 +153,24 @@ const Recipe = ({ data }) => {
             <ResultImg key={`ResultImg_${index}`} src={photo} />
           ))}
       </StyledSlider>
+      <ModalBox detail modalState={modalState}>
+        <ImgBox src="" alt="none" ref={previewRef} detail />
+        <ModalClose onClick={closeModal}>
+          <CloseP>x</CloseP>
+        </ModalClose>
+      </ModalBox>
+      <ModalBackground detail modalState={modalState} onClick={closeModal} />
     </RecipeWrapper>
   );
 };
 export default Recipe;
+
+const CloseP = styled.p`
+  margin: 0;
+  position: absolute;
+  top: -5px;
+  left: 6px;
+`;
 
 const RecipeWrapper = styled.div`
   margin: 20px;

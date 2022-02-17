@@ -16,7 +16,7 @@ export const StyledP = styled.p`
   ${(props) =>
     props.stepFour &&
     css`
-      padding-left: 3px;
+      padding-left: 10px;
       padding-bottom: 20px;
       height: 11px;
     `}
@@ -220,12 +220,12 @@ export const ModalBox = styled.div`
   align-items: center;
   flex-direction: column;
   z-index: 999;
-  /* 
+
   ${(props) =>
-    props.sub &&
+    props.detail &&
     css`
-      right: 7px;
-    `} */
+      right: 6px;
+    `}
 `;
 export const ModalBackground = styled.div`
   display: ${(props) => (props.modalState === true ? "flex" : "none")};
@@ -238,12 +238,24 @@ export const ModalBackground = styled.div`
   z-index: 500;
   justify-content: center;
   overflow: hidden;
+  ${(props) =>
+    props.detail &&
+    css`
+      right: 0;
+      overflow: hidden;
+    `}
 `;
 
 export const ImgBox = styled.img`
   width: 300px;
   height: 300px;
   position: relative;
+  ${(props) =>
+    props.detail &&
+    css`
+      width: 100%;
+      height: 100%;
+    `}
 `;
 
 export const DeleteImg = styled.div`

@@ -6,12 +6,14 @@ import { detailDataAtom, delAndAmendBtnStateAtom } from "../../states/detail";
 import axios from "axios";
 import swal from "sweetalert";
 import { useNavigate } from "react-router-dom";
+import { commentScrollStateAtom } from "../../states/detail";
 
 const Summary = ({ data, postId }) => {
   const navigate = useNavigate();
   const [detailData, setDetailData] = useRecoilState(detailDataAtom);
   const [heartCheck, setHeartCheck] = useState(false);
   const [delAndAmendBtnState, setDelAndAmendBtnState] = useRecoilState(delAndAmendBtnStateAtom);
+  const [commentScrollState, setCommentScrollState] = useRecoilState(commentScrollStateAtom);
   const [numLikes, setNumLikes] = useState(data ? data.numLikes : null);
   const userId = useRecoilValue(userIdAtom);
   const [heart, setHeart] = useState(false);
@@ -107,6 +109,16 @@ const Summary = ({ data, postId }) => {
       } catch (e) {
         console.error(e);
         console.log(e.response.data.message);
+        swal({
+          title: "로그인 하러가기",
+          icon: "warning",
+          buttons: true,
+          dangerMode: true,
+        }).then((res) => {
+          if (res) {
+            navigate("/login");
+          }
+        });
       }
     }
     heartStateCheck();
@@ -123,7 +135,12 @@ const Summary = ({ data, postId }) => {
               <span>{numLikes}명이 좋아합니다.</span>
             </Likes>
             <Comments>
-              <span className="sprite comment" />
+              <span
+                className="sprite comment"
+                onClick={() => {
+                  setCommentScrollState(true);
+                }}
+              />
               <span>{data.numComments}</span>
             </Comments>
             <Views>

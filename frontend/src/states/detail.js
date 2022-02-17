@@ -15,3 +15,8 @@ export const delAndAmendBtnStateAtom = atom({
   key: "delAndAmendBtnStateAtom",
   default: false,
 });
+
+export const commentScrollStateAtom = atom({
+  key: "commentScrollStateAtom",
+  default: false,
+});
