@@ -102,22 +102,28 @@ const PostSchema = new mongoose.Schema(
       default: 0,
     },
 
+    //게시글이 받은 좋아요 수
+    numLikes: {
+      type: Number,
+      default: 0,
+    },
+
     //관리자가 엄선해주는 레시피 목록
     example: {
       type: Boolean,
-      default: null,
+      default: false,
     },
   },
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
 //게시글에 달린 좋아요 수를 받습니다.
-PostSchema.virtual("numLikes", {
-  ref: "Like",
-  localField: "_id",
-  foreignField: "postId",
-  count: true,
-});
+// PostSchema.virtual("numLikes", {
+//   ref: "Like",
+//   localField: "_id",
+//   foreignField: "postId",
+//   count: true,
+// });
 
 //게시글에 달린 댓글 수를 받습니다.
 PostSchema.virtual("numComments", {

@@ -18,4 +18,6 @@ const LikeSchema = new Schema(
   { timestamps: true }
 );
 
+LikeSchema.index({ postId: -1, isUnliked: 1 });
+
 module.exports = LikeSchema;

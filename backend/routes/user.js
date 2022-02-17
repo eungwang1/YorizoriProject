@@ -21,6 +21,10 @@ router.post(
       throw new Error("변경된 내용이 없습니다.");
       return;
     }
+    const exsitedNickName = await User.findOne({ nickName });
+    if (exsitedNickName) {
+      throw new Error("이미 존재하는 닉네임입니다.");
+    }
     const user = await User.findOne({ _id: userId });
     if (req.file) {
       const { location, key } = req.file;
@@ -51,9 +55,7 @@ router.get(
   asyncHandler(async (req, res, next) => {
     const { userId } = req.params; //body에서 유저아이디를 받고
     const user = await User.findOne({ _id: userId })
-      .populate({ path: "numFollowees", match: { isUnfollowed: false } })
       .populate({ path: "numFollowers", match: { isUnfollowed: false } })
-      .populate({ path: "numPosts", match: { useYN: true } })
       .populate({ path: "numLikes", match: { isUnliked: false } })
       .select("-password"); //_id가 일치하는 유저를 찾음
     //password 제외한 정보를 보냄
@@ -63,7 +65,6 @@ router.get(
 
 //작성한 레시피 조회
 //유저 한명이 작성한 데이터를 가져오는 경우에 user를 populate해야 하나 고민을 해봤는데
-//프론트에서 주로 map을 이용해서 데이터를 사용하는 것 같아서 populate하면 사용하기 더 쉬울 것 같다는 판단으로 populate 했습니다.
 router.get(
   "/:userId/post",
   // isLoggedIn,
@@ -78,20 +79,18 @@ router.get(
     limit = parseInt(limit);
     const userPosts = await Post.find({ userId, useYN: true })
       .sort({ createdAt: -1 })
+      .skip(startIndex - 1)
+      .limit(limit)
       .populate({
         path: "userId",
         select: "-password",
-        populate: [
-          { path: "numFollowees", match: { isUnfollowed: false } },
-          { path: "numFollowers", match: { isUnfollowed: false } },
-          { path: "numPosts", match: { useYN: true } },
-          { path: "numLikes", match: { isUnliked: false } },
-        ],
+        // populate: [
+        //   { path: "numFollowers", match: { isUnfollowed: false } },
+        //   { path: "numLikes", match: { isUnliked: false } },
+        // ],
       })
-      .populate({ path: "numLikes", match: { isUnliked: false } })
-      .populate({ path: "numComments", match: { isDeleted: false } })
-      .skip(startIndex - 1)
-      .limit(limit);
+      .populate({ path: "numComments", match: { isDeleted: false } });
+
     res.status(200).json({ userPosts });
   })
 );
@@ -110,26 +109,21 @@ router.get(
     limit = parseInt(limit);
     const likePosts = await Like.find({ userId, isUnliked: false })
       .sort({ createdAt: -1 })
+      .skip(startIndex - 1)
+      .limit(limit)
       .populate({
         path: "userId",
         select: "-password",
-        populate: [
-          { path: "numFollowees", match: { isUnfollowed: false } },
-          { path: "numFollowers", match: { isUnfollowed: false } },
-          { path: "numPosts", match: { useYN: true } },
-          { path: "numLikes", match: { isUnliked: false } },
-        ],
+        // populate: [
+        //   { path: "numFollowers", match: { isUnfollowed: false } },
+        //   { path: "numLikes", match: { isUnliked: false } },
+        // ],
       })
       .populate({
         path: "postId",
         match: { useYN: true },
-        populate: [
-          { path: "numLikes", match: { isUnliked: false } },
-          { path: "numComments", match: { isDeleted: false } },
-        ],
-      })
-      .skip(startIndex - 1)
-      .limit(limit);
+        populate: [{ path: "numComments", match: { isDeleted: false } }],
+      });
     res.status(200).json({ likePosts });
   })
 );
@@ -151,20 +145,15 @@ router.get(
       .populate({
         path: "userId",
         select: "-password",
-        populate: [
-          { path: "numFollowees", match: { isUnfollowed: false } },
-          { path: "numFollowers", match: { isUnfollowed: false } },
-          { path: "numPosts", match: { useYN: true } },
-          { path: "numLikes", match: { isUnliked: false } },
-        ],
+        // populate: [
+        //   { path: "numFollowers", match: { isUnfollowed: false } },
+        //   { path: "numLikes", match: { isUnliked: false } },
+        // ],
       })
       .populate({
         path: "postId",
         match: { useYN: true },
-        populate: [
-          { path: "numLikes", match: { isUnliked: false } },
-          { path: "numComments", match: { isDeleted: false } },
-        ],
+        populate: [{ path: "numComments", match: { isDeleted: false } }],
       });
     //겹치는 게시글들을 제거하기 위해 각 게시글마다 최신 글을 하나씩 모아 commentPosts 배열을 만듭니다.
     //예) A,a,a,B,b,C => A,B,C
@@ -215,26 +204,21 @@ router.get(
     limit = parseInt(limit);
     const lastViewedPosts = await History.find({ userId, isLastViewed: true })
       .sort({ createdAt: -1 })
+      .skip(startIndex - 1)
+      .limit(limit)
       .populate({
         path: "userId",
         select: "-password",
-        populate: [
-          { path: "numFollowees", match: { isUnfollowed: false } },
-          { path: "numFollowers", match: { isUnfollowed: false } },
-          { path: "numPosts", match: { useYN: true } },
-          { path: "numLikes", match: { isUnliked: false } },
-        ],
+        // populate: [
+        //   { path: "numFollowers", match: { isUnfollowed: false } },
+        //   { path: "numLikes", match: { isUnliked: false } },
+        // ],
       })
       .populate({
         path: "postId",
         match: { useYN: true },
-        populate: [
-          { path: "numLikes", match: { isUnliked: false } },
-          { path: "numComments", match: { isDeleted: false } },
-        ],
-      })
-      .skip(startIndex - 1)
-      .limit(limit);
+        populate: [{ path: "numComments", match: { isDeleted: false } }],
+      });
     res.status(200).json({ lastViewedPosts });
   })
 );
@@ -253,18 +237,16 @@ router.get(
     limit = parseInt(limit);
     const followers = await Follow.find({ followeeId: userId, isUnfollowed: false })
       .sort({ createdAt: -1 })
+      .skip(startIndex - 1)
+      .limit(limit)
       .populate({
         path: "followerId",
         select: "-password",
         populate: [
-          { path: "numFollowees", match: { isUnfollowed: false } },
           { path: "numFollowers", match: { isUnfollowed: false } },
-          { path: "numPosts", match: { useYN: true } },
           { path: "numLikes", match: { isUnliked: false } },
         ],
-      })
-      .skip(startIndex - 1)
-      .limit(limit);
+      });
     res.status(200).json({ followers });
   })
 );
@@ -283,18 +265,16 @@ router.get(
     limit = parseInt(limit);
     const followees = await Follow.find({ followerId: userId, isUnfollowed: false })
       .sort({ createdAt: -1 })
+      .skip(startIndex - 1)
+      .limit(limit)
       .populate({
         path: "followeeId",
         select: "-password",
         populate: [
-          { path: "numFollowees", match: { isUnfollowed: false } },
           { path: "numFollowers", match: { isUnfollowed: false } },
-          { path: "numPosts", match: { useYN: true } },
           { path: "numLikes", match: { isUnliked: false } },
         ],
-      })
-      .skip(startIndex - 1)
-      .limit(limit);
+      });
     res.status(200).json({ followees });
   })
 );
@@ -306,32 +286,35 @@ router.get(
   "/sortByFollowees",
   asyncHandler(async (req, res, next) => {
     let { startIndex, limit, hasPost } = req.query;
-    let filteringNum = 0;
-    if (hasPost) filteringNum = 1;
-    const users = await User.find()
-      .populate({ path: "numFollowees", match: { isUnfollowed: false } })
-      .populate({ path: "numFollowers", match: { isUnfollowed: false } })
-      .populate({ path: "numPosts", match: { useYN: true } })
-      .populate({ path: "numLikes", match: { isUnliked: false } })
-      .sort({ createdAt: -1 });
-    const sortedUsers = users
-      //팔로워가 많은 유저중 게시글이 없는 유저는 필터링함
-      .filter((user) => user.numPosts >= filteringNum)
-      .sort((a, b) => b.numFollowees - a.numFollowees);
-    if (!startIndex && !limit) {
-      res.status(200).json({ sortedUsers });
-      return;
-    }
-    //startIndex 와 limit  중 하나만 보내면 에러를 던짐
-    if (!startIndex || !limit) {
-      throw Error("startIndex와 limit 중 빠진 항목이 있습니다.");
-      return;
-    }
+    if (!startIndex) startIndex = 1;
+    if (!limit) limit = 0;
     //startIndex와 limit으로 정제된 데이터를 보내줌
     startIndex = parseInt(startIndex);
     limit = parseInt(limit);
-    const limitedSortedUsers = sortedUsers.slice(startIndex - 1, startIndex - 1 + limit);
+
+    let filteringNum = 0;
+    if (hasPost) filteringNum = 2;
+    const limitedSortedUsers = await User.find({ numPosts: { $gte: 1 } })
+      .sort({ numFollowees: -1, createdAt: -1 })
+      .skip(startIndex - 1)
+      .limit(limit)
+      .populate({ path: "numFollowers", match: { isUnfollowed: false } })
+      .populate({ path: "numLikes", match: { isUnliked: false } });
+
     res.status(200).json({ limitedSortedUsers });
   })
 );
 module.exports = router;
+
+// router.get(
+//   "/:userId/comment",
+//   isLoggedIn,
+//   asyncHandler(async (req, res, next) => {
+//     const { userId } = req.params;
+//     //댓글 collection에서 유저가 작성한 댓글을 필터링한 후 중복된 post를 제거한후 postId를 저장한 배열
+//     const commentPostIds = await Comment.find({ userId, isDeleted: false }).distinct("postId");
+//     //게시글 컬렉션에서 위에서 저장한 postId를 이용해 게시글을 찾음
+//     const commentPosts = await Post.find().where("_id").in(commentPostIds);
+//     res.status(200).json({ commentPosts });
+//   })
+// );

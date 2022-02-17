@@ -44,9 +44,7 @@ router.get(
         path: "userId",
         select: "-password",
         populate: [
-          { path: "numFollowees", match: { isUnfollowed: false } },
           { path: "numFollowers", match: { isUnfollowed: false } },
-          { path: "numPosts", match: { useYN: true } },
           { path: "numLikes", match: { isUnliked: false } },
         ],
       })

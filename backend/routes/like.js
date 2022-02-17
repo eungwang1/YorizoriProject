@@ -13,12 +13,14 @@ router.post(
     const { id: userId } = req.user || req.cookies; //req.user 에서 userId 꺼내고
 
     //만약 이미 좋아요를 누른 게시물이라면 에러를 던짐
-    const currentLike = await Like.findOne({ postId, userId, isUnliked: false });
+    const currentLike = await Like.findOne({ postId, isUnliked: false, userId });
     if (currentLike) {
       throw new Error("이미 좋아요 한 게시글입니다.");
       return;
     }
     await Like.create({ userId, postId }); //새로운 좋아요 데이터 생성
+    //해당 포스트의 좋아요 값 +1
+    await Post.updateOne({ _id: postId }, { $inc: { numLikes: 1 } });
     res.status(200).json({ message: "좋아요 한 목록에 추가되었습니다." });
   })
 );
@@ -42,12 +44,10 @@ router.get(
       .populate({
         path: "userId",
         select: "-password",
-        populate: [
-          { path: "numFollowees", match: { isUnfollowed: false } },
-          { path: "numFollowers", match: { isUnfollowed: false } },
-          { path: "numPosts", match: { useYN: true } },
-          { path: "numLikes", match: { isUnliked: false } },
-        ],
+        // populate: [
+        //   { path: "numFollowers", match: { isUnfollowed: false } },
+        //   { path: "numLikes", match: { isUnliked: false } },
+        // ],
       })
       .skip(startIndex - 1)
       .limit(limit);
@@ -61,14 +61,16 @@ router.delete(
   isLoggedIn,
   asyncHandler(async (req, res, next) => {
     const { postId } = req.body;
-    const { id: userId } = req.user || req.cookies;;
-    const currentLike = await Like.findOne({ postId, userId, isUnliked: false }); //
+    const { id: userId } = req.user || req.cookies;
+    const currentLike = await Like.findOne({ postId, isUnliked: false, userId }); //
     if (!currentLike) {
       throw new Error("좋아요 한 게시글이 아닙니다."); // 종아요한 게시글이 아니면 에러 던짐
       return;
     }
     currentLike.isUnliked = true;
     await currentLike.save();
+    //해당 포스트의 좋아요 값 -1
+    await Post.updateOne({ _id: postId }, { $inc: { numLikes: -1 } });
     res.status(200).json({ message: "좋아요 한 목록에서 삭제되었습니다." });
   })
 );

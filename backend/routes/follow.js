@@ -9,7 +9,7 @@ router.post(
   "/",
   isLoggedIn,
   asyncHandler(async (req, res, next) => {
-    const { id: followeeId } = req.user || req.cookies;;
+    const { id: followeeId } = req.user || req.cookies;
     const { followerId } = req.body;
 
     const currentFollow = await Follow.findOne({ followeeId, followerId, isUnfollowed: false }); //기존에 존재하는 팔로우 정보를 찾아보고
@@ -22,6 +22,7 @@ router.post(
       followerId,
       followeeId,
     });
+    await User.updateOne({ _id: followerId }, { $inc: { numFollowees: 1 } });
     res.status(200).json({ message: "해당 유저 팔로우에 성공했습니다." });
   })
 );
@@ -31,7 +32,7 @@ router.delete(
   "/",
   isLoggedIn,
   asyncHandler(async (req, res, next) => {
-    const { id: followeeId } = req.user || req.cookies;;
+    const { id: followeeId } = req.user || req.cookies;
     const { followerId } = req.body;
     const currentFollow = await Follow.findOne({ followeeId, followerId, isUnfollowed: false });
     if (!currentFollow) {
@@ -40,6 +41,7 @@ router.delete(
     }
     currentFollow.isUnfollowed = true; //isUnfollowed 값을 true로 바꿔 삭제된 데이터로 관리
     await currentFollow.save();
+    await User.updateOne({ _id: followerId }, { $inc: { numFollowees: -1 } });
 
     res.status(200).json({ message: "팔로우한 유저에서 삭제되었습니다." });
   })
