@@ -3,8 +3,7 @@ import styled from "styled-components";
 import ProfileEdit from '../Components/mypage/ProfileEdit'
 
 
-const MyPageEdit = (props) => {
-  console.log(props)
+const MyPageEdit = () => {
   return (
     <div>
       <ProfileEdit />

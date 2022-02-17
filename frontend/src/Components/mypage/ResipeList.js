@@ -24,7 +24,6 @@ export default function ResipeButton(props) {
 
   const changeResipe = () => {
     setOnResipe((onResipe) => {
-      console.log(onResipe)
       return !onResipe
     })
   }
@@ -53,13 +52,13 @@ export default function ResipeButton(props) {
                 console.log(item)
               return (
                 <ResipeListItem key={index}>
-                  <Link to={`/detail/${props.nums === "1" || props.nums === "2" ? item.postId.id : item.id } `}>
-                    { props.nums === "1" || props.nums === "2"
+                  <Link to={`/detail/${props.nums === "1" || props.nums === "2" || props.nums === "3" ? item.postId.id : item.id } `}>
+                    { props.nums === "1" || props.nums === "2" || props.nums === "3"
                       ? <img src={item.postId.thumbnail} alt=""/>
                       : <img src={item.thumbnail} alt=""/>
                     }
                   </Link>
-                  { props.nums === "1" || props.nums === "2"
+                  { props.nums === "1" || props.nums === "2" || props.nums === "3"
                     ? <p> {item.postId.recipeName}</p>
                     : <p> {item.recipeName}</p>
                   }
@@ -119,7 +118,7 @@ const ResipeListBox = styled.div`
     margin: 15px 25px 0 25px;
     width: 100px;
     height: 100px;
-    border-radius: 15px;
+    border-radius: 5px;
     object-fit: cover;
   }
   

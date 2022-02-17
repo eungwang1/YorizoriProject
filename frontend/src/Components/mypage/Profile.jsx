@@ -6,56 +6,146 @@ import NavTop from "../nav/TopNav"
 import { MyPageMainBox, MyPageMainImgBox, MyPageMainBtnBox, MypageResipeBox} from "./ProfileStyle"
 import ResipeButton from "../mypage/ResipeList"
 import axios from 'axios';
-
+import { useRecoilValue } from "recoil";
+import { userIdAtom } from "../../states";
+import { TargetPostZone, TargetPostBox } from "./FollowerStyle";
 
 const MyPageTemplate = () => {
   const [ userData, setUserData] = useState([])
+  const [ targetUserData, setTargetUserData] = useState([])
   const [ myPostResipe, setMyPostResipe ] = useState([])
+  const [ myFollower, setMyFollower ] = useState([])
+  const [ targetFollower, setTargetFollower ] = useState([])
+  const [ myFollowee, setMyFollowee ] = useState([])
+  const [ targetFollowee, setTargetFollowee ] = useState([])
+  const [ targetPostResipe, setTargetPostResipe ] = useState([])
   const [ myLikeResipe, setMyLikeResipe ] = useState([])
   const [ myCommentResipe, setMyCommentResipe ] = useState([])
   const [ myHistoryResipe, setHistoryResipe ] = useState([])
   let { userId } = useParams()
+  const authId =  useRecoilValue(userIdAtom)
 
+
+  
   useEffect(()=>{
-    fetch(`http://localhost:8080/user/${userId}/profile`)
+    fetch(`http://localhost:8080/user/${authId}/profile`)
       .then(response => response.json())
       .then(data => setUserData(data.user))
       
       .catch(err => console.log(err))
   },[]);
   
+  useEffect(()=>{
+    fetch(`http://localhost:8080/user/${userId}/profile`)
+      .then(response => response.json())
+      .then(data => setTargetUserData(data.user))
+      
+      .catch(err => console.log(err))
+  },[]);
 
   useEffect(()=>{
-    fetch(`http://localhost:8080/user/${userId}/post`)
+    fetch(`http://localhost:8080/user/${authId}/follower`)
+      .then(response => response.json())
+      .then(data => setMyFollower(data.followers))
+      
+      .catch(err => console.log(err))
+  },[]);
+
+  useEffect(()=>{
+    fetch(`http://localhost:8080/user/${userId}/follower`)
+      .then(response => response.json())
+      .then(data => setTargetFollower(data.followers))
+      
+      .catch(err => console.log(err))
+  },[]);
+
+  useEffect(()=>{
+    fetch(`http://localhost:8080/user/${authId}/followee`)
+      .then(response => response.json())
+      .then(data => setMyFollowee(data.followees))
+      
+      .catch(err => console.log(err))
+  },[]);
+
+  useEffect(()=>{
+    fetch(`http://localhost:8080/user/${userId}/followee`)
+      .then(response => response.json())
+      .then(data => setTargetFollowee(data.followees))
+      
+      .catch(err => console.log(err))
+  },[]);
+
+  
+  useEffect(()=>{
+    fetch(`http://localhost:8080/user/${authId}/post`)
       .then(response => response.json())
       .then(data => setMyPostResipe(data.userPosts))
     },[]);
 
   useEffect(()=>{
-    fetch(`http://localhost:8080/user/${userId}/like`)
+    fetch(`http://localhost:8080/user/${userId}/post`)
+      .then(response => response.json())
+      .then(data => setTargetPostResipe(data.userPosts))
+    },[]);
+
+  useEffect(()=>{
+    fetch(`http://localhost:8080/user/${authId}/like`)
       .then(response => response.json())
       .then(data => setMyLikeResipe(data.likePosts))
     },[]);
 
   useEffect(()=>{
-    fetch(`http://localhost:8080/user/${userId}/comment`)
+    fetch(`http://localhost:8080/user/${authId}/comment`)
       .then(response => response.json())
       .then(data => setMyCommentResipe(data.commentPosts))
     },[]);
 
   useEffect(()=>{
-    fetch(`http://localhost:8080/user/${userId}/history`)
+    fetch(`http://localhost:8080/user/${authId}/history`)
       .then(response => response.json())
       .then(data => setHistoryResipe(data.lastViewedPosts))
     },[]);
 
 
+  async function followerCall() {
+    await axios
+      .post("/follow", {
+      followerId : userId,
+      headers: {
+        "Content-Type": "application/json",
+        },
+      })
+      .then((data) => alert("팔로우 성공"))
+      .catch((err) => console.log(err));
+  }
+
+  async function followerUnCall() {
+    await axios
+      .delete("/follow", {
+      followeeId : userId,
+      headers: {
+        "Content-Type": "application/json",
+        },
+      })
+      .then((data) => alert("언팔로우 성공"))
+      .catch((err) => console.log(err));
+  }
+
+  // console.log("유저", userId)
+  // console.log("로그인", authId)
+  // console.log("타켓", targetUserData)
+  // console.log("타켓팔로워", targetFollower)
+  // console.log("타켓팔로잉", targetFollowee)
+  // console.log("나의팔로워", myFollower)
+  // console.log("나의팔로잉", myFollowee)
+
   return (
     <div>
       <NavTop />
         <MyPageMainBox style={{ marginTop: "80px", marginBottom: "90px" }}>
+        { userId === authId 
+        ?
           <MyPageMainImgBox inImgBox>
-            
             <MyPageMainInfoBox>
               <div className="InfoProfile">
                 <MyPageImage src={userData.profileImage ? userData.profileImage : "../../images/baseimage.png"}/>
@@ -67,13 +157,13 @@ const MyPageTemplate = () => {
                       <span>{myPostResipe.length}</span>
                   </div>
                   <div>
-                    <Link to="/">
+                    <Link to={`/user/${authId}/follower`}>
                       <p>팔로워</p>
                       <span>{userData.numFollowers}</span>
                     </Link>
                   </div>
                   <div>
-                    <Link to="/">
+                    <Link to={`/user/${authId}/followee`}>
                       <p>팔로잉</p>
                       <span>{userData.numFollowees}</span>
                     </Link>
@@ -96,8 +186,42 @@ const MyPageTemplate = () => {
               
             </MyPageMainBtnBox>
           </MyPageMainImgBox>
-        </MyPageMainBox>
+        : 
+        <MyPageMainImgBox>
+          <MyPageMainInfoBox>
+            <div className="InfoProfile">
+              <MyPageImage src={targetUserData.profileImage ? targetUserData.profileImage : "../../images/baseimage.png"}/>
+              <p>{targetUserData.nickName}</p>
+            </div>
+          </MyPageMainInfoBox>
 
+          <MyPageMainBtnBox>
+            { targetFollowee.map((item) => item.followeeId.id).includes(authId)
+              ?
+                <MyPageMainProfileEdit type="button" onClick={followerUnCall}>언팔로우</MyPageMainProfileEdit>
+              :
+                <MyPageMainProfileEdit type="button" onClick={followerCall}>팔로우</MyPageMainProfileEdit>
+            }
+          </MyPageMainBtnBox>
+
+          <div style={{width: "100%", borderBottom : "1px solid #c5c5c5", marginBottom: "20px"}} />
+          <TargetPostBox>
+            
+            <TargetPostZone>
+              { targetPostResipe.map((item, input) => {
+                return (
+                  <Link key={input} to={`/detail/${item.id}`}>
+                    <img src={item.thumbnail}/>
+                  </Link>
+                )
+              })}
+            </TargetPostZone>
+          </TargetPostBox>
+
+
+        </MyPageMainImgBox>
+        }
+        </MyPageMainBox>
       <NavBottom />
     </div>
   

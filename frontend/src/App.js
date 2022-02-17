@@ -13,6 +13,8 @@ import Home from "./pages/Home";
 import PostPage from "./pages/PostPage";
 import MoreComments from "./Components/postDetail/MoreComments";
 import KakaoAuth from "./pages/KakaoAuth";
+import Followee from "./pages/Followee";
+import Follower from "./pages/Follower";
 
 function App() {
   return (
@@ -31,6 +33,8 @@ function App() {
         <Route path="detail/:postId/comments" element={<MoreComments />} />
         <Route element={<MyPage />} path="/user/:userId/profile" />
         <Route element={<MyPageEdit />} path="/user/:userId/edit" />
+        <Route element={<Follower />} path="/user/:userId/Follower" />
+        <Route element={<Followee />} path="/user/:userId/Followee" />
         <Route element={<PostPage />} path="/post" />
       </Routes>
     </RecoilRoot>
