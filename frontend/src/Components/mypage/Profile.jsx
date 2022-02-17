@@ -122,7 +122,7 @@ const MyPageTemplate = () => {
   async function followerUnCall() {
     await axios
       .delete("/follow", {
-      followerId : userId,
+      data: { followerId: userId },
       headers: {
         "Content-Type": "application/json",
         },
