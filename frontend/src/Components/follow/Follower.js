@@ -25,7 +25,7 @@ return (
     <div>
       <TopNav />
        <MainBox>
-         <p>나의 팔로워</p>
+         <p>나의 팔로잉</p>
        </MainBox>
         { myFollowerList.map((item) => {
           return (

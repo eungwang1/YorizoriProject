@@ -23,7 +23,7 @@ const MyFollowee = () => {
     <div>
       <TopNav />
        <MainBox>
-         <p>나의 팔로잉</p>
+         <p>나의 팔로워</p>
        </MainBox>
        { myFolloweeList.map((item) => {
           return (

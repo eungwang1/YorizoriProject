@@ -122,7 +122,7 @@ const MyPageTemplate = () => {
   async function followerUnCall() {
     await axios
       .delete("/follow", {
-      followeeId : userId,
+      followerId : userId,
       headers: {
         "Content-Type": "application/json",
         },
@@ -157,15 +157,15 @@ const MyPageTemplate = () => {
                       <span>{myPostResipe.length}</span>
                   </div>
                   <div>
-                    <Link to={`/user/${authId}/follower`}>
+                    <Link to={`/user/${authId}/followee`}>
                       <p>팔로워</p>
-                      <span>{userData.numFollowers}</span>
+                      <span>{userData.numFollowees}</span>
                     </Link>
                   </div>
                   <div>
-                    <Link to={`/user/${authId}/followee`}>
+                    <Link to={`/user/${authId}/follower`}>
                       <p>팔로잉</p>
-                      <span>{userData.numFollowees}</span>
+                      <span>{userData.numFollowers}</span>
                     </Link>
                   </div>
                 </MyPageFollowBox>
