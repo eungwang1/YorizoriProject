@@ -19,7 +19,11 @@ router.post(
     // 기존에 이메일로 가입한 사람이 있나 검사 (중복 가입 방지)
     const isUser = await User.findOne({ email });
     if (isUser) {
-      return res.status(400).json({ message: "이미 가입된 이메일입니다." }); // 에러페이지로 바로 리다이렉트
+      return res.status(400).json({ success: false, message: "이미 가입된 이메일입니다." }); // 에러페이지로 바로 리다이렉트
+    }
+    const existingNickName = await User.findOne({ nickName });
+    if (existingNickName) {
+      return res.status(400).json({ success: false, message: "이미 사용중인 닉네임입니다." });
     }
 
     // 정상적인 회원가입 절차면 해시화
@@ -35,29 +39,32 @@ router.post(
   })
 );
 
-router.post("/find", isNotLoggedIn, asyncHandler( async (req, res) => {
-  const {email, nickName, kakaoId, profileImage } = req.body;
-  const isUserExist = await User.findOne({ email });
-  console.log(isUserExist,"유져 있냐??")
-  let id;
-  if(!isUserExist) {
-    const user = await User.create({
-      email,
-      nickName,
-      profileImage,
-      kakaoId,
-    })
-    id = user._id;
-    console.log(id)
-    res.status(200).json({ message: "업데이트 성공!", uid: id, uimg: user.profileImage })
-  }
-  else if(!isUserExist.kakaoId) {
-    id = isUserExist?._id;
-    isUserExist.kakaoId = kakaoId;
-    isUserExist.save();
-    res.status(200).json({ message: "업데이트 성공!", uid: id, uimg: isUserExist.profileImage })
-  }
-}))
+router.post(
+  "/find",
+  isNotLoggedIn,
+  asyncHandler(async (req, res) => {
+    const { email, nickName, kakaoId, profileImage } = req.body;
+    const isUserExist = await User.findOne({ email });
+    console.log(isUserExist, "유져 있냐??");
+    let id;
+    if (!isUserExist) {
+      const user = await User.create({
+        email,
+        nickName,
+        profileImage,
+        kakaoId,
+      });
+      id = user._id;
+      console.log(id);
+      res.status(200).json({ message: "업데이트 성공!", uid: id, uimg: user.profileImage });
+    } else if (!isUserExist.kakaoId) {
+      id = isUserExist?._id;
+      isUserExist.kakaoId = kakaoId;
+      isUserExist.save();
+      res.status(200).json({ message: "업데이트 성공!", uid: id, uimg: isUserExist.profileImage });
+    }
+  })
+);
 
 //* 로그인 요청
 // 사용자 미들웨어 isNotLoggedIn 통과해야 async (req, res, next) => 미들웨어 실행
@@ -115,7 +122,7 @@ router.get(
     // }
     req.logout();
     req.session.destroy(); // 로그인인증 수단으로 사용한 세션쿠키를 지우고 파괴한다. 세션쿠키가 없다는 말은 즉 로그아웃 인 말.
-    res.clearCookie("id")
+    res.clearCookie("id");
     res.status(200).json({ message: "로그아웃 성공" });
   })
 );
@@ -140,7 +147,7 @@ router.get("/oauth", (req, res) => {
       .then((result) => {
         console.log(result.data["access_token"], "hahahahahahahaha");
         // 토큰을 활용한 로직을 적어주면된다.
-        res.status(200)
+        res.status(200);
         return result;
       })
       .catch((e) => {
