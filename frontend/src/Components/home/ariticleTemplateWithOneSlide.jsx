@@ -4,7 +4,7 @@ import styled, { css } from "styled-components";
 
 export const ArticleWrapper = styled.div`
   width: 100%;
-  height: 400px;
+  height: 420px;
   position: relative;
   padding: 0 15px 0 15px;
   margin-top: 20px;
@@ -33,7 +33,7 @@ export const TextMain = styled.p`
   margin: 0;
   span {
     font-size: 24px;
-    color: #d45500;
+    color: #feae11;
     font-weight: 700;
   }
   & + & {
@@ -45,9 +45,9 @@ export const TextMain = styled.p`
 `;
 
 export const LinkedText = styled.button`
-  color: #d45500;
+  color: #feae11;
   background: rgba(0, 0, 0, 0);
-  border: 1px solid #d45500;
+  border: 1px solid #feae11;
   border-radius: 10px;
   text-align: center;
   font-size: 14px;
@@ -58,7 +58,7 @@ export const LinkedText = styled.button`
   margin-top: 14px;
   margin-bottom: 0px;
   &:hover {
-    background: #d45500;
+    background: #feae11;
     color: #ffffff;
   }
 `;
@@ -78,6 +78,7 @@ export const ImageWithTag = styled.div`
   width: 100%;
   height: 310px;
   min-width: 160px;
+  margin-top: 5px;
   & + & {
     margin-left: 10px;
   }
@@ -103,12 +104,12 @@ export const TextBox = styled.div`
 `;
 export const Title = styled.p`
   width: 100%;
-  height: 40px;
+  // height: 50px;
   font-size: 16px;
   margin: 0px;
-  overflow: hidden;
-  //   text-overflow: ellipsis;
-  //   white-space: nowrap;
+  // overflow: hidden;
+  // text-overflow: ellipsis;
+  // white-space: nowrap;
 `;
 export const Author = styled.p`
   font-size: 13px;

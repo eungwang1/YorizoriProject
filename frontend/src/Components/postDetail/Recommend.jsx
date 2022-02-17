@@ -3,56 +3,41 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const selectIndex = (totalIndex, selectingNumber) => {
-  let randomIndexArray = [];
-  for (let i = 0; i < selectingNumber; i++) {
-    let randomNum = Math.floor(Math.random() * totalIndex);
-    if (randomIndexArray.indexOf(randomNum) === -1) {
-      randomIndexArray.push(randomNum);
-    } else {
-      i--;
-    }
-  }
-  return randomIndexArray;
-};
 const Recommend = ({ data }) => {
-  const [allRecipes, setAllRecipes] = useState(null);
-  const [randomNumArray, setRandomNumArray] = useState(null);
   const [filteredRecipe, setFilteredRecipe] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await axios.get("/post");
-        setAllRecipes(data);
+        const {
+          data: { filteredPostCount },
+        } = await axios.get("/post/withFilter/count", {
+          params: {
+            category: data.category,
+          },
+        });
+        const limit = 4;
+        const startIndex = parseInt(Math.random() * (Number(filteredPostCount) - limit));
+        console.log("startIndex", startIndex);
+        const {
+          data: { filteredPost },
+        } = await axios.get("/post/withFilter", {
+          params: {
+            startIndex,
+            limit,
+            category: data.category,
+            currentPost: data._id,
+          },
+        });
+        console.log("filteredPost", filteredPost);
+        setFilteredRecipe(filteredPost);
       } catch (e) {
         console.error(e);
       }
     };
     fetchData();
   }, []);
-
-  useEffect(() => {
-    if (allRecipes) {
-      const FilteredData = allRecipes.data.filter((el) => {
-        if (el.category === data.category) {
-          return el;
-        }
-      });
-      console.log(FilteredData);
-      setFilteredRecipe(FilteredData);
-      const dataLength = FilteredData.length;
-      let dataCnt = 4;
-      if (dataLength <= 4) {
-        dataCnt = dataLength;
-      }
-      const randomNumArray = selectIndex(dataLength, dataCnt);
-      setRandomNumArray(randomNumArray);
-    }
-  }, [allRecipes]);
-  console.log(randomNumArray);
-  console.log(filteredRecipe);
 
   return (
     <RecommendWrapper>
@@ -61,21 +46,20 @@ const Recommend = ({ data }) => {
         <SmallP> 이런 메뉴는 어떠세요?</SmallP>
       </StyledDiv>
       <RecommendedPostWrapper>
-        {randomNumArray &&
-          randomNumArray.map((n, index) => {
-            return (
-              <RecommendedPost
-                key={`RecommendPost_${index}`}
-                onClick={() => {
-                  navigate(`/detail/${filteredRecipe[n]._id}`);
-                  window.location.reload();
-                }}
-              >
-                <PostImg key={`PostImg_${index}`} src={filteredRecipe[n].thumbnail} />
-                <PostTitle key={`PostTitle_${index}`}>{filteredRecipe[n].recipeName}</PostTitle>
-              </RecommendedPost>
-            );
-          })}
+        {filteredRecipe?.map((post) => {
+          return (
+            <RecommendedPost
+              key={post._id}
+              onClick={() => {
+                navigate(`/detail/${post._id}`);
+                window.location.reload();
+              }}
+            >
+              <PostImg src={post.thumbnail} />
+              <PostTitle>{post.recipeName}</PostTitle>
+            </RecommendedPost>
+          );
+        })}
       </RecommendedPostWrapper>
     </RecommendWrapper>
   );
