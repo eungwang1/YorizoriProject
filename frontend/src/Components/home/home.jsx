@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useUserActions } from "../../actions";
 import BottomNav from "../../Components/nav/BottomNav";
 import TopNav_main from "../../Components/nav/TopNav_main";
+import ScrollToTopButton from "../nav/ScrollToTopButton";
 import FileUpload from "@mimoid-prog/react-file-upload";
 import {
   useRecoilStateLoadable,
@@ -47,6 +48,7 @@ const Home = () => {
       {/* 팔로워 순으로 상위 4명의 유저를 뽑아서 유저의 게시글을 6개씩 보여줌 */}
       <FamousUserPost></FamousUserPost>
       <SloganBottom></SloganBottom>
+      <ScrollToTopButton />
       <BottomNav></BottomNav>
     </HomeBlock>
   );

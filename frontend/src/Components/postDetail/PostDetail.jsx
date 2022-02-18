@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import TopNav from "../nav/TopNav";
 import BottomNav from "../nav/BottomNav";
+import ScrollToTopButton from "../nav/ScrollToTopButton";
 import Summary from "./Summary";
 import Ingredient from "./Ingredient";
 import Recipe from "./Recipe";
@@ -65,6 +66,7 @@ const PostDetail = () => {
         <Line />
         <Recommend data={detailData} />
       </Content>
+      <ScrollToTopButton />
       <BottomNav />
     </PostDetailBlock>
   );

@@ -60,6 +60,7 @@ const Buttons = () => {
             onClick={() => {
               randompost();
               getRandomIndex();
+              document.body.style.overflow = "hidden";
             }}
           >
             <div />

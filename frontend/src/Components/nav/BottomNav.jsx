@@ -1,5 +1,5 @@
 import React from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { pageStateAtom } from "../../states";
 import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
@@ -9,7 +9,7 @@ import { userIdAtom } from "../../states";
 const BottomNav = ({ post }) => {
   const pageState = useRecoilValue(pageStateAtom);
   const authCheck = useRecoilValue(authAtom);
-  const authId =  useRecoilValue(userIdAtom)
+  const authId = useRecoilValue(userIdAtom);
 
   const navigate = useNavigate();
   return (
@@ -17,10 +17,11 @@ const BottomNav = ({ post }) => {
       <IconImg pageState={pageState} post onClick={() => navigate("/post")} />
       <IconImg pageState={pageState} home onClick={() => navigate("/")} />
       <IconImg pageState={pageState} recipe onClick={() => navigate("/view_all")} />
-      { authCheck
-        ? <IconImg pageState={pageState} mypage onClick={() => navigate(`/user/${authId}/profile`)}/>
-        : <IconImg pageState={pageState} mypage onClick={() => navigate('/login')} />
-      }
+      {authCheck ? (
+        <IconImg pageState={pageState} mypage onClick={() => navigate(`/user/${authId}/profile`)} />
+      ) : (
+        <IconImg pageState={pageState} mypage onClick={() => navigate("/login")} />
+      )}
     </BottomNavBlock>
   );
 };
@@ -28,7 +29,7 @@ const BottomNav = ({ post }) => {
 export default BottomNav;
 
 const BottomNavBlock = styled.div`
-  height: 80px;
+  height: 90px;
   width: 100%;
   position: fixed;
   bottom: 0px;

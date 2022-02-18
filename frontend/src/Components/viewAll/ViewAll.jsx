@@ -6,6 +6,7 @@ import Postzone from "./Postzone";
 import TopNav_main from "../nav/TopNav_main";
 import BottomNav from "../nav/BottomNav";
 import Modal from "./Modal";
+import ScrollToTopButton from "../nav/ScrollToTopButton";
 
 import { useRecoilValue } from "recoil";
 import { randomButtonState, randomPostState } from "../../states/ViewAllAtom";
@@ -24,6 +25,7 @@ const ViewAll = () => {
         <CategoryDropdown></CategoryDropdown>
         <Postzone />
       </Content>
+      <ScrollToTopButton />
       <BottomNav />
     </ViewAllBlock>
   );
