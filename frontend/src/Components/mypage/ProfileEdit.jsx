@@ -24,9 +24,11 @@ const EditMyPage = () => {
   const [ profileImage, setProfileImage] = useState(userData.profileImage ? userData.profileImage : "../../images/baseimage.png");
   const [ saveImage, setSaveImage ] = useState("")
   const [ savenickName, setSaveNickName ] = useState("")
+  const [ allUser, setAllUser ] = useState([]) 
   const nickNameInput = useRef()
   let { userId } = useParams()
   const authId =  useRecoilValue(userIdAtom)
+  const allNameData = allUser.map((item) => item.nickName)
 
   useEffect(()=>{
     fetch(`http://localhost:8080/user/${userId}/profile`)
@@ -46,6 +48,14 @@ const EditMyPage = () => {
       
       .catch(err => console.log(err))
   },[]);
+
+  useEffect(()=>{
+    fetch(`http://localhost:8080/user/all`)
+      .then(response => response.json())
+      .then(data => { setAllUser(data.allUser)})
+      
+      .catch(err => console.log(err))
+  }, []);
 
 
   async function successChenge() {
@@ -75,6 +85,7 @@ const EditMyPage = () => {
   const pass1 = () => {
     document.querySelector(".passbox").classList.toggle("passcheck")
   }
+
 
   function nickNameCheck(value) {
     let pattern_space = /\s/g;	// 공백체크
@@ -111,7 +122,13 @@ const EditMyPage = () => {
       data.innerText = "현재 사용중인 닉네임 입니다."
       setNickCheck("type2")
       setSaveNickName(userData.nickName)
-    }
+
+    } else if ( allNameData.includes(value) ) {
+      data.innerText = "중복된 닉네임 입니다."
+      setNickCheck("type2")
+      setSaveNickName(userData.nickName)
+
+    } 
 
      else {
       data.innerText = "사용 가능한 닉네임 입니다."
@@ -120,7 +137,8 @@ const EditMyPage = () => {
     }
 
   }
-  console.log(myAuthData.nickName)
+
+
   return (
       <EditMainBox>
         <NavTop />
