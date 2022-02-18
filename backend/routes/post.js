@@ -13,7 +13,7 @@ router.post(
   recipeUpload.fields([
     { name: "thumbnail", maxCount: 1 },
     { name: "copyImage" },
-    { name: "doneImage" },
+    // { name: "doneImage" },
   ]),
   asyncHandler(async (req, res, next) => {
     const {
@@ -254,7 +254,7 @@ router.post(
   recipeUpload.fields([
     { name: "thumbnail", maxCount: 1 },
     { name: "copyImage" },
-    { name: "doneImage" },
+    // { name: "doneImage" },
   ]),
   asyncHandler(async (req, res, next) => {
     const { postId } = req.params;
@@ -312,39 +312,39 @@ router.post(
       posts.copyImageKey = arrCopyImageKey;
     }
 
-    //-------------------------------------------------------
-    //현재 수정하려고 하는 이미지(doneImage)의 location값을 받아오기
-    //doneImage DB에 넣기
-    let arrDone = [];
-    let doneContents = req.files.doneImage;
-    for (i = 0; i < doneContents.length; i++) {
-      arrDone.push(doneContents[i].location);
-    }
+    // //-------------------------------------------------------
+    // //현재 수정하려고 하는 이미지(doneImage)의 location값을 받아오기
+    // //doneImage DB에 넣기
+    // let arrDone = [];
+    // let doneContents = req.files.doneImage;
+    // for (i = 0; i < doneContents.length; i++) {
+    //   arrDone.push(doneContents[i].location);
+    // }
 
-    //processIamge의 url주소가 이전과 다르다면 변경 되었을 경우
-    if (posts.doneImage != arrDone) {
-      //s3에서 삭제
-      for (i = 0; i < posts.doneImageKey.length; i++) {
-        const params = {
-          Bucket: "yorijori-recipes",
-          Key: posts.doneImageKey[i],
-        };
-        s3.deleteObject(params, function (error, data) {
-          if (error) console.log(error);
-          else console.log(data, "요리조리 doneImage 기존 사진 삭제완료");
-          return;
-        });
-      }
-      posts.doneImage = arrDone;
+    // //processIamge의 url주소가 이전과 다르다면 변경 되었을 경우
+    // if (posts.doneImage != arrDone) {
+    //   //s3에서 삭제
+    //   for (i = 0; i < posts.doneImageKey.length; i++) {
+    //     const params = {
+    //       Bucket: "yorijori-recipes",
+    //       Key: posts.doneImageKey[i],
+    //     };
+    //     s3.deleteObject(params, function (error, data) {
+    //       if (error) console.log(error);
+    //       else console.log(data, "요리조리 doneImage 기존 사진 삭제완료");
+    //       return;
+    //     });
+    //   }
+    //   posts.doneImage = arrDone;
 
-      //doneImage의 key값 찾기
-      let arrDoneKey = [];
-      let doneContentsKey = req.files.doneImage;
-      for (i = 0; i < doneContentsKey.length; i++) {
-        arrDoneKey.push(doneContentsKey[i].key);
-      }
-      posts.doneImageKey = arrDoneKey;
-    }
+    //   //doneImage의 key값 찾기
+    //   let arrDoneKey = [];
+    //   let doneContentsKey = req.files.doneImage;
+    //   for (i = 0; i < doneContentsKey.length; i++) {
+    //     arrDoneKey.push(doneContentsKey[i].key);
+    //   }
+    //   posts.doneImageKey = arrDoneKey;
+    // }
     //process내부 processImage의 location , key값 부여
     for (i = 0; i < posts.process.length; i++) {
       posts.process[i].processImage = posts.copyImage[i];
