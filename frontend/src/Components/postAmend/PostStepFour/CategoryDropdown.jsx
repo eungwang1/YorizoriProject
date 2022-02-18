@@ -1,0 +1,98 @@
+import React, { useEffect } from "react";
+import { DropdownWrapper } from "../commonStyle";
+import { Dropdown } from "react-dropdown-now";
+import { categoryAtom } from "../PostAtom/PostAtom";
+import { useRecoilState } from "recoil";
+
+const CategoryDropdown = ({ data }) => {
+  const [category, setCategory] = useRecoilState(categoryAtom);
+
+  useEffect(() => {
+    console.log(category);
+    if (!category.category) {
+      setCategory({
+        ...category,
+        category: data.category,
+      });
+    }
+    if (!category.material) {
+      setCategory({
+        ...category,
+        material: data.material,
+      });
+    }
+    if (!category.condition) {
+      setCategory({
+        ...category,
+        condition: data.condition,
+      });
+    }
+    if (!category.cook) {
+      setCategory({
+        ...category,
+        cook: data.cook,
+      });
+    }
+  }, [category]);
+
+  return (
+    <>
+      <DropdownWrapper category>
+        <Dropdown
+          placeholder={category.category ? category.category : "종류별"}
+          options={["한식", "중식", "일식", "아시안", "양식", "기타"]}
+          onSelect={(value) => {
+            setCategory({
+              ...category,
+              category: value.value,
+            });
+          }}
+        />
+        <Dropdown
+          placeholder={category.material ? category.material : "재료별"}
+          options={["육류", "채소류", "해물류", "과일류", "달걀/유제품", "기타"]}
+          onSelect={(value) => {
+            setCategory({
+              ...category,
+              material: value.value,
+            });
+          }}
+        />
+      </DropdownWrapper>
+      <DropdownWrapper category>
+        <Dropdown
+          placeholder={category.condition ? category.condition : "상황별"}
+          options={[
+            "파티",
+            "주말에 혼먹",
+            "근사하게",
+            "다이어트",
+            "영양식",
+            "야식",
+            "간식",
+            "초스피드",
+            "기타",
+          ]}
+          onSelect={(value) => {
+            setCategory({
+              ...category,
+              condition: value.value,
+            });
+          }}
+        />
+        <Dropdown
+          placeholder={category.cook ? category.cook : "방법별"}
+          options={["볶음", "무침", "비빔", "끓이기", "굽기", "삶기", "튀김", "기타"]}
+          onSelect={(value) => {
+            setCategory({
+              ...category,
+              cook: value.value,
+            });
+          }}
+        />
+      </DropdownWrapper>
+    </>
+  );
+};
+
+export default CategoryDropdown;

@@ -64,9 +64,7 @@ const Summary = ({ data, postId }) => {
         }
       });
     } catch (e) {
-      if (e.response.status === 403) {
-        alert("로그아웃 상태입니다.");
-      }
+      console.error(e);
     }
   };
 
@@ -156,7 +154,8 @@ const Summary = ({ data, postId }) => {
           <Author>
             <ProfileImg
               onClick={() => {
-                navigate(`/user/${data.userId.id}/profile`);
+                // navigate(`/user/${data.userId.id}/profile`);
+                window.location.replace(`/user/${data.userId.id}/profile`);
               }}
               src={data.userId.profileImage ? data.userId.profileImage : "../images/onlylogo.png"}
             />
@@ -177,7 +176,13 @@ const Summary = ({ data, postId }) => {
                     >
                       삭제하기
                     </StyledDiv>
-                    <StyledDiv>수정하기</StyledDiv>
+                    <StyledDiv
+                      onClick={() => {
+                        navigate(`/post/${postId}`, { state: { data, postId } });
+                      }}
+                    >
+                      수정하기
+                    </StyledDiv>
                   </DropDownWrapper>
                 )}
               </DropDownContainer>

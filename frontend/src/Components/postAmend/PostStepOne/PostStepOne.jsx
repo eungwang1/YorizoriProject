@@ -15,17 +15,33 @@ import {
 import { useForm, useFormContext } from "react-hook-form";
 import { MainImageStateAtom } from "../PostAtom/PostAtom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
+import { ConvertURLtoFile } from "../util/ConvertURLtoFile";
 
-const PostStepOne = () => {
+const PostStepOne = ({ data }) => {
   const ImgLabel = useRef();
   const ImgInput = useRef();
   const PreviewRef = useRef();
-  const { watch } = useForm();
+  const { watch, setValue, getValues } = useForm();
   const { register } = useFormContext();
 
   const mainImage = useRecoilValue(MainImageStateAtom);
   const setMainImage = useSetRecoilState(MainImageStateAtom);
   const [modalState, setModalState] = useState(false);
+  const [number, setNumber] = useState(0);
+
+  useEffect(() => {
+    if (!mainImage.state) {
+      ConvertURLtoFile(data.thumbnail).then((el) => {
+        console.log([el]);
+        setMainImage({
+          ...mainImage,
+          file: [el],
+          state: true,
+          preview: data.thumbnail,
+        });
+      });
+    }
+  }, []);
 
   useEffect(() => {
     PreviewRef.current.src = mainImage.preview;
@@ -87,7 +103,11 @@ const PostStepOne = () => {
         />
       </ButtonWrapper>
       <StyledP stepOne>레시피 제목을 입력해주세요.(필수)</StyledP>
-      <TitleInput {...register(`recipeName`)} placeholder="마늘 50개 들어간 알리오 올리오" />
+      <TitleInput
+        {...register(`recipeName`)}
+        placeholder="마늘 50개 들어간 알리오 올리오"
+        defaultValue={data.recipeName}
+      />
       <PositionRelative>
         <ImgUploadInput
           accept="image/*"
@@ -101,6 +121,7 @@ const PostStepOne = () => {
       <StyledTextArea
         {...register(`desc`)}
         placeholder="직접 백종원 선생님의 레시피를 참고하여 변형하였습니다. "
+        defaultValue={data.desc}
       ></StyledTextArea>
     </PostTemplete>
   );

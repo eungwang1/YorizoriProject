@@ -1,6 +1,7 @@
 import "./App.css";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
+import PostAemdPage from "./pages/PostAemdPage";
 // import OldPostPage from "./pages/OldPostPage";
 import MyPage from "./pages/MyPage";
 import MyPageEdit from "./pages/MyPageEdit";
@@ -29,6 +30,7 @@ function App() {
         {/* <Route path="detail" element={<PostDetailPage />}>
           <Route path="comments" element={<MoreComments />} />
         </Route> */}
+        <Route path="/post/:postId" element={<PostAemdPage />} />
         <Route path="detail/:postId" element={<PostDetailPage />} />
         <Route path="detail/:postId/comments" element={<MoreComments />} />
         <Route element={<MyPage />} path="/user/:userId/profile" />
