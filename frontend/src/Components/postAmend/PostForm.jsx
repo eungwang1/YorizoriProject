@@ -10,6 +10,7 @@ import {
   InvalidationAtom,
   IngredientsListAtom,
   SourceListAtom,
+  InitialrenderStateAtom,
 } from "./PostAtom/PostAtom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import PostStepOne from "./PostStepOne/PostStepOne";
@@ -21,7 +22,6 @@ import axios from "axios";
 import swal from "sweetalert";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import { ConvertURLtoFile } from "./util/ConvertURLtoFile";
 
 const PostFormBlock = styled.form``;
 document.addEventListener(
@@ -64,18 +64,15 @@ const PostForm = () => {
   const cookInfo = useRecoilValue(cookInfoAtom);
   const category = useRecoilValue(categoryAtom);
   const [invalidationState, setInvalidationState] = useRecoilState(InvalidationAtom);
-
-  const [ingredientsList, setIngredientsList] = useRecoilState(IngredientsListAtom);
-  const [SourceList, setSourceList] = useRecoilState(SourceListAtom);
+  const [InitialrenderState, setInitialState] = useRecoilState(InitialrenderStateAtom);
   const { state } = useLocation();
   const { data, postId } = state;
   const navigate = useNavigate();
   const methods = useForm();
 
   useEffect(() => {
-    setPostpostPageState(2);
-    setPostpostPageState(1);
-  }, []);
+    setInitialState(false);
+  }, [InitialrenderState]);
 
   const onSubmit = async (data) => {
     let ingredient = [];
@@ -224,17 +221,21 @@ const PostForm = () => {
   return (
     <FormProvider {...methods}>
       <PostFormBlock onSubmit={methods.handleSubmit(onSubmit)}>
-        {postPageState === 1 ? (
+        {(InitialrenderState || postPageState === 1) && <PostStepOne data={data}></PostStepOne>}
+        {(InitialrenderState || postPageState === 2) && <PostStepTwo data={data}></PostStepTwo>}
+        {(InitialrenderState || postPageState === 3) && <PostStepThree data={data}></PostStepThree>}
+        {(InitialrenderState || postPageState === 4) && <PostStepFour data={data}></PostStepFour>}
+        {/* {postPageState === 1 || true ? (
           <PostStepOne data={data}></PostStepOne>
-        ) : postPageState === 2 ? (
+        ) : postPageState === 2 || true ? (
           <PostStepTwo data={data}></PostStepTwo>
-        ) : postPageState === 3 ? (
+        ) : postPageState === 3 || true ? (
           <PostStepThree data={data}></PostStepThree>
-        ) : postPageState === 4 ? (
+        ) : postPageState === 4 || true ? (
           <PostStepFour data={data}></PostStepFour>
         ) : (
           <PostStepOne data={data}></PostStepOne>
-        )}
+        )} */}
       </PostFormBlock>
     </FormProvider>
   );

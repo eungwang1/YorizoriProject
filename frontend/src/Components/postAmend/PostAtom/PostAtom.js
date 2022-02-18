@@ -80,3 +80,8 @@ export const InvalidationAtom = atom({
   key: "invalidation",
   default: false,
 });
+
+export const InitialrenderStateAtom = atom({
+  key: "InitialrenderStateAtom",
+  default: true,
+});
