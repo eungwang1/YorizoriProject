@@ -11,6 +11,10 @@ import {
   conditionAtom,
   cookAtom,
   ViewAll,
+  viewAllFamousPage,
+  viewAllRecentPage,
+  viewAllRecentPosts,
+  sortState,
 } from "../../states/ViewAllAtom";
 
 const CategoryDropdown = () => {
@@ -28,18 +32,23 @@ const CategoryDropdown = () => {
   const resetMaterial = useResetRecoilState(materialAtom);
   const resetCondition = useResetRecoilState(conditionAtom);
   const resetCook = useResetRecoilState(cookAtom);
+  const [recipes, setRecipes] = useRecoilState(ViewAll);
+  const [recentRecipes, setRecentRecipes] = useRecoilState(viewAllRecentPosts);
+  const [famousPage, setFamousPage] = useRecoilState(viewAllFamousPage);
+  const [recentPage, setRecentPage] = useRecoilState(viewAllRecentPage);
+  const famousOrRecentCondition = useRecoilValue(sortState);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const category = dropDownOptions.value;
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const category = dropDownOptions.value;
 
-      const url = `http://localhost:8080/post/withFilter?category=${category}`;
-      const response = await fetch(url);
-      const data = await response.json();
-      setCategoty(data.category);
-    };
-    fetchData();
-  }, []);
+  //     const url = `http://localhost:8080/post/withFilter?category=${category}`;
+  //     const response = await fetch(url);
+  //     const data = await response.json();
+  //     setCategoty(data.category);
+  //   };
+  //   fetchData();
+  // }, []);
   const handleFilterCategory = (e) => {
     resetView();
     resetSearchValue();
@@ -73,41 +82,58 @@ const CategoryDropdown = () => {
     setFilterCondition(e.value);
   };
 
+  const onSelectResethandler = () => {
+    if (famousOrRecentCondition === "famous") {
+      if (famousPage !== 1) setRecipes([]);
+      setFamousPage(1);
+    }
+    if (famousOrRecentCondition === "recent") {
+      if (recentPage !== 1) setRecentRecipes([]);
+      setRecentPage(1);
+    }
+  };
+
   return (
     <>
       <DropdownWrapper>
         <Dropdown
           placeholder="종류"
-          options={["한식", "중식", "일식", "아시안", "양식", "기타"]}
+          options={["전체", "한식", "중식", "일식", "아시안", "양식", "기타"]}
           onChange={(e) => handleFilterCategory(e)}
           onSelect={(value) => {
-            setDropDownOptions((dropDownValues) => ({
-              ...dropDownValues,
-              category: value.value,
-              material: "",
-              condition: "",
-              cook: "",
-            }));
+            setDropDownOptions((dropDownValues) => {
+              if (dropDownValues.category == value.value) return dropDownValues;
+              if (dropDownValues.category == "" && value.value === "전체") return dropDownValues;
+              return {
+                ...dropDownValues,
+                category: value.value === "전체" ? "" : value.value,
+              };
+            });
+            onSelectResethandler();
+            console.log("dropDownOptions", dropDownOptions);
           }} // always fires once a selection happens even if there is no change
         />
         <Dropdown
           placeholder="재료"
-          options={["육류", "채소류", "해물류", "과일류", "달걀/유제품", "기타"]}
+          options={["전체", "육류", "채소류", "해물류", "과일류", "달걀/유제품", "기타"]}
           value="one"
           onChange={(e) => handleFilterMaterial(e)}
           onSelect={(value) => {
-            setDropDownOptions((dropDownValues) => ({
-              ...dropDownValues,
-              category: "",
-              material: value.value,
-              condition: "",
-              cook: "",
-            }));
+            setDropDownOptions((dropDownValues) => {
+              if (dropDownValues.material == value.value) return dropDownValues;
+              if (dropDownValues.material == "" && value.value === "전체") return dropDownValues;
+              return {
+                ...dropDownValues,
+                material: value.value === "전체" ? "" : value.value,
+              };
+            });
+            onSelectResethandler();
           }} // always fires once a selection happens even if there is no change
         />
         <Dropdown
           placeholder="상황"
           options={[
+            "전체",
             "파티",
             "주말에 혼먹",
             "근사하게",
@@ -121,29 +147,33 @@ const CategoryDropdown = () => {
           value="one"
           onChange={(e) => handleFilterCondition(e)}
           onSelect={(value) => {
-            setDropDownOptions((dropDownValues) => ({
-              ...dropDownValues,
-              category: "",
-              material: "",
-              condition: value.value,
-              cook: "",
-            }));
+            setDropDownOptions((dropDownValues) => {
+              if (dropDownValues.condition == value.value) return dropDownValues;
+              if (dropDownValues.condition == "" && value.value === "전체") return dropDownValues;
+              return {
+                ...dropDownValues,
+                condition: value.value === "전체" ? "" : value.value,
+              };
+            });
+            onSelectResethandler();
           }} // always fires once a selection happens even if there is no change
         />
         <Dropdown
           placeholder="방법"
-          options={["볶음", "무침", "비빔", "끓이기", "굽기", "삶기", "튀김", "기타"]}
+          options={["전체", "볶음", "무침", "비빔", "끓이기", "굽기", "삶기", "튀김", "기타"]}
           className="last"
           value="one"
           onChange={(e) => handleFilterCook(e)}
           onSelect={(value) => {
-            setDropDownOptions((dropDownValues) => ({
-              ...dropDownValues,
-              category: "",
-              material: "",
-              condition: "",
-              cook: value.value,
-            }));
+            setDropDownOptions((dropDownValues) => {
+              if (dropDownValues.cook == value.value) return dropDownValues;
+              if (dropDownValues.cook == "" && value.value === "전체") return dropDownValues;
+              return {
+                ...dropDownValues,
+                cook: value.value === "전체" ? "" : value.value,
+              };
+            });
+            onSelectResethandler();
           }} // always fires once a selection happens even if there is no change
         />
       </DropdownWrapper>

@@ -50,31 +50,36 @@ const Modal = () => {
 
   const getRandomIndex = async () => {
     if (randomButton) {
-      let random = parseInt(Math.random() * recipes.length);
-      setRandomPost(recipes[random]);
+      const {
+        data: { post },
+      } = await axios.get("/post/random");
+      console.log(post);
+      setRandomPost(post);
+      // let random = parseInt(Math.random() * recipes.length);
+      // setRandomPost(recipes[random]);
     }
   };
 
-  const getRecipe = async () => {
-    try {
-      const url = `http://localhost:8080/post`;
+  // const getRecipe = async () => {
+  //   try {
+  //     const url = `http://localhost:8080/post`;
 
-      const fetchData = async () => {
-        // setLoading(true);
-        const result = await axios(url);
-        const resultrecipes = recipes.concat(result.data.limitedSortedPosts);
-        setRecipes(resultrecipes);
-        // setLoading(false);
-      };
-      fetchData();
-    } catch {
-      console.error("에러");
-    }
-  };
+  //     const fetchData = async () => {
+  //       // setLoading(true);
+  //       const result = await axios(url);
+  //       const resultrecipes = recipes.concat(result.data.limitedSortedPosts);
+  //       setRecipes(resultrecipes);
+  //       // setLoading(false);
+  //     };
+  //     fetchData();
+  //   } catch {
+  //     console.error("에러");
+  //   }
+  // };
 
-  useEffect(() => {
-    getRecipe();
-  });
+  // useEffect(() => {
+  //   getRecipe();
+  // });
 
   return (
     <ModalWrapping RandomButtonPush={randomButton}>

@@ -3,18 +3,20 @@ import styled from "styled-components";
 
 import Buttons from "./Buttons";
 import Postzone from "./Postzone";
+import PostzoneByRecent from "./PostzoneByRecent";
 import TopNav_main from "../nav/TopNav_main";
 import BottomNav from "../nav/BottomNav";
 import Modal from "./Modal";
 import ScrollToTopButton from "../nav/ScrollToTopButton";
 
 import { useRecoilValue } from "recoil";
-import { randomButtonState, randomPostState } from "../../states/ViewAllAtom";
+import { randomButtonState, randomPostState, sortState } from "../../states/ViewAllAtom";
 import CategoryDropdown from "./CategoryDropDown";
 
 const ViewAll = () => {
   const randomButton = useRecoilValue(randomButtonState);
   const randomPost = useRecoilValue(randomPostState);
+  const famousOrRecentCondition = useRecoilValue(sortState);
 
   return (
     <ViewAllBlock>
@@ -23,7 +25,7 @@ const ViewAll = () => {
       <Content>
         <Buttons />
         <CategoryDropdown></CategoryDropdown>
-        <Postzone />
+        {famousOrRecentCondition === "famous" ? <Postzone /> : <PostzoneByRecent />}
       </Content>
       <ScrollToTopButton />
       <BottomNav />

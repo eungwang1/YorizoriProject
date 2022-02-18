@@ -1,118 +1,114 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Link, useParams,   } from "react-router-dom";
-import NavBottom from "../nav/BottomNav"
-import NavTop from "../nav/TopNav"
-import { MyPageMainBox, MyPageMainImgBox, MyPageMainBtnBox, MypageResipeBox} from "./ProfileStyle"
-import ResipeButton from "../mypage/ResipeList"
-import axios from 'axios';
+import { Link, useParams } from "react-router-dom";
+import NavBottom from "../nav/BottomNav";
+import NavTop from "../nav/TopNav";
+import { MyPageMainBox, MyPageMainImgBox, MyPageMainBtnBox, MypageResipeBox } from "./ProfileStyle";
+import ResipeButton from "../mypage/ResipeList";
+import axios from "axios";
 import { useRecoilValue } from "recoil";
 import { userIdAtom } from "../../states";
 import { TargetPostZone, TargetPostBox, PostWrapper } from "./FollowerStyle";
 
 const MyPageTemplate = () => {
-  const [ userData, setUserData] = useState([])
-  const [ targetUserData, setTargetUserData] = useState([])
-  const [ myPostResipe, setMyPostResipe ] = useState([])
-  const [ myFollower, setMyFollower ] = useState([])
-  const [ targetFollower, setTargetFollower ] = useState([])
-  const [ myFollowee, setMyFollowee ] = useState([])
-  const [ targetFollowee, setTargetFollowee ] = useState([])
-  const [ targetPostResipe, setTargetPostResipe ] = useState([])
-  const [ myLikeResipe, setMyLikeResipe ] = useState([])
-  const [ myCommentResipe, setMyCommentResipe ] = useState([])
-  const [ myHistoryResipe, setHistoryResipe ] = useState([])
-  let { userId } = useParams()
-  const authId =  useRecoilValue(userIdAtom)
+  const [userData, setUserData] = useState([]);
+  const [targetUserData, setTargetUserData] = useState([]);
+  const [myPostResipe, setMyPostResipe] = useState([]);
+  const [myFollower, setMyFollower] = useState([]);
+  const [targetFollower, setTargetFollower] = useState([]);
+  const [myFollowee, setMyFollowee] = useState([]);
+  const [targetFollowee, setTargetFollowee] = useState([]);
+  const [targetPostResipe, setTargetPostResipe] = useState([]);
+  const [myLikeResipe, setMyLikeResipe] = useState([]);
+  const [myCommentResipe, setMyCommentResipe] = useState([]);
+  const [myHistoryResipe, setHistoryResipe] = useState([]);
+  let { userId } = useParams();
+  const authId = useRecoilValue(userIdAtom);
 
-
-  
-  useEffect(()=>{
+  useEffect(() => {
     fetch(`http://localhost:8080/user/${authId}/profile`)
-      .then(response => response.json())
-      .then(data => setUserData(data.user))
-      
-      .catch(err => console.log(err))
-  },[]);
-  
-  useEffect(()=>{
+      .then((response) => response.json())
+      .then((data) => setUserData(data.user))
+
+      .catch((err) => console.log(err));
+  }, []);
+
+  useEffect(() => {
     fetch(`http://localhost:8080/user/${userId}/profile`)
-      .then(response => response.json())
-      .then(data => setTargetUserData(data.user))
-      
-      .catch(err => console.log(err))
-  },[]);
+      .then((response) => response.json())
+      .then((data) => setTargetUserData(data.user))
 
-  useEffect(()=>{
+      .catch((err) => console.log(err));
+  }, []);
+
+  useEffect(() => {
     fetch(`http://localhost:8080/user/${authId}/follower`)
-      .then(response => response.json())
-      .then(data => setMyFollower(data.followers))
-      
-      .catch(err => console.log(err))
-  },[]);
+      .then((response) => response.json())
+      .then((data) => setMyFollower(data.followers))
 
-  useEffect(()=>{
+      .catch((err) => console.log(err));
+  }, []);
+
+  useEffect(() => {
     fetch(`http://localhost:8080/user/${userId}/follower`)
-      .then(response => response.json())
-      .then(data => setTargetFollower(data.followers))
-      
-      .catch(err => console.log(err))
-  },[]);
+      .then((response) => response.json())
+      .then((data) => setTargetFollower(data.followers))
 
-  useEffect(()=>{
+      .catch((err) => console.log(err));
+  }, []);
+
+  useEffect(() => {
     fetch(`http://localhost:8080/user/${authId}/followee`)
-      .then(response => response.json())
-      .then(data => setMyFollowee(data.followees))
-      
-      .catch(err => console.log(err))
-  },[]);
+      .then((response) => response.json())
+      .then((data) => setMyFollowee(data.followees))
 
-  useEffect(()=>{
+      .catch((err) => console.log(err));
+  }, []);
+
+  useEffect(() => {
     fetch(`http://localhost:8080/user/${userId}/followee`)
-      .then(response => response.json())
-      .then(data => setTargetFollowee(data.followees))
-      
-      .catch(err => console.log(err))
-  },[]);
+      .then((response) => response.json())
+      .then((data) => setTargetFollowee(data.followees))
 
-  
-  useEffect(()=>{
+      .catch((err) => console.log(err));
+  }, []);
+
+  useEffect(() => {
     fetch(`http://localhost:8080/user/${authId}/post`)
-      .then(response => response.json())
-      .then(data => setMyPostResipe(data.userPosts))
-    },[]);
+      .then((response) => response.json())
+      .then((data) => setMyPostResipe(data.userPosts));
+  }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     fetch(`http://localhost:8080/user/${userId}/post`)
-      .then(response => response.json())
-      .then(data => setTargetPostResipe(data.userPosts))
-    },[]);
+      .then((response) => response.json())
+      .then((data) => setTargetPostResipe(data.userPosts));
+  }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     fetch(`http://localhost:8080/user/${authId}/like`)
-      .then(response => response.json())
-      .then(data => setMyLikeResipe(data.likePosts))
-    },[]);
+      .then((response) => response.json())
+      .then((data) => setMyLikeResipe(data.likePosts));
+  }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     fetch(`http://localhost:8080/user/${authId}/comment`)
-      .then(response => response.json())
-      .then(data => setMyCommentResipe(data.commentPosts))
-    },[]);
+      .then((response) => response.json())
+      .then((data) => setMyCommentResipe(data.commentPosts));
+  }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     fetch(`http://localhost:8080/user/${authId}/history`)
-      .then(response => response.json())
-      .then(data => setHistoryResipe(data.lastViewedPosts))
-    },[]);
-
+      .then((response) => response.json())
+      .then((data) => setHistoryResipe(data.lastViewedPosts));
+  }, []);
 
   async function followerCall() {
     await axios
       .post("/follow", {
-      followerId : userId,
-      headers: {
-        "Content-Type": "application/json",
+        followerId: userId,
+        headers: {
+          "Content-Type": "application/json",
         },
       })
       .then((data) => alert("팔로우 성공"))
@@ -122,9 +118,9 @@ const MyPageTemplate = () => {
   async function followerUnCall() {
     await axios
       .delete("/follow", {
-      data: { followerId: userId },
-      headers: {
-        "Content-Type": "application/json",
+        data: { followerId: userId },
+        headers: {
+          "Content-Type": "application/json",
         },
       })
       .then((data) => alert("언팔로우 성공"))
@@ -141,97 +137,103 @@ const MyPageTemplate = () => {
   return (
     <div>
       <NavTop />
-        <MyPageMainBox style={{ marginTop: "80px", marginBottom: "90px" }}>
-        { userId === authId 
-        ?
+      <MyPageMainBox style={{ marginTop: "80px", marginBottom: "90px" }}>
+        {userId === authId ? (
           <MyPageMainImgBox inImgBox>
             <MyPageMainInfoBox>
               <div className="InfoProfile">
-                <MyPageImage src={userData.profileImage ? userData.profileImage : "../../images/baseimage.png"}/>
+                <MyPageImage
+                  src={userData.profileImage ? userData.profileImage : "../../images/baseimage.png"}
+                />
                 <p>{userData.nickName}</p>
               </div>
-                <MyPageFollowBox className="followBox">
-                   <div>
-                      <p>게시글</p>
-                      <span>{myPostResipe.length}</span>
-                  </div>
-                  <div>
-                    <Link to={`/user/${authId}/followee`}>
-                      <p>팔로워</p>
-                      <span>{userData.numFollowees}</span>
-                    </Link>
-                  </div>
-                  <div>
-                    <Link to={`/user/${authId}/follower`}>
-                      <p>팔로잉</p>
-                      <span>{userData.numFollowers}</span>
-                    </Link>
-                  </div>
-                </MyPageFollowBox>
+              <MyPageFollowBox className="followBox">
+                <div>
+                  <p>게시글</p>
+                  <span>{myPostResipe.length}</span>
+                </div>
+                <div>
+                  <Link to={`/user/${authId}/followee`}>
+                    <p>팔로워</p>
+                    <span>{userData.numFollowees}</span>
+                  </Link>
+                </div>
+                <div>
+                  <Link to={`/user/${authId}/follower`}>
+                    <p>팔로잉</p>
+                    <span>{userData.numFollowers}</span>
+                  </Link>
+                </div>
+              </MyPageFollowBox>
             </MyPageMainInfoBox>
-            <MyPageMainBtnBox >
-
+            <MyPageMainBtnBox>
               <Link to={`/user/${userData._id}/edit`}>
-                <MyPageMainProfileEdit type="button" >프로필 수정</MyPageMainProfileEdit>
+                <MyPageMainProfileEdit type="button">프로필 수정</MyPageMainProfileEdit>
               </Link>
 
-              <div style={{width: "100%", borderBottom : "1px solid #c5c5c5", marginBottom: "5px"}}>
-              </div>
-              <ResipeButton postResipe={myPostResipe} nums="0"/>
-              <ResipeButton likeResipe={myLikeResipe} nums="1"/>
-              <ResipeButton commentResipe={myCommentResipe} nums="2"/>
-              <ResipeButton historyResipe={myHistoryResipe} nums="3"/>
-              <div style={{width: "300px", height: "70px"}}></div>
-              
+              <div
+                style={{ width: "100%", borderBottom: "1px solid #c5c5c5", marginBottom: "5px" }}
+              ></div>
+              <ResipeButton postResipe={myPostResipe} nums="0" />
+              <ResipeButton likeResipe={myLikeResipe} nums="1" />
+              <ResipeButton commentResipe={myCommentResipe} nums="2" />
+              <ResipeButton historyResipe={myHistoryResipe} nums="3" />
+              <div style={{ width: "300px", height: "70px" }}></div>
             </MyPageMainBtnBox>
           </MyPageMainImgBox>
-        : 
-        <MyPageMainImgBox>
-          <MyPageMainInfoBox>
-            <div className="InfoProfile">
-              <MyPageImage src={targetUserData.profileImage ? targetUserData.profileImage : "../../images/onlylogo.png"}/>
-              <p>{targetUserData.nickName}</p>
-            </div>
-          </MyPageMainInfoBox>
+        ) : (
+          <MyPageMainImgBox>
+            <MyPageMainInfoBox>
+              <div className="InfoProfile">
+                <MyPageImage
+                  src={
+                    targetUserData.profileImage
+                      ? targetUserData.profileImage
+                      : "../../images/onlylogo.png"
+                  }
+                />
+                <p>{targetUserData.nickName}</p>
+              </div>
+            </MyPageMainInfoBox>
 
-          <MyPageMainBtnBox>
-            { targetFollowee.map((item) => item.followeeId.id).includes(authId)
-              ?
-                <MyPageMainProfileEdit type="button" onClick={followerUnCall}>언팔로우</MyPageMainProfileEdit>
-              :
-                <MyPageMainProfileEdit type="button" onClick={followerCall}>팔로우</MyPageMainProfileEdit>
-            }
-          </MyPageMainBtnBox>
+            <MyPageMainBtnBox>
+              {targetFollowee.map((item) => item.followeeId.id).includes(authId) ? (
+                <MyPageMainProfileEdit type="button" onClick={followerUnCall}>
+                  언팔로우
+                </MyPageMainProfileEdit>
+              ) : (
+                <MyPageMainProfileEdit type="button" onClick={followerCall}>
+                  팔로우
+                </MyPageMainProfileEdit>
+              )}
+            </MyPageMainBtnBox>
 
-          <div style={{width: "100%", borderBottom : "1px solid #c5c5c5", marginBottom: "20px"}} />
-          <TargetPostBox>
-            
-                    
-            <TargetPostZone>
-              { targetPostResipe.map((item, input) => {
-                return (
-                  <Link
+            <div
+              style={{ width: "100%", borderBottom: "1px solid #c5c5c5", marginBottom: "20px" }}
+            />
+            <TargetPostBox>
+              <TargetPostZone>
+                {targetPostResipe.map((item, input) => {
+                  return (
+                    <Link
                       key={input}
                       to={`/detail/${item.id} `}
-                      style={{ textDecoration: "none", color: "inherit", height: "170px;" }}
+                      style={{ textDecoration: "none", color: "inherit", height: "170px" }}
                     >
                       <PostWrapper>
                         <img style={{ objectFit: "cover" }} src={item.thumbnail} />
                         <div>{item.recipeName}</div>
                       </PostWrapper>
                     </Link>
-                )
-              })}
-            </TargetPostZone>
-          </TargetPostBox>
-
-
-        </MyPageMainImgBox>
-        }
-        </MyPageMainBox>
+                  );
+                })}
+              </TargetPostZone>
+            </TargetPostBox>
+          </MyPageMainImgBox>
+        )}
+      </MyPageMainBox>
       <NavBottom />
     </div>
-  
   );
 };
 
@@ -247,14 +249,14 @@ const MyPageImage = styled.img`
     font-size: 18px;
     font-weight: 500;
   }
-`
+`;
 const MyPageMainProfileEdit = styled.button`
   width: 315px;
   height: 45px;
   font-weight: bold;
   font-size: 16px;
   border-radius: 10px;
-  background-color: #FEAE11;
+  background-color: #feae11;
   display: inline-block;
   outline: none;
   border: none;
@@ -262,12 +264,12 @@ const MyPageMainProfileEdit = styled.button`
   color: white;
   margin-top: 14px;
   margin-bottom: 30px;
-`
+`;
 
 const MyPageFollowBox = styled.div`
   width: 150px;
   height: 100px;
-`
+`;
 
 const MyPageMainInfoBox = styled.div`
   display: flex;
@@ -281,7 +283,7 @@ const MyPageMainInfoBox = styled.div`
       font-size: 16px;
       margin: 8px 0 20px 0;
     }
-  };
+  }
 
   .followBox {
     position: relative;
@@ -289,7 +291,7 @@ const MyPageMainInfoBox = styled.div`
     top: 10px;
     display: flex;
     justify-content: center;
-    line-height: 5px;    
+    line-height: 5px;
     align-items: center;
     width: 220px;
     color: gray;
@@ -315,5 +317,5 @@ const MyPageMainInfoBox = styled.div`
       }
     }
   }
-`
+`;
 export default MyPageTemplate;
