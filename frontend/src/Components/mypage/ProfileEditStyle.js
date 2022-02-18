@@ -15,8 +15,8 @@ export const MyPagePasswordEditBox = styled.div`
   display: flex;
   justify-content: space-between;
   flex-direction: column;
+  margin-bottom: 30px;
   span {
-    margin-top: 10px;
     line-height: 1px;
     cursor: pointer;
   }

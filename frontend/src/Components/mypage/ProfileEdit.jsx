@@ -10,6 +10,8 @@ import { MyPagePasswordEditBox } from "./ProfileEditStyle";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faCircleCheck, faCircleXmark} from "@fortawesome/free-solid-svg-icons";
 import axios from 'axios';
+import { userIdAtom } from "../../states";
+import { useRecoilValue } from "recoil";
 
 
 const EditMyPage = () => {
@@ -18,11 +20,13 @@ const EditMyPage = () => {
   const [ nickCheck, setNickCheck ] = useState("type1")
   const [ password, setPassword ] = useState("1234")
   const [ userData, setUserData] = useState([])
+  const [ myAuthData, setMyAuthData ] = useState([]) 
   const [ profileImage, setProfileImage] = useState(userData.profileImage ? userData.profileImage : "../../images/baseimage.png");
   const [ saveImage, setSaveImage ] = useState("")
   const [ savenickName, setSaveNickName ] = useState("")
   const nickNameInput = useRef()
   let { userId } = useParams()
+  const authId =  useRecoilValue(userIdAtom)
 
   useEffect(()=>{
     fetch(`http://localhost:8080/user/${userId}/profile`)
@@ -33,6 +37,14 @@ const EditMyPage = () => {
     })
     
     .catch(err => console.log(err))
+  },[]);
+
+  useEffect(()=>{
+    fetch(`http://localhost:8080/user/${authId}/profile`)
+      .then(response => response.json())
+      .then(data => setMyAuthData(data.user))
+      
+      .catch(err => console.log(err))
   },[]);
 
 
@@ -95,6 +107,10 @@ const EditMyPage = () => {
       setNickCheck("type2")
       setSaveNickName(userData.nickName)
 
+    } else if ( myAuthData.nickName === value ) {
+      data.innerText = "현재 사용중인 닉네임 입니다."
+      setNickCheck("type2")
+      setSaveNickName(userData.nickName)
     }
 
      else {
@@ -104,7 +120,7 @@ const EditMyPage = () => {
     }
 
   }
-
+  console.log(myAuthData.nickName)
   return (
       <EditMainBox>
         <NavTop />
@@ -119,7 +135,7 @@ const EditMyPage = () => {
                 setMyNickName(e.target.value)
                 nickNameCheck(e.target.value)
               }}/>
-              <p>{nickCheck === "type2" ? <FontAwesomeIcon icon={faCircleXmark} className="checkError"/> : <FontAwesomeIcon icon={faCircleCheck} className="checkSuccess"/> } <span id="nickNameCheckText"></span></p>
+              <p style={{marginBottom: "30px"}}>{nickCheck === "type2" ? <FontAwesomeIcon icon={faCircleXmark} className="checkError"/> : <FontAwesomeIcon icon={faCircleCheck} className="checkSuccess"/> } <span id="nickNameCheckText"></span></p>
               
               <MyPagePasswordEditBox className="passbox">
                 <span onClick={pass1}>비밀번호 바꾸기</span><br /><br />
@@ -128,7 +144,7 @@ const EditMyPage = () => {
                 <div className="showpass">
                 </div>
               </MyPagePasswordEditBox>
-              <div style={{position: "relative", top: "21px"}}>
+              <div style={{position: "relative", top: "-3px"}}>
               { nickCheck === "type2" 
               ? 
                 <EditBtn type="button" onClick={successChenge, () => nickNameInput.current.focus()}>
@@ -140,7 +156,7 @@ const EditMyPage = () => {
                   완료
                   </EditBtn>
                 </Link>
-              }
+              } 
               </div>
 
             </MyPageMainImgBox>
@@ -154,6 +170,8 @@ const EditMainBox = styled.div`
   
 `
 const EditImage = styled.img`
+  position: relative;
+  top: 16px;
   width: 190px;
   height: 190px;
   border-radius: 50%;
@@ -221,6 +239,7 @@ const EditInput = styled.input`
 
     .checkError {
       font-size: 14px;
+
     }
 
     .checkSuccess {
