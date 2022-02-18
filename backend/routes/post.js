@@ -175,7 +175,7 @@ router.get(
 router.get(
   "/withFilter",
   asyncHandler(async (req, res, next) => {
-    let { startIndex, limit, currentPost } = req.query;
+    let { startIndex, limit, currentPost, filterByLikes } = req.query;
 
     console.log("currentPost", currentPost);
 
@@ -190,33 +190,48 @@ router.get(
         ? key != "startIndex"
           ? key != "limit"
             ? key != "currentPost"
-              ? (filteredCondition[key] = value)
+              ? key != "filterByLikes"
+                ? (filteredCondition[key] = value)
+                : null
               : null
             : null
           : null
         : null;
     }
-
     console.log("filteredCondition", filteredCondition);
-    const totalPost = await Post.find({
-      ...filteredCondition,
-      _id: { $ne: currentPost },
-      useYN: true,
-    }).countDocuments({});
-    // console.log(Math.round(totalPost / limit));
-    if (startIndex <= Math.round(totalPost / limit)) {
-      const userPosts = await Post.find({ ...filteredCondition, _id: { $ne: currentPost } })
-        .sort({ numLikes: -1, createdAt: -1 })
-        .skip((startIndex - 1) * limit)
+    if (filterByLikes === "likes") {
+      const filteredPost = await Post.find({
+        ...filteredCondition,
+        _id: { $ne: currentPost },
+        useYN: true,
+      })
+        .sort({ numLikes: -1 }) // 좋아요순정렬
+        .skip(startIndex - 1)
         .limit(limit)
         .populate({
           path: "userId",
           select: "-password",
         })
         .populate({ path: "numComments", match: { isDeleted: false } });
-
-      res.status(200).json({ userPosts });
+      console.log("인기순조회했다");
+      res.status(200).json({ filteredPost });
+      return;
     }
+    const filteredPost = await Post.find({
+      ...filteredCondition,
+      _id: { $ne: currentPost },
+      useYN: true,
+    })
+      .sort({ createdAt: -1 }) // 최신순정렬
+      .skip(startIndex - 1)
+      .limit(limit)
+      .populate({
+        path: "userId",
+        select: "-password",
+      })
+      .populate({ path: "numComments", match: { isDeleted: false } });
+    console.log("최신순조회했다");
+    res.status(200).json({ filteredPost });
   })
 );
 

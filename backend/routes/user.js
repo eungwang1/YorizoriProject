@@ -5,6 +5,7 @@ const asyncHandler = require("../utils/asyncHandler");
 const { Like, History, Follow, User, Post, Comment } = require("../models/");
 
 const { profileUpload, s3 } = require("../middlewares/upload");
+const res = require("express/lib/response");
 
 // 유저 프로필 수정
 //formdata를 patch로 받는 방법을 아직 모르겠어서 일단 post 처리
@@ -302,6 +303,14 @@ router.get(
       .populate({ path: "numLikes", match: { isUnliked: false } });
 
     res.status(200).json({ limitedSortedUsers });
+  })
+);
+
+router.get(
+  "/all",
+  asyncHandler(async (req, res, next) => {
+    const allUser = await User.find().select("_id nickName");
+    res.status(200).json({ allUser });
   })
 );
 module.exports = router;
