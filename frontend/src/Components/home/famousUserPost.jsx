@@ -91,7 +91,7 @@ const FamousUserPost = () => {
             >
               {famousUsersPostsLoadable.contents[changePosts][0]?.userId.nickName}
             </span>
-            님의 음식이에요.
+            님.
           </S.TextMain>
         </S.TextMainWrapper>
 

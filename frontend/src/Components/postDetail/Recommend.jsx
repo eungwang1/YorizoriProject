@@ -18,7 +18,7 @@ const Recommend = ({ data }) => {
           },
         });
         const limit = 4;
-        const startIndex = parseInt(Math.random() * (Number(filteredPostCount) - limit));
+        const startIndex = Math.ceil(Math.random() * (Number(filteredPostCount) - limit));
         console.log("startIndex", startIndex);
         const {
           data: { filteredPost },

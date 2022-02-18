@@ -32,9 +32,10 @@ export const TextMain = styled.p`
   text-align: left;
   margin: 0;
   span {
-    font-size: 24px;
+    font-size: 21px;
     color: #feae11;
     font-weight: 700;
+    margin-right: 3px;
   }
   & + & {
     margin-top: 5px;
