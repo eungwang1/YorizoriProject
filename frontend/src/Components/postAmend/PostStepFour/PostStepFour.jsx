@@ -1,10 +1,9 @@
-import React from "react";
-import styled, { css } from "styled-components";
+import React, { useEffect } from "react";
 import PostTemplete from "../PostTemplete";
-import { StyledP, ContainerDiv } from "../commonStyle";
-import { Dropdown } from "react-dropdown-now";
+import { StyledP } from "../commonStyle";
 import CategoryDropdown from "./CategoryDropdown";
 import CookInfoDropdown from "./CookInfoDropdown";
+import { useRecoilState } from "recoil";
 
 const PostStepFour = ({ data }) => {
   return (

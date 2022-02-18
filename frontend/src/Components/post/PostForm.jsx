@@ -141,7 +141,12 @@ const PostForm = () => {
           sec: value,
         };
         process_el.processTime = time;
-        process.push(process_el);
+        if (process_el.explain) process.push(process_el);
+
+        process_el = {
+          ...process_el,
+          explain: "",
+        };
       }
     }
 

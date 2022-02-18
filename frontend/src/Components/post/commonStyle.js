@@ -250,6 +250,7 @@ export const ImgBox = styled.img`
   width: 300px;
   height: 300px;
   position: relative;
+  object-fit: cover;
   ${(props) =>
     props.detail &&
     css`

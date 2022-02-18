@@ -13,8 +13,8 @@ import {
   ModalBackground,
 } from "../commonStyle";
 import { useForm, useFormContext } from "react-hook-form";
-import { MainImageStateAtom } from "../PostAtom/PostAtom";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { MainImageStateAtom, SubImageStateAtom } from "../PostAtom/PostAtom";
+import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
 import { ConvertURLtoFile } from "../util/ConvertURLtoFile";
 
 const PostStepOne = ({ data }) => {
@@ -23,12 +23,44 @@ const PostStepOne = ({ data }) => {
   const PreviewRef = useRef();
   const { watch, setValue, getValues } = useForm();
   const { register } = useFormContext();
-
   const mainImage = useRecoilValue(MainImageStateAtom);
+  const [subImage, setSubImage] = useRecoilState(SubImageStateAtom);
   const setMainImage = useSetRecoilState(MainImageStateAtom);
   const [modalState, setModalState] = useState(false);
   const [number, setNumber] = useState(0);
 
+  useEffect(() => {
+    console.log("랜더링오류");
+    data.copyImage.map((el, index) => {
+      ConvertURLtoFile(el).then((imgFile) => {
+        console.log(imgFile);
+        console.log(el);
+        if (!subImage.preview[index + 1]) {
+          setSubImage((oldList) => {
+            const newList = {
+              ...oldList,
+              file: oldList.file.map((element, idx) => {
+                if (element) {
+                  return element;
+                } else if (idx === index + 1) {
+                  return imgFile;
+                }
+              }),
+              preview: oldList.preview.map((element, idx) => {
+                if (element) {
+                  return element;
+                } else if (idx === index + 1) {
+                  return el;
+                }
+              }),
+            };
+            return newList;
+          });
+        }
+      });
+    });
+    console.log(subImage);
+  }, []);
   useEffect(() => {
     if (!mainImage.state) {
       ConvertURLtoFile(data.thumbnail).then((el) => {

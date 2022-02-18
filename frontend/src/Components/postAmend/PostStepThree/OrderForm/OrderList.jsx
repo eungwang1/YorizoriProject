@@ -65,6 +65,7 @@ const OrderList = ({ data }) => {
         }
       });
     });
+    console.log(subImage);
   }, []);
 
   const deleteIngredient = (index) => {

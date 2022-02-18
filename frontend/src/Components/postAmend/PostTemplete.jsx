@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled, { css } from "styled-components";
 import PostNav from "../nav/PostNav";
 import NavBottom from "../nav/BottomNav";
 import { StyledP } from "./commonStyle";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
 import { postPageStateAtom } from "./PostAtom/PostAtom";
 
 const PostTemplete = ({ children, stepNum, page, request }) => {
   const postPageState = useRecoilValue(postPageStateAtom);
   const setPostpostPageState = useSetRecoilState(postPageStateAtom);
+
   return (
     <PostTempleteBlock autocomplete="off">
       <PostNav />
