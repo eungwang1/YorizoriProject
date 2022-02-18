@@ -19,17 +19,15 @@ const MyFollower = () => {
       .catch(err => console.log(err))
   },[]);
 
-  console.log(myFollowerList)
-
 return (
     <div>
       <TopNav />
        <MainBox>
          <p>나의 팔로잉</p>
        </MainBox>
-        { myFollowerList.map((item) => {
+        { myFollowerList.map((item, index) => {
           return (
-            <FolloweeListBox>
+            <FolloweeListBox key={index}>
               <Link to={`/user/${item.followerId.id}/profile`}>
                 <FolloweeInfoBtnBox>
                     <img src={ item.followerId.profileImage ? item.followerId.profileImage : "../../images/onlylogo.png"}></img>

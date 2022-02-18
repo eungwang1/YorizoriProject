@@ -25,9 +25,9 @@ const MyFollowee = () => {
        <MainBox>
          <p>나의 팔로워</p>
        </MainBox>
-       { myFolloweeList.map((item) => {
+       { myFolloweeList.map((item, index) => {
           return (
-            <FolloweeListBox>
+            <FolloweeListBox key={index} >
               <Link to={`/user/${item.followeeId.id}/profile`}>
                 <FolloweeInfoBtnBox>
                     <img src={ item.followeeId.profileImage ? item.followeeId.profileImage : "../../images/onlylogo.png"}></img>

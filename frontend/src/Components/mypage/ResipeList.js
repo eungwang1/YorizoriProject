@@ -15,7 +15,7 @@ export default function ResipeButton(props) {
   
   let datas = ""
 
-  if(props.nums === "1" || props.nums === "2") {
+  if(props.nums === "1" || props.nums === "2" || props.nums === "3") {
     datas = props[listResipe[props.nums]].filter((item) => item.postId)
   } else {
     datas = props[listResipe[props.nums]]
