@@ -193,6 +193,7 @@ const EditImage = styled.img`
   width: 190px;
   height: 190px;
   border-radius: 50%;
+  object-fit: cover;
   /* background-image: url("../images/profile.png");
   background-size: cover; */
 

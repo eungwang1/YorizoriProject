@@ -189,7 +189,7 @@ const MyPageTemplate = () => {
         <MyPageMainImgBox>
           <MyPageMainInfoBox>
             <div className="InfoProfile">
-              <MyPageImage src={targetUserData.profileImage ? targetUserData.profileImage : "../../images/baseimage.png"}/>
+              <MyPageImage src={targetUserData.profileImage ? targetUserData.profileImage : "../../images/onlylogo.png"}/>
               <p>{targetUserData.nickName}</p>
             </div>
           </MyPageMainInfoBox>
@@ -239,6 +239,7 @@ const MyPageImage = styled.img`
   width: 115px;
   height: 115px;
   border-radius: 50%;
+  object-fit: cover;
 
   + p {
     font-family: sans-serif;
