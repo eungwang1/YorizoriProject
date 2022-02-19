@@ -3,26 +3,30 @@ import { Link, useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
 
 const SloganWrapper = styled.div`
-  width: 100%;
-  height: 200px;
+  // width: 100%;
+  // height: 200px;
   z-index: 10;
   margin-top: 80px;
   position: relative;
 `;
 
-const SloganBackground = styled.div`
-  position: relative;
-  border-radius: 10px 0 0 10px;
-  height: 200px;
-  background-color: #fffcf4;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  right : 0
-  z-index: 100;
+// const SloganBackground = styled.div`
+//   position: relative;
+//   border-radius: 10px 0 0 10px;
+//   height: 200px;
+//   background-color: #fffcf4;
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   align-items: center;
+//   right : 0
+//   z-index: 100;
+// `;
+const SloganBackground = styled.img`
+  width: 100%;
+  heigth: 200px;
+  object-fit: cover;
 `;
-
 const SloganTitle = styled.div`
   background-image: url("../images/onlytitle.png");
   background-size: contain;
@@ -55,11 +59,7 @@ const SloganContents = styled.p`
 const Slogan = () => {
   return (
     <SloganWrapper>
-      <SloganBackground>
-        <SloganTitle></SloganTitle>
-        <SloganBody>직접 만드는 즐거움</SloganBody>
-        <SloganContents>다양한 레시피를 확인하고 여러분만의 레시피를 공유해보세요</SloganContents>
-      </SloganBackground>
+      <SloganBackground src="../images/slogan.png" />
     </SloganWrapper>
   );
 };
