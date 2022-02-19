@@ -1,0 +1,94 @@
+{
+  "post": [
+    {
+      "key": 1,
+      "postinfo": {
+        "recipeName": "맛있다....감바스...",
+        "thumbnail": "../images/gam.jpg",
+        "desc": "감바스를 좋아하시나요? 이제 좋아하게 되실겁니다.",
+        "category": "양식",
+        "condition": "근사하게",
+        "material": "해물류",
+        "cook": "끓이기",
+        "servings": "2인분",
+        "time": "15분이내",
+        "diffic": "아무나",
+        "ingredients": [
+          { "name": "중새우", "amount": "15마리" },
+          { "name": "올리브유", "amount": "1컵" }
+        ],
+        "seasoning": [
+          { "name": "허브맛솔트", "amount": "조금" },
+          { "name": "페페로치노", "amount": "1스푼" }
+        ],
+        "process": [
+          {
+            "explain": "기름을 데워줍니다.",
+            "processImage": "../images/gam.jpg",
+            "processTime": {
+              "min": 0,
+              "sec": 10
+            }
+          },
+          {
+            "explain": "페페로치노와 새우를 넣어줍니다.새우의 색이 변할때 까지 튀겨주면 감바스 만들기 완성이에요.",
+            "processImage": "../images/gam.jpg",
+            "processTime": {
+              "min": 1,
+              "sec": 30
+            }
+          }
+        ],
+        "photo": [
+          { "image": "../images/gam.jpg" },
+          { "image": "../images/food1.jpg" },
+          { "image": "../images/gam.jpg" },
+          { "image": "../images/food2.jpg" },
+          { "image": "../images/gam.jpg" }
+        ]
+      }
+    },
+    {
+      "key": 2,
+      "postinfo": {
+        "recipeName": "맛있다....감바스...",
+        "thumbnail": "../images/gam.jpg",
+        "desc": "감바스를 좋아하시나요? 이제 좋아하게 되실겁니다.",
+        "category": "양식",
+        "condition": "근사하게",
+        "material": "해물류",
+        "cook": "끓이기",
+        "servings": "2인분",
+        "time": "15분이내",
+        "diffic": "아무나",
+        "ingredients": [
+          { "name": "중새우", "amount": "15마리" },
+          { "name": "올리브유", "amount": "1컵" }
+        ],
+        "seasoning": [
+          { "name": "허브맛솔트", "amount": "조금" },
+          { "name": "페페로치노", "amount": "1스푼" }
+        ],
+        "process": [
+          {
+            "explain": "기름을 데워줍니다.",
+            "processImage": "../images/gam.jpg",
+            "processTime": {
+              "min": 0,
+              "sec": 30
+            }
+          },
+          {
+            "explain": "페페로치노와 새우를 넣어줍니다.새우의 색이 변할때 까지 튀겨주면 감바스 만들기 완성이예요.",
+            "processImage": "../images/gam.jpg",
+            "processTime": {
+              "min": 1,
+              "sec": 8
+            }
+          }
+        ],
+        "photo": [{ "image": "../images/gam.jpg" }, { "image": "../images/gam.jpg" }]
+      }
+    }
+  ]
+}
