@@ -87,7 +87,7 @@
 
 ## 페이지별 화면
 
-**전체 시연영상은 <a href="https://kdt-gitlab.elice.io/sw_track/class_01/project_2/team9/project-template/-/wikis/Final-Web-View">이곳</a>에 자세하게 안내되어있습니다. <a href="https://kdt-gitlab.elice.io/sw_track/class_01/project_2/team9/project-template/-/wikis/Final-Web-View">이곳</a>을 클릭해주세요 !**
+<!-- **전체 시연영상은 <a href="https://kdt-gitlab.elice.io/sw_track/class_01/project_2/team9/project-template/-/wikis/Final-Web-View">이곳</a>에 자세하게 안내되어있습니다. <a href="https://kdt-gitlab.elice.io/sw_track/class_01/project_2/team9/project-template/-/wikis/Final-Web-View">이곳</a>을 클릭해주세요 !** -->
 | |
 :------------------------------------------------------------------------------------------------------------------------------: |
 | <img src="https://user-images.githubusercontent.com/94670393/155182395-4b0628a1-3a9f-4bc3-9d5e-91d0df0db56f.png" height="400" /> |
@@ -132,6 +132,6 @@
 
 [프로젝트 소개](https://www.notion.so/elice/9-847410c596414205aecb426254b5afb0)
 
-[요리조리 Wiki](https://kdt-gitlab.elice.io/sw_track/class_01/project_2/team9/project-template/-/wikis/home)
-
-[배포 링크](http://elice-kdt-sw-1st-team9.elicecoding.com/)
+<!-- [요리조리 Wiki](https://kdt-gitlab.elice.io/sw_track/class_01/project_2/team9/project-template/-/wikis/home) -->
+<!-- 
+[배포 링크](http://elice-kdt-sw-1st-team9.elicecoding.com/) -->
