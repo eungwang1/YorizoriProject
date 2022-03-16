@@ -31,6 +31,11 @@
 
 <br>
 
+## 프로젝트 기술 스택
+<img src="https://drive.google.com/uc?export=view&id=1NF29WJVP7SDSf6h236U9nK-V6TXivgfL"/>
+
+<br>
+
 ## 서비스 주요 기능
 
 <hr>
@@ -110,10 +115,7 @@
 <br>
 <br>
  
-## 프로젝트 기술 스택
-<img src="https://drive.google.com/uc?export=view&id=1NF29WJVP7SDSf6h236U9nK-V6TXivgfL"/>
 
-<br>
 
 ## 팀원
 
