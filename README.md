@@ -128,9 +128,9 @@
 
 <br>
 
-## 더 자세히 알아보기
+<!-- ## 더 자세히 알아보기
 
-[프로젝트 소개](https://www.notion.so/elice/9-847410c596414205aecb426254b5afb0)
+[프로젝트 소개](https://www.notion.so/elice/9-847410c596414205aecb426254b5afb0) -->
 
 <!-- [요리조리 Wiki](https://kdt-gitlab.elice.io/sw_track/class_01/project_2/team9/project-template/-/wikis/home) -->
 <!-- 
